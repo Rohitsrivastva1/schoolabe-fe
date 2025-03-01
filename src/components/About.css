@@ -1,0 +1,123 @@
+/* Dark theme background */
+.aboutUs {
+    font-family: 'Inter', sans-serif;
+    background-color: #0D1117;
+    color: #E6EDF3;
+    padding: 0;
+    margin: 0;
+}
+
+/* Hero Section */
+.aboutHero {
+    text-align: center;
+    padding: 120px 20px;
+    background: linear-gradient(135deg, #0D1117, #161B22);
+}
+
+.aboutHero h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #E6EDF3;
+}
+
+.aboutHero p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #8B949E;
+}
+
+/* About Section */
+.aboutSection {
+    padding: 80px 20px;
+    text-align: center;
+    background-color: #161B22;
+}
+
+.aboutSection h2 {
+    font-size: 2rem;
+    color: #A371F7;
+}
+
+.aboutSection p {
+    font-size: 1.2rem;
+    color: #8B949E;
+}
+
+/* Offerings */
+.offerings {
+    padding: 80px 20px;
+    text-align: center;
+    background: #0D1117;
+}
+
+.offerings h2 {
+    font-size: 2rem;
+    color: #58A6FF;
+}
+
+.offerList {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.offerCard {
+    background: #21262D;
+    padding: 20px;
+    border-radius: 10px;
+    width: 280px;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.offerCard:hover {
+    transform: translateY(-5px);
+}
+
+.offerCard h3 {
+    color: #3FB950;
+    font-size: 1.4rem;
+}
+
+.offerCard p {
+    color: #8B949E;
+    font-size: 1rem;
+}
+
+/* Call to Action */
+.cta {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #161B22, #0D1117);
+}
+
+.cta h2 {
+    font-size: 2rem;
+    color: #58A6FF;
+}
+
+.cta p {
+    font-size: 1.2rem;
+    color: #8B949E;
+    margin-top: 10px;
+}
+
+.primaryBtn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    background-color: #3FB950;
+    color: #0D1117;
+    box-shadow: 0px 4px 10px rgba(63, 185, 80, 0.3);
+    transition: all 0.3s ease;
+}
+
+.primaryBtn:hover {
+    background-color: #2EA043;
+    box-shadow: 0px 4px 15px rgba(46, 160, 67, 0.5);
+}
