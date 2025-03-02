@@ -1,0 +1,68 @@
+{
+    "python": {
+      "variables": {
+        "title": "Python Variables and Literals",
+        "content": [
+          { "type": "h1", "text": "Python Variables and Literals" },
+          { "type": "p", "text": "In the previous tutorial, you learned about Python comments. Now, let's learn about variables and literals in Python." },
+          { "type": "h2", "text": "Python Variables" },
+          { "type": "p", "text": "In programming, a variable is a container (storage area) to hold data. For example," },
+          { "type": "code", "text": "number = 10" },
+          { "type": "p", "text": "Here, number is a variable storing the value 10." },
+          { "type": "h2", "text": "Assigning values to Variables in Python" },
+          { "type": "p", "text": "As we can see from the above example, we use the assignment operator = to assign a value to a variable." },
+          { "type": "code", "text": "site_name = 'programiz.pro'\nprint(site_name)" },
+          { "type": "p", "text": "Output:" },
+          { "type": "output", "text": "programiz.pro" },
+          { "type": "h2", "text": "Changing the Value of a Variable in Python" },
+          { "type": "code", "text": "site_name = 'programiz.pro'\nprint(site_name)\nsite_name = 'apple.com'\nprint(site_name)" },
+          { "type": "p", "text": "Output:" },
+          { "type": "output", "text": "programiz.pro\napple.com" },
+          { "type": "h2", "text": "Assigning multiple values to multiple variables" },
+          { "type": "code", "text": "a, b, c = 5, 3.2, 'Hello'\nprint(a)\nprint(b)\nprint(c)" },
+          { "type": "h2", "text": "Rules for Naming Python Variables" },
+          {
+            "type": "ul",
+            "items": [
+              "A variable name must start with a letter or an underscore.",
+              "Variable names are case-sensitive (name and Name are different variables).",
+              "A variable name can only contain letters, numbers, and underscores."
+            ]
+          }
+        ]
+      },
+      "variables2": {
+        "title": "Dummy 2",
+        "content": [
+          { "type": "h1", "text": "Laung Variables and Literals" },
+          { "type": "p", "text": "In the previous tutorial, you learned about Python comments. Now, let's learn about variables and literals in Python." },
+          { "type": "h2", "text": "Python Variables" },
+          { "type": "p", "text": "In programming, a variable is a container (storage area) to hold data. For example," },
+          { "type": "code", "text": "number = 10" },
+          { "type": "p", "text": "Here, number is a variable storing the value 10." },
+          { "type": "h2", "text": "Assigning values to Variables in Python" },
+          { "type": "p", "text": "As we can see from the above example, we use the assignment operator = to assign a value to a variable." },
+          { "type": "code", "text": "site_name = 'programiz.pro'\nprint(site_name)" },
+          { "type": "p", "text": "Output:" },
+          { "type": "output", "text": "programiz.pro" },
+          { "type": "h2", "text": "Changing the Value of a Variable in Python" },
+          { "type": "code", "text": "site_name = 'programiz.pro'\nprint(site_name)\nsite_name = 'apple.com'\nprint(site_name)" },
+          { "type": "p", "text": "Output:" },
+          { "type": "output", "text": "programiz.pro\napple.com" },
+          { "type": "h2", "text": "Assigning multiple values to multiple variables" },
+          { "type": "code", "text": "a, b, c = 5, 3.2, 'Hello'\nprint(a)\nprint(b)\nprint(c)" },
+          { "type": "h2", "text": "Rules for Naming Python Variables" },
+          {
+            "type": "ul",
+            "items": [
+              "A variable name must start with a letter or an underscore.",
+              "Variable names are case-sensitive (name and Name are different variables).",
+              "A variable name can only contain letters, numbers, and underscores."
+            ]
+          }
+        ]
+      }
+
+    }
+  }
+  
