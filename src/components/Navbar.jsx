@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Navbar.module.css"; // Use CSS module
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,12 +28,12 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <div className={`${styles.navLinks} ${menuOpen ? styles.active : ""}`}>
-          <a href="/" onClick={() => setMenuOpen(false)}>Home</a>
-          <a href="/about" onClick={() => setMenuOpen(false)}>About</a>
-          <a href="/courses" onClick={() => setMenuOpen(false)}>Courses</a>
-          <a href="/contact" onClick={() => setMenuOpen(false)}>Contact</a>
-          <a href="/code" onClick={() => setMenuOpen(false)}>Code Editor</a>
-        </div>
+  <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+  <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
+  <Link to="/courses" onClick={() => setMenuOpen(false)}>Courses</Link>
+  <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
+  <Link to="/code" onClick={() => setMenuOpen(false)}>Code Editor</Link>
+</div>
       </div>
     </nav>
   );
