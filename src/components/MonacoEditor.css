@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-top: 80px;
   height: 100vh;
   background-color: #0d1117; /* Slightly lighter background */
   color: #e6edf3; /* Brighter text color */
@@ -10,74 +11,14 @@
   padding: 20px;
 }
 
-/* Left Side - Code Editor */
-.editor-container {
-  margin-top: 30px;
-  flex: 1;
-  padding: 20px;
-  background: #161b22; 
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Language Selector */
-.language-selector {
-  background: #21262d; /* Darker background */
-  color: #58a6ff; /* Accent color */
-  border: none;
-  padding: 10px 15px; /* Increased padding */
-  border-radius: 5px;
-  font-size: 16px;
-  margin-bottom: 15px; /* Increased margin */
-  cursor: pointer;
-}
-
-/* Run Button */
-.run-button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  background: #238636; 
-  border: none;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: transform 0.2s ease, background 0.3s ease;
-}
-
-.run-button:hover {
-  background: #2ea043;
-  transform: scale(1.05);
-}
-
-/* Output Box */
-.output-box {
-  margin-top: 20px;
-  padding: 15px;
-  background: #161b22; /* Match editor background */
-  border: 1px solid #30363d; /* Subtle border */
-  border-radius: 5px;
-  min-height: 100px;
-  font-family: "Fira Code", monospace;
-  font-size: 14px;
-}
-
-.output-box h3 {
-  color: #8b949e; /* Less prominent heading */
-  margin-bottom: 10px;
-}
-
-/* Right Side - Question */
+/* Left Side - Question */
 .question-container {
   flex: 1;
-  margin-top: 52px;
-  margin-left: 20px;
   padding: 20px;
   background: #161b22;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 40%;
 }
 
 .question-container h2 {
@@ -116,6 +57,68 @@
   font-size: 14px;
 }
 
+/* Right Side - Code Editor */
+.editor-container {
+  flex: 1;
+  padding: 20px;
+  background: #161b22; 
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  max-width: 58%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Language Selector */
+.language-selector {
+  background: #21262d; /* Darker background */
+  color: #58a6ff; /* Accent color */
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Run Button */
+.run-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: #238636; 
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.run-button:hover {
+  background: #2ea043;
+  transform: scale(1.05);
+}
+
+/* Output Box */
+.output-box {
+  margin-top: 10px;
+  padding: 15px;
+  background: #161b22; /* Match editor background */
+  border: 1px solid #30363d; /* Subtle border */
+  border-radius: 5px;
+  min-height: 100px;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+}
+
+.output-box h3 {
+  color: #8b949e; /* Less prominent heading */
+  margin-bottom: 10px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .code-container {
@@ -123,7 +126,11 @@
   }
 
   .question-container {
-    margin-left: 0;
-    margin-top: 20px;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .editor-container {
+    max-width: 100%;
   }
 }

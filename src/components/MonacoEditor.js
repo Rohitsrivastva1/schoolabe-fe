@@ -50,9 +50,27 @@ const MonacoEditor = () => {
   };
 
   return (
-    
     <div className="code-container">
-      {/* Left Side - Code Editor */}
+      {/* Left Side - Question */}
+      <div className="question-container">
+        <h2>📝 Question: Reverse a String</h2>
+        <p>
+          Write a function <code>reverseString(str)</code> that takes a string
+          as input and returns the reversed string.
+        </p>
+
+        <h3>✅ Example Test Cases:</h3>
+        <ul>
+          <li>
+            <code>reverseString("hello")</code> → <code>"olleh"</code>
+          </li>
+          <li>
+            <code>reverseString("world")</code> → <code>"dlrow"</code>
+          </li>
+        </ul>
+      </div>
+
+      {/* Right Side - Code Editor */}
       <div className="editor-container">
         {/* Language Selector */}
         <select
@@ -68,7 +86,7 @@ const MonacoEditor = () => {
 
         {/* Monaco Editor */}
         <Editor
-          height="400px"
+          height="350px"
           theme="vs-dark"
           defaultLanguage="javascript"
           value={code}
@@ -91,25 +109,6 @@ const MonacoEditor = () => {
           <h3>📜 Output:</h3>
           <pre>{output}</pre>
         </div>
-      </div>
-
-      {/* Right Side - Question and Test Cases */}
-      <div className="question-container">
-        <h2>📝 Question: Reverse a String</h2>
-        <p>
-          Write a function <code>reverseString(str)</code> that takes a string
-          as input and returns the reversed string.
-        </p>
-
-        <h3>✅ Example Test Cases:</h3>
-        <ul>
-          <li>
-            <code>reverseString("hello")</code> → <code>"olleh"</code>
-          </li>
-          <li>
-            <code>reverseString("world")</code> → <code>"dlrow"</code>
-          </li>
-        </ul>
       </div>
     </div>
   );
