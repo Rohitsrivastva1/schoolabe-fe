@@ -1,11 +1,13 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom"; // ✅ Use only HashRouter
+
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import Courses from "./components/Courses";
 import Contact from "./components/Contact";
 import About from "./components/About";
 import MonacoEditor from "./components/MonacoEditor";
+
 const App = () => {
   return (
     <Router>
