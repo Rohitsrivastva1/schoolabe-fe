@@ -1,44 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "./Navbar.css";
+import React, { useState } from "react";
+import styles from "./Navbar.module.css"; // Use CSS module
 
 const Navbar = () => {
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
-  );
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    applyTheme();
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    const newTheme = isDarkMode ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const applyTheme = () => {
-    document.body.classList.toggle("dark-mode", !isDarkMode);
-    document.body.classList.toggle("light-mode", isDarkMode);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
-    <nav className={`navbar ${isDarkMode ? "dark-mode" : ""}`}>
-      <div className="container">
-        <Link to="/" className="logo">
+    <nav className={styles.navbar}>
+      <div className={styles.container}>
+        <a href="/" className={styles.logo}>
           Schoolabe
-        </Link>
-        <div className="nav-links">
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/courses">Courses</Link>
-          <Link to="/contact">Contact</Link>
-          <Link to="/join">Code Editor</Link>
+        </a>
+
+        {/* Hamburger Icon (Visible on Mobile) */}
+        <div
+          className={`${styles.hamburger} ${menuOpen ? styles.active : ""}`}
+          onClick={toggleMenu}
+        >
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
         </div>
-        {/* Theme Toggle Button */}
-        {/* <button className="theme-toggle" onClick={toggleTheme}>
-          {isDarkMode ? "☀️" : "🌙"}
-        </button> */}
+
+        {/* Navigation Links */}
+        <div className={`${styles.navLinks} ${menuOpen ? styles.active : ""}`}>
+          <a href="/" onClick={() => setMenuOpen(false)}>Home</a>
+          <a href="/about" onClick={() => setMenuOpen(false)}>About</a>
+          <a href="/courses" onClick={() => setMenuOpen(false)}>Courses</a>
+          <a href="/contact" onClick={() => setMenuOpen(false)}>Contact</a>
+          <a href="/join" onClick={() => setMenuOpen(false)}>Code Editor</a>
+        </div>
       </div>
     </nav>
   );

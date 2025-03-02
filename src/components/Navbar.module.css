@@ -1,0 +1,124 @@
+/* Reset styles */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #1e1e1e;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 70px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+/* Nav Menu */
+.navLinks {
+  display: flex;
+  gap: 25px;
+}
+
+.navLinks a {
+  font-size: 1rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.navLinks a:hover {
+  color: #ff9800;
+}
+
+/* Hamburger Menu Icon */
+.hamburger {
+  display: none; /* Hidden by default (Only visible in mobile view) */
+  cursor: pointer;
+  z-index: 1500;
+}
+
+.bar {
+  background-color: white;
+  width: 25px;
+  height: 3px;
+  margin: 5px;
+  transition: 0.3s ease-in-out;
+  display: block;
+}
+
+/* Animate bars when menu is active */
+.hamburger.active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  .hamburger {
+    display: block; /* Show hamburger menu on mobile */
+  }
+
+  /* Hide Desktop Links Initially */
+  .navLinks {
+    position: absolute;
+    top: 70px;
+    left: -100%; /* Initially hidden */
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9); /* Transparent Dark Background */
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    padding: 50px 20px;
+    transition: left 0.3s ease-in-out;
+  }
+
+  /* Show Menu When Open */
+  .navLinks.active {
+    left: 0;
+  }
+
+  /* Mobile Links */
+  .navLinks a {
+    font-size: 1.5rem;
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}

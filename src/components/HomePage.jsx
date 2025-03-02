@@ -1,28 +1,49 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
-
+import { Typewriter } from "react-simple-typewriter";
+import "./Home.css";
+import codeGif from "../assets/code-typing.gif"; 
 const HomePage = () => {
   return (
     <div>
       {/* Hero Section */}
       <div className="hero-section">
         <div className="hero-content">
-          <h1>Master Programming with Expert-Led Tutorials</h1>
-          <p>
-            Learn Python, JavaScript, Data Structures & Algorithms, Web
-            Development, and more.
-          </p>
+          <h1>
+            Write, Run & Master  
+            <span className="typing-effect">
+              <Typewriter
+                words={[" JavaScript.", " Python.", " C++.", " DSA.", " Web Dev."]}
+                loop={0}
+                cursor
+                cursorStyle="_"
+                typeSpeed={100}
+                deleteSpeed={50}
+                delaySpeed={1000}
+              />
+            </span>
+          </h1>
+          <p>Code in real-time with our interactive editor. Learn, practice, and ace coding interviews.</p>
           <div className="buttons">
-            <Link to="/courses" className="btn primary-btn">
-              Explore Courses
+            <Link to="/code-editor" className="btn primary-btn1">
+              Try Code Editor
             </Link>
-            <Link to="/join-us" className="btn secondary-btn">
-              Join Us
+            <Link to="/courses" className="btn secondary-btn1">
+              Explore Courses
             </Link>
           </div>
         </div>
+
+        {/* Right Side: GIF or Animation */}
+        <div className="hero-image">
+          <img src={codeGif} alt="Live Coding" />
+        </div>
       </div>
+
+      {/* Other Sections */}
+      {/* Keep your existing Features, Categories, Community sections here */}
+    {/* </div> */}
 
       {/* Features Section */}
       <section className="features">
