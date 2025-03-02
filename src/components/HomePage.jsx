@@ -12,6 +12,7 @@ const HomePage = () => {
         <div className="hero-content">
           <h1>
             Write, Run & Master  
+            <br></br>
             <span className="typing-effect">
               <Typewriter
                 words={[" JavaScript.", " Python.", " C++.", " DSA.", " Web Dev."]}
