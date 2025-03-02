@@ -8,7 +8,8 @@ import About from "./components/About";
 import MonacoEditor from "./components/MonacoEditor";
 import CoursePage from "./components/CoursePage";
 import Sidebar from "./components/Sidebar";
-
+import "./App.css"; // Import global styles
+import TutorialEditor from "./components/TutorialEditor";
 const App = () => {
   return (
     <Router>
@@ -20,11 +21,14 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/code" element={<MonacoEditor />} />
+          <Route path="/cod" element={<TutorialEditor />} />
+
+          {/* Course Page with Sidebar */}
           <Route
             path="/courses/:course/:topicId"
             element={
-              <div className="course-layout">
-                <Sidebar course="python" />
+              <div className="course-container">
+                <Sidebar />
                 <CoursePage />
               </div>
             }
