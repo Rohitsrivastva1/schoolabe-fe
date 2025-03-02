@@ -4,8 +4,8 @@
   justify-content: space-between;
   align-items: flex-start;
   height: 100vh;
-  background-color: #0d1117;
-  color: #c9d1d9;
+  background-color: #0d1117; /* Slightly lighter background */
+  color: #e6edf3; /* Brighter text color */
   font-family: "Fira Code", monospace;
   padding: 20px;
 }
@@ -13,25 +13,23 @@
 /* Left Side - Code Editor */
 .editor-container {
   margin-top: 30px;
-
   flex: 1;
   padding: 20px;
-  background: #161b22;
+  background: #161b22; 
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Language Selector */
 .language-selector {
-  background: #30363d;
-  color: white;
+  background: #21262d; /* Darker background */
+  color: #58a6ff; /* Accent color */
   border: none;
-  padding: 10px;
+  padding: 10px 15px; /* Increased padding */
   border-radius: 5px;
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 15px; /* Increased margin */
   cursor: pointer;
-  
 }
 
 /* Run Button */
@@ -39,7 +37,7 @@
   width: 100%;
   margin-top: 10px;
   padding: 12px;
-  background: #238636;
+  background: #238636; 
   border: none;
   color: white;
   font-size: 18px;
@@ -58,11 +56,17 @@
 .output-box {
   margin-top: 20px;
   padding: 15px;
-  background: #21262d;
+  background: #161b22; /* Match editor background */
+  border: 1px solid #30363d; /* Subtle border */
   border-radius: 5px;
   min-height: 100px;
   font-family: "Fira Code", monospace;
   font-size: 14px;
+}
+
+.output-box h3 {
+  color: #8b949e; /* Less prominent heading */
+  margin-bottom: 10px;
 }
 
 /* Right Side - Question */
@@ -77,11 +81,18 @@
 }
 
 .question-container h2 {
-  color: #58a6ff;
+  color: #58a6ff; /* Accent color */
+  margin-bottom: 10px;
+}
+
+.question-container p {
+  color: #c9d1d9;
+  margin-bottom: 15px;
 }
 
 .question-container h3 {
   color: #8b949e;
+  margin-bottom: 10px;
 }
 
 .question-container ul {
@@ -90,11 +101,19 @@
 }
 
 .question-container ul li {
-  background: #21262d;
+  background: #21262d; 
   padding: 10px;
   margin: 5px 0;
   border-radius: 5px;
   font-family: "Fira Code", monospace;
+}
+
+/* Code Snippets in Question */
+.question-container code {
+  background-color: #30363d;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 /* Responsive */
