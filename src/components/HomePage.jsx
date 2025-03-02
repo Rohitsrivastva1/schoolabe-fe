@@ -26,7 +26,7 @@ const HomePage = () => {
           </h1>
           <p>Code in real-time with our interactive editor. Learn, practice, and ace coding interviews.</p>
           <div className="buttons">
-            <Link to="/code-editor" className="btn primary-btn1">
+            <Link to="/code" className="btn primary-btn1">
               Try Code Editor
             </Link>
             <Link to="/courses" className="btn secondary-btn1">
