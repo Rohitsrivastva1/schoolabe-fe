@@ -1,5 +1,6 @@
 import React from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async"; // Import HelmetProvider
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import Courses from "./components/Courses";
@@ -11,27 +12,29 @@ import Sidebar from "./components/Sidebar";
 
 const App = () => {
   return (
-    <Router>
-      <Navbar />
-      <div className="main-content">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/code" element={<MonacoEditor />} />
-          <Route
-            path="/courses/:course/:topicId"
-            element={
-              <div className="course-layout">
-                <Sidebar course="python" />
-                <CoursePage />
-              </div>
-            }
-          />
-        </Routes>
-      </div>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <Navbar />
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/code" element={<MonacoEditor />} />
+            <Route
+              path="/courses/:course/:topicId"
+              element={
+                <div className="course-layout">
+                  <Sidebar course="python" />
+                  <CoursePage />
+                </div>
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </HelmetProvider>
   );
 };
 

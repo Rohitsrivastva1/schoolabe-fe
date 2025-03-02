@@ -4,10 +4,18 @@
   import { Typewriter } from "react-simple-typewriter";
   import "./Home.css";
   import codeGif from "../assets/code-typing.gif"; 
+  import SEO from "../components/SEO";
+
   const HomePage = () => {
     return (
       <div>
         {/* Hero Section */}
+        <SEO
+        title="Learn to Code | Schoolabe"
+        description="Master programming with interactive courses at Schoolabe."
+        keywords="coding, programming, courses, react, javascript"
+        url="https://www.schoolabe.com"
+      />
         <div className="hero-section">
           <div className="hero-content">
             <h1>

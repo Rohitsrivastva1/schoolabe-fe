@@ -1,3 +1,5 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
+Sitemap: https://schoolabe.com/sitemap.xml
+Sitemap: https://www.schoolabe.com/sitemap.xml
