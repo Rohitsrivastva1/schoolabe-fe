@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Editor } from "@monaco-editor/react";
+import { FaPlay, FaDownload, FaSun, FaMoon } from "react-icons/fa";
 import axios from "axios";
 import "./MonacoEditor.css";
 
@@ -10,8 +11,21 @@ const MonacoEditor = () => {
   const [code, setCode] = useState("// Write your JavaScript code here...");
   const [output, setOutput] = useState("");
   const [language, setLanguage] = useState("javascript");
+  const [theme, setTheme] = useState("vs-dark");
 
-  // Mapping languages to Judge0 language IDs
+  // Auto-save to localStorage
+  useEffect(() => {
+    const savedCode = localStorage.getItem("savedCode");
+    if (savedCode) {
+      setCode(savedCode);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("savedCode", code);
+  }, [code]);
+
+  // Language options mapping
   const languageOptions = {
     javascript: 63,
     python: 71,
@@ -23,30 +37,39 @@ const MonacoEditor = () => {
     setOutput("🚀 Running your code...");
 
     try {
-      // Step 1: Send the code to Judge0 API
       const response = await axios.post(
         `${JUDGE0_API_URL}?base64_encoded=false&wait=true`,
         {
           source_code: code,
           language_id: languageOptions[language],
-          stdin: "", // Standard input if needed
+          stdin: "",
         },
         {
           headers: {
             "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
-            "X-RapidAPI-Key": API_KEY, // Replace with your actual key
+            "X-RapidAPI-Key": API_KEY,
             "Content-Type": "application/json",
           },
         }
       );
 
-      // Step 2: Get the result
       const result = response.data;
       setOutput(result.stdout || result.stderr || "⚠️ No output");
     } catch (error) {
       console.error("Error executing code:", error);
       setOutput("❌ Error executing code");
     }
+  };
+
+  // Download Code as File
+  const downloadCode = () => {
+    const blob = new Blob([code], { type: "text/javascript" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "code.js";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -72,22 +95,31 @@ const MonacoEditor = () => {
 
       {/* Right Side - Code Editor */}
       <div className="editor-container">
-        {/* Language Selector */}
-        <select
-          onChange={(e) => setLanguage(e.target.value)}
-          value={language}
-          className="language-selector"
-        >
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="c">C</option>
-          <option value="cpp">C++</option>
-        </select>
+        {/* Top Bar with Icons */}
+        <div className="top-bar">
+          {/* Language Selector */}
+          <select
+            onChange={(e) => setLanguage(e.target.value)}
+            value={language}
+            className="language-selector"
+          >
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+
+          {/* Theme Toggle Icon */}
+          <FaSun
+            className="icon-btn theme-toggle"
+            onClick={() => setTheme(theme === "vs-dark" ? "light" : "vs-dark")}
+          />
+        </div>
 
         {/* Monaco Editor */}
         <Editor
           height="350px"
-          theme="vs-dark"
+          theme={theme}
           defaultLanguage="javascript"
           value={code}
           onChange={setCode}
@@ -99,10 +131,11 @@ const MonacoEditor = () => {
           }}
         />
 
-        {/* Run Button */}
-        <button onClick={handleRun} className="run-button">
-          ▶️ Run Code
-        </button>
+        {/* Action Icons */}
+        <div className="icon-container">
+          <FaPlay className="icon-btn run-btn" onClick={handleRun} />
+          <FaDownload className="icon-btn download-btn" onClick={downloadCode} />
+        </div>
 
         {/* Output Terminal */}
         <div className="output-box">
