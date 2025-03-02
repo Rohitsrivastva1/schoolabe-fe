@@ -1,7 +1,6 @@
 /* Dark Theme Styling */
 
 body {
-  overflow: hidden; /* Disable scrolling */
   user-select: none; /* Disable text selection */
 }
 .code-container {
