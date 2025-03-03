@@ -1,0 +1,73 @@
+/* 📂 src/components/TutorialEditor.css */
+
+.editor-container {
+  margin-top: 20px;
+  background: #161b22;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: auto;
+  color: white;
+}
+
+.title-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: none;
+  background: #0d1117;
+  color: white;
+}
+
+.content-list {
+  margin-bottom: 15px;
+}
+
+.content-block {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.content-block textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background: #0d1117;
+  color: white;
+  resize: none;
+}
+
+pre {
+  background: #0d1117;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: red;
+  color: white;
+}
+
+.save-btn {
+  background: green;
+  color: white;
+  width: 100%;
+}

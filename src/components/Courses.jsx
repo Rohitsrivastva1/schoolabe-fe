@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./Courses.css";
 
+const BASE_URL = "http://localhost:5000"; // Update with your actual API URL
+
 const Courses = () => {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/courses`)
+      .then(response => {
+        if (Array.isArray(response.data.courses)) {
+          setCourses(response.data.courses);
+        } else {
+          console.error("Unexpected API response format:", response.data);
+          setCourses([]);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching courses:", error);
+        setCourses([]);
+      });
+  }, []);
+
   return (
     <div className="courses">
       <h1>Our Courses – Learn Programming & Land Your Dream Job</h1>
@@ -11,45 +32,19 @@ const Courses = () => {
       </p>
 
       <div className="course-list">
-        <div className="course-card">
-          <h2>🐍 Python for Beginners to Advanced</h2>
-          <p>Master Python programming with real-world projects, data science, and automation.</p>
-          <Link to="/courses/python" className="btn secondary-btn">
-            View Course
-          </Link>
-        </div>
-
-        <div className="course-card">
-          <h2>⚡ JavaScript – Frontend & Backend Development</h2>
-          <p>Learn JavaScript, ES6, React, Node.js & full-stack development.</p>
-          <Link to="/courses/javascript" className="btn secondary-btn">
-            View Course
-          </Link>
-        </div>
-
-        <div className="course-card">
-          <h2>☕ Java Programming & System Design</h2>
-          <p>Master Java, OOP, and system design for high-paying software jobs.</p>
-          <Link to="/courses/java" className="btn secondary-btn">
-            View Course
-          </Link>
-        </div>
-
-        <div className="course-card">
-          <h2>🧩 Data Structures & Algorithms</h2>
-          <p>Crack coding interviews with optimized DSA solutions and problem-solving techniques.</p>
-          <Link to="/courses/dsa" className="btn secondary-btn">
-            View Course
-          </Link>
-        </div>
-
-        <div className="course-card">
-          <h2>🌐 Web Development (HTML, CSS, JavaScript, React, Node.js)</h2>
-          <p>Build responsive, full-stack web applications with hands-on projects.</p>
-          <Link to="/courses/web" className="btn secondary-btn">
-            View Course
-          </Link>
-        </div>
+        {courses.length > 0 ? (
+          courses.map((course) => (
+            <div className="course-card" key={course.id}>
+              <h2>{course.title}</h2>
+              <p>{course.description}</p>
+              <Link to={`/courses/${course.id}`} className="btn secondary-btn">
+                View Course
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p>Loading courses...</p>
+        )}
       </div>
     </div>
   );

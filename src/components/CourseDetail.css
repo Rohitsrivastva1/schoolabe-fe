@@ -1,0 +1,157 @@
+/* ========================== */
+/* 🚀 Course Page Layout 🚀 */
+/* ========================== */
+.course-detail-container {
+    display: flex;
+    height: 100vh;
+    background: #0d1117;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+/* 🏗️ Sidebar */
+.sidebar {
+    width: 300px; /* Fixed width */
+    background: rgba(22, 27, 34, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 20px;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    flex-shrink: 0;
+    position: fixed; /* Always fixed */
+    height: 100vh;
+    left: 0;
+    top: 0;
+}
+
+.sidebar h2 {
+    font-size: 22px;
+    color: #58a6ff;
+    border-bottom: 2px solid #58a6ff;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.course-description {
+    font-size: 14px;
+    color: #8b949e;
+    margin-bottom: 15px;
+}
+
+/* 📜 Sidebar List */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 12px;
+    background: #161b22;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #c9d1d9;
+}
+
+.sidebar ul li:hover {
+    background: #21262d;
+    transform: scale(1.05);
+}
+
+/* 🟢 Active Tutorial */
+.active-tutorial {
+    background: #2a2f3a !important;
+    font-weight: bold;
+    border-left: 4px solid #58a6ff;
+}
+
+/* ========================== */
+/* 📖 Tutorial Content Section */
+/* ========================== */
+.tutorial-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    transition: opacity 0.3s ease-in-out;
+    scrollbar-width: thin;
+    scrollbar-color: #30363d transparent;
+    max-width: 65%; /* Adjusted */
+    margin-left: 320px; /* Space for sidebar */
+}
+
+/* 🏷️ Tutorial Heading */
+.tutorial-content h2 {
+    font-size: 24px;
+    color: #58a6ff;
+    border-bottom: 2px solid #58a6ff;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* 📝 Text Blocks */
+.block-h1 h1 {
+    font-size: 26px;
+    color: #ffa657;
+    margin-bottom: 10px;
+}
+
+.block-p p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #e6edf3;
+}
+
+/* 💻 Code Blocks */
+.code-container1 {
+    background: #161b22;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.code-container1 pre {
+    font-family: 'Fira Code', monospace;
+    color: #ffdd55;
+    overflow-x: auto;
+}
+
+/* 📤 Output Box */
+.output-box1 {
+    background: #1c1f26;
+    padding: 10px;
+    border-left: 4px solid #ffa657;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* 🌀 Fade-in Effect */
+.fade-in {
+    opacity: 1;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 📜 Responsive Scrollbars */
+.tutorial-content::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tutorial-content::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
