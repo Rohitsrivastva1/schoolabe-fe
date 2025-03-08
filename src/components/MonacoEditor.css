@@ -129,10 +129,10 @@ body {
 /* Responsive */
 @media (max-width: 1024px) {
 
-  body {
-    overflow: visible; /* Disable scrolling */
-    user-select: none; /* Disable text selection */
-  }
+  /* body {
+    overflow: visible; 
+    user-select: none; 
+  } */
 
 
   .code-container {

@@ -3,18 +3,29 @@ import axios from "axios";
 
 const CreateCourse = ({ onCourseCreated }) => {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleCreateCourse = async () => {
     if (!title) return alert("Enter course title!");
+    if (!description) return alert("Enter course description!");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/courses", { title });
-      alert("Course Created!");
-      setTitle(""); // Reset input
-      onCourseCreated(response.data.course); // Pass course to parent
+      const response = await axios.post("http://localhost:5000/courses", {
+        title,
+        description,
+      });
+
+      if (response.data.success) {
+        alert("Course Created!");
+        setTitle("");
+        setDescription("");
+        onCourseCreated(response.data.course); // Pass the course object
+      } else {
+        alert("Failed to create course. API returned failure.");
+      }
     } catch (error) {
       console.error("Error creating course:", error);
-      alert("Failed to create course");
+      alert("Failed to create course. Check console for details.");
     }
   };
 
@@ -28,7 +39,15 @@ const CreateCourse = ({ onCourseCreated }) => {
         onChange={(e) => setTitle(e.target.value)}
         className="title-input"
       />
-      <button className="save-btn" onClick={handleCreateCourse}>Create Course</button>
+      <textarea
+        placeholder="Course Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="description-input"
+      />
+      <button className="save-btn" onClick={handleCreateCourse}>
+        Create Course
+      </button>
     </div>
   );
 };

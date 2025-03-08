@@ -37,7 +37,7 @@ const Courses = () => {
             <div className="course-card" key={course.id}>
               <h2>{course.title}</h2>
               <p>{course.description}</p>
-              <Link to={`/courses/${course.id}`} className="btn secondary-btn">
+              <Link to={`/courses/${course.slug}`} className="btn secondary-btn">
                 View Course
               </Link>
             </div>

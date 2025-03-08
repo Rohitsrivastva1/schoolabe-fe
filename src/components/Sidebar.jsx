@@ -1,23 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import courseData from "../data/courses.json";
-import "./courseStyles.css"; // Import CSS
+// import React from "react";
+// import { Link } from "react-router-dom";
+// // import "./Sidebar.css";
 
-const Sidebar = ({ course }) => {
-  const topics = courseData[course] || {};
+// const Sidebar = ({ course, tutorials, selectedTutorial, courseSlug }) => {
+//   if (!course) {
+//     return <p>Loading...</p>;
+//   }
 
-  return (
-    <div className="sidebar">
-      <h2>{course.toUpperCase()} Course</h2>
-      <ul>
-        {Object.keys(topics).map((topicId) => (
-          <li key={topicId}>
-            <Link to={`/courses/${course}/${topicId}`}>{topics[topicId].title}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+//   return (
+//     <aside className="sidebar">
+//       <h2>{course?.title ? course.title.toUpperCase() : "Loading..."}</h2>
+//       <p className="course-description">{course?.description || "No description available."}</p>
+//       <ul>
+//         {tutorials.length > 0 ? (
+//           tutorials.map((tutorial, index) => (
+//             <li
+//               key={tutorial.id || index}
+//               className={selectedTutorial?.id === tutorial.id ? "active-tutorial" : ""}
+//             >
+//               <Link to={`/courses/${courseSlug}/${tutorial.slug}`}>
+//                 {tutorial.title || "Untitled Tutorial"}
+//               </Link>
+//             </li>
+//           ))
+//         ) : (
+//           <p>No tutorials available.</p>
+//         )}
+//       </ul>
+//     </aside>
+//   );
+// };
 
-export default Sidebar;
+// export default Sidebar;
