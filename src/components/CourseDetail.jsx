@@ -13,6 +13,17 @@ const CourseDetail = () => {
   const [fadeIn, setFadeIn] = useState(false);
   const navigate = useNavigate();
 
+  // Utility function to convert a title into a slug format
+  const slugify = (text) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w-]+/g, "")
+      .replace(/--+/g, "-");
+  };
+
+  // Fetch Course & Tutorials when courseSlug changes
   useEffect(() => {
     if (!courseSlug) return;
 
@@ -36,43 +47,36 @@ const CourseDetail = () => {
       .catch((error) => console.error("Error fetching tutorials:", error));
   }, [courseSlug]);
 
+  // Select first tutorial when tutorials are loaded
   useEffect(() => {
     if (tutorials.length === 0) return;
 
-    const slugify = (text) => {
-      return text
-        .toString()
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^\w-]+/g, "")
-        .replace(/--+/g, "-");
-    };
-
-    const tutorial =
+    let tutorial =
       tutorials.find((t) => slugify(t.title) === tutorialSlug) || tutorials[0];
 
     setSelectedTutorial(tutorial);
-    console.log("Selected tutorial:", tutorial);
     setFadeIn(true);
-  }, [tutorials, tutorialSlug]);
+
+    // Fix: Update URL if tutorialSlug is missing or invalid
+    if (!tutorialSlug || tutorialSlug !== slugify(tutorial.title)) {
+      navigate(`/courses/${courseSlug}/${slugify(tutorial.title)}`, { replace: true });
+    }
+
+    console.log("Selected tutorial:", tutorial);
+  }, [tutorials, tutorialSlug, navigate, courseSlug]);
+
+  // Logs selected tutorial when it changes (Fix for delayed state logging)
+  useEffect(() => {
+    console.log("Updated selected tutorial:", selectedTutorial);
+  }, [selectedTutorial]);
 
   const handleTutorialClick = (tutorial) => {
     console.log("Tutorial clicked:", tutorial);
     setFadeIn(false);
+    
     setTimeout(() => {
       setSelectedTutorial(tutorial);
-      console.log("Selected tutorial:", selectedTutorial);
-
       setFadeIn(true);
-
-      const slugify = (text) => {
-        return text
-          .toString()
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^\w-]+/g, "")
-          .replace(/--+/g, "-");
-      };
       navigate(`/courses/${courseSlug}/${slugify(tutorial.title)}`);
     }, 200);
   };
@@ -87,9 +91,7 @@ const CourseDetail = () => {
             tutorials.map((tutorial) => (
               <li
                 key={tutorial.id}
-                className={
-                  selectedTutorial?.id === tutorial.id ? "active-tutorial" : ""
-                }
+                className={selectedTutorial?.id === tutorial.id ? "active-tutorial" : ""}
                 onClick={() => handleTutorialClick(tutorial)}
               >
                 {tutorial.title}
@@ -104,10 +106,10 @@ const CourseDetail = () => {
       <main className={`tutorial-content ${fadeIn ? "fade-in" : ""}`}>
         {selectedTutorial &&
         selectedTutorial.content &&
-        typeof selectedTutorial.content === "string" ? ( // Check if content is a string
+        typeof selectedTutorial.content === "string" ? (
           <div>
             <h2>{selectedTutorial.title}</h2>
-            {JSON.parse(selectedTutorial.content).map((block, index) => ( // Parse the string
+            {JSON.parse(selectedTutorial.content).map((block, index) => (
               <div key={index} className={`block-${block.type}`}>
                 {block.type === "text" && <p>{block.text}</p>}
                 {block.type === "h1" && <h1>{block.text}</h1>}

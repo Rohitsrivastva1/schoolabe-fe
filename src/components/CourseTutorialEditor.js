@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:5000";
 
 const CourseTutorialEditor = () => {
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null); // Initialize as null
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const [courseTitle, setCourseTitle] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const [tutorials, setTutorials] = useState([]);
@@ -18,77 +18,23 @@ const CourseTutorialEditor = () => {
     axios
       .get(`${BASE_URL}/courses`)
       .then((response) => {
-        console.log("Courses API Response:", response.data);
-        if (response.data.success && Array.isArray(response.data.courses)) {
+        if (response.data.success) {
           setCourses(response.data.courses);
-          console.log("Courses:", response.data.courses);
-        } else {
-          console.error("Unexpected API response format:", response.data);
-          setCourses([]);
         }
       })
-      .catch((error) => {
-        console.error("Error fetching courses:", error);
-        setCourses([]);
-      });
+      .catch((error) => console.error("Error fetching courses:", error));
   }, []);
 
   const fetchTutorials = (courseSlug) => {
     if (!courseSlug) return;
-    console.log("Fetching tutorials for course:", courseSlug);
-
     axios
       .get(`${BASE_URL}/tutorials/${courseSlug}`)
       .then((response) => {
-        console.log("Tutorials API Response:", response.data);
-        if (response.data.success && Array.isArray(response.data.tutorials)) {
+        if (response.data.success) {
           setTutorials(response.data.tutorials);
-        } else {
-          setTutorials([]);
         }
       })
       .catch((error) => console.error("Error fetching tutorials:", error));
-  };
-
-  const createCourse = () => {
-    if (!courseTitle.trim()) return alert("Course title is required!");
-    axios
-      .post(`${BASE_URL}/courses`, {
-        title: courseTitle,
-        description: courseDescription,
-      })
-      .then((response) => {
-        console.log("Course Created:", response.data);
-        if (response.data.success && response.data.course) {
-          setCourses([...courses, response.data.course]);
-        }
-        setCourseTitle("");
-        setCourseDescription("");
-      })
-      .catch((error) => console.error("Error creating course:", error));
-  };
-
-  const createTutorial = () => {
-    if (!selectedCourse) return alert("Select a course first!");
-    if (!tutorialTitle.trim()) return alert("Tutorial title is required!");
-
-    const tutorialData = {
-      title: tutorialTitle,
-      content: JSON.stringify(content),
-      courseSlug: selectedCourse.slug, // Send courseSlug
-    };
-
-    axios
-      .post(`${BASE_URL}/tutorials`, tutorialData)
-      .then((response) => {
-        console.log("Tutorial Created:", response.data);
-        if (response.data.success && response.data.tutorial) {
-          setTutorials([...tutorials, response.data.tutorial]);
-        }
-        setTutorialTitle("");
-        setContent([]);
-      })
-      .catch((error) => console.error("Error creating tutorial:", error));
   };
 
   const addBlock = (type) => {
@@ -107,93 +53,144 @@ const CourseTutorialEditor = () => {
     setContent(content.filter((block) => block.id !== id));
   };
 
+  const createTutorial = () => {
+    if (!selectedCourse) return alert("Select a course first!");
+    if (!tutorialTitle.trim()) return alert("Tutorial title is required!");
+
+    const tutorialData = {
+      title: tutorialTitle,
+      content: JSON.stringify(content),
+      courseSlug: selectedCourse.slug,
+    };
+
+    axios
+      .post(`${BASE_URL}/tutorials`, tutorialData)
+      .then((response) => {
+        if (response.data.success) {
+          setTutorials([...tutorials, response.data.tutorial]);
+        }
+        setTutorialTitle("");
+        setContent([]);
+      })
+      .catch((error) => console.error("Error creating tutorial:", error));
+  };
+
   return (
     <div className="editor-container">
       <h2>Course & Tutorial Editor</h2>
 
+      {/* === Course Selection Section === */}
       <div className="course-section">
-        <h3>Create New Course</h3>
-        <input
-          type="text"
-          placeholder="Course Title"
-          value={courseTitle}
-          onChange={(e) => setCourseTitle(e.target.value)}
-        />
-        <textarea
-          placeholder="Course Description"
-          value={courseDescription}
-          onChange={(e) => setCourseDescription(e.target.value)}
-        />
-        <button onClick={createCourse}>Create Course</button>
-      </div>
-
-      <div className="course-section">
-        <h3>Select Existing Course</h3>
+        <h3>Select a Course</h3>
         <select
           onChange={(e) => {
             const selectedCourseObj = courses.find(
               (course) => course.id === parseInt(e.target.value)
             );
-            setSelectedCourse(selectedCourseObj); // Set the whole course object
+            setSelectedCourse(selectedCourseObj);
             if (selectedCourseObj) {
               fetchTutorials(selectedCourseObj.slug);
             }
           }}
         >
           <option value="">Select a course</option>
-          {courses.length > 0 ? (
-            courses.map((course) => (
-              <option key={course.id} value={course.id}>
-                {course.title}
-              </option>
-            ))
-          ) : (
-            <option disabled>Loading courses...</option>
-          )}
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.title}
+            </option>
+          ))}
         </select>
       </div>
 
       {selectedCourse && (
-        <div className="tutorial-section">
-          <h3>Create New Tutorial</h3>
-          <input
-            type="text"
-            placeholder="Tutorial Title"
-            value={tutorialTitle}
-            onChange={(e) => setTutorialTitle(e.target.value)}
-          />
+        <div className="editor-preview-wrapper">
+          {/* === EDITOR SECTION === */}
+          <div className="editor-section">
+            <h3>Create New Tutorial</h3>
+            <input
+              type="text"
+              placeholder="Tutorial Title"
+              value={tutorialTitle}
+              onChange={(e) => setTutorialTitle(e.target.value)}
+            />
 
-          <div className="content-list">
-            {content.map((block) => (
-              <div key={block.id} className={`content-block ${block.type}`}>
-                {block.type === "code" ? (
-                  <pre>
+            <div className="content-list">
+              {content.map((block) => (
+                <div key={block.id} className="content-block">
+                  {block.type === "code" ? (
+                    <pre>
+                      <textarea
+                        value={block.text}
+                        onChange={(e) => updateBlock(block.id, e.target.value)}
+                        placeholder="Enter code..."
+                      />
+                    </pre>
+                  ) : (
                     <textarea
                       value={block.text}
                       onChange={(e) => updateBlock(block.id, e.target.value)}
-                      placeholder="Enter code..."
+                      placeholder={`Enter ${block.type}...`}
                     />
-                  </pre>
-                ) : (
-                  <textarea
-                    value={block.text}
-                    onChange={(e) => updateBlock(block.id, e.target.value)}
-                    placeholder={`Enter ${block.type}...`}
-                  />
-                )}
-                <button onClick={() => removeBlock(block.id)}>Delete</button>
-              </div>
-            ))}
+                  )}
+                  <button onClick={() => removeBlock(block.id)}>Delete</button>
+                </div>
+              ))}
+            </div>
+
+            <div className="editor-actions">
+              <button onClick={() => addBlock("h1")}>Add Heading</button>
+              <button onClick={() => addBlock("p")}>Add Paragraph</button>
+              <button onClick={() => addBlock("code")}>Add Code</button>
+              <button onClick={() => addBlock("ul")}>Add Unordered List</button>
+              <button onClick={() => addBlock("ol")}>Add Ordered List</button>
+              <button onClick={() => addBlock("table")}>Add Table</button>
+            </div>
+
+            <button onClick={createTutorial}>Save Tutorial</button>
           </div>
 
-          <div className="editor-actions">
-            <button onClick={() => addBlock("h1")}>Add Heading</button>
-            <button onClick={() => addBlock("p")}>Add Paragraph</button>
-            <button onClick={() => addBlock("code")}>Add Code</button>
-            <button onClick={() => addBlock("output")}>Add Output</button>
+          {/* === PREVIEW SECTION === */}
+          <div className="preview-section">
+            <h3>Live Preview</h3>
+            <div className="preview-content">
+              {content.map((block, index) => (
+                <div key={index} className={`block-${block.type}`}>
+                  {block.type === "h1" && <h1>{block.text}</h1>}
+                  {block.type === "p" && <p>{block.text}</p>}
+                  {block.type === "code" && (
+                    <pre className="code-block">
+                      <code>{block.text}</code>
+                    </pre>
+                  )}
+                  {block.type === "ul" && (
+                    <ul>
+                      {block.text.split("\n").map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {block.type === "ol" && (
+                    <ol>
+                      {block.text.split("\n").map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ol>
+                  )}
+                  {block.type === "table" && (
+                    <table border="1">
+                      {block.text.split("\n").map((row, idx) => (
+                        <tr key={idx}>
+                          {row.split(",").map((cell, cellIdx) => (
+                            <td key={cellIdx}>{cell}</td>
+                          ))}
+                        </tr>
+                      ))}
+                    </table>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-
-          <button onClick={createTutorial}>Save Tutorial</button>
         </div>
       )}
     </div>

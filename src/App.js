@@ -11,6 +11,9 @@ import TutorialEditor from "./components/TutorialEditor";
 import CourseTutorialEditor from "./components/CourseTutorialEditor";
 import CourseDetail from "./components/CourseDetail";
 import "./App.css";
+import Auth from "./components/Auth";
+import axios from "axios";
+axios.defaults.withCredentials = true; // Ensures HTTP-only cookies are sent with requests
 
 const App = () => {
   return (
@@ -34,6 +37,9 @@ const App = () => {
               element={<CourseDetail />}
             />
             <Route path="/courses/:courseSlug" element={<CourseDetail />} />
+
+            <Route path="/signup" element={<Auth />} />
+      
           </Routes>
         </div>
       </Router>

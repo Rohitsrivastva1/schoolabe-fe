@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Courses.css";
+import { Helmet, HelmetProvider } from "react-helmet-async"; // Use react-helmet-async
 
 const BASE_URL = "http://localhost:5000"; // Update with your actual API URL
 
@@ -26,6 +27,13 @@ const Courses = () => {
 
   return (
     <div className="courses">
+
+      <Helmet>
+        <title>Our Courses - Schoolabe</title>
+        <meta name="description" content="Explore coding courses on Python, JavaScript, and Full-Stack Development at Schoolabe." />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+
       <h1>Our Courses – Learn Programming & Land Your Dream Job</h1>
       <p>
         Master <strong>Python, JavaScript, Java, Data Structures & Algorithms, Web Development</strong>, and more with expert-led tutorials.

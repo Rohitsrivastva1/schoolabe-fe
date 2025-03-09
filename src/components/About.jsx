@@ -1,9 +1,22 @@
 import React from "react";
 import "./About.css";
+import { Helmet, HelmetProvider } from "react-helmet-async"; // Use react-helmet-async
 
 const About = () => {
   return (
+
+    
     <div className="aboutUs">
+
+
+      <Helmet>
+        <title>About Us - Schoolabe</title>
+        <meta name="description" content="Learn about Schoolabe, our mission, and how we help students master coding with expert-led courses." />
+        <meta name="keywords" content="Schoolabe, coding, programming, learn to code, tech careers" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+
+
     {/* Hero Section */}
     <section className="aboutHero">
       <h1>Empowering You to Master Programming</h1>

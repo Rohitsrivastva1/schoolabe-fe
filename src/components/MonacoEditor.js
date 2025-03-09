@@ -3,6 +3,8 @@ import { Editor } from "@monaco-editor/react";
 import { FaPlay, FaDownload, FaSun, FaMoon } from "react-icons/fa";
 import axios from "axios";
 import "./MonacoEditor.css";
+import { useNavigate } from "react-router-dom";
+import { checkAuth } from "../services/authService"; // Import checkAuth function
 
 const JUDGE0_API_URL = "https://judge0-ce.p.rapidapi.com/submissions";
 const API_KEY = "f8eabb09fbmsh10211bcfd0fc041p1c71ffjsn4b7b09598998"; // Replace with your API key if required
@@ -12,14 +14,20 @@ const MonacoEditor = () => {
   const [output, setOutput] = useState("");
   const [language, setLanguage] = useState("javascript");
   const [theme, setTheme] = useState("vs-dark");
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
-  // Auto-save to localStorage
   useEffect(() => {
-    const savedCode = localStorage.getItem("savedCode");
-    if (savedCode) {
-      setCode(savedCode);
-    }
-  }, []);
+    const fetchUser = async () => {
+      const userData = await checkAuth();
+      if (!userData) {
+        navigate("/signup"); // Redirect if not logged in
+      } else {
+        setUser(userData); // Set user state if logged in
+      }
+    };
+    fetchUser();
+  }, [navigate]);
 
   useEffect(() => {
     localStorage.setItem("savedCode", code);
