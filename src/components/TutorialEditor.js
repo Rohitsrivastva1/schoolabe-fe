@@ -1,13 +1,28 @@
 // 📂 src/components/TutorialEditor.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FaPlus, FaTrash, FaSave } from "react-icons/fa";
 import "./TutorialEditor.css"; // Import styles
-
+import { useNavigate } from "react-router-dom";
+import { checkAuth } from "../services/authService"; // Import checkAuth function
 const TutorialEditor = ({ onSave }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState([]);
+  const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+        const fetchUser = async () => {
+          const userData = await checkAuth();
+          if (!userData) {
+            navigate("/signup"); // Redirect if not logged in
+          } else {
+            setUser(userData); // Set user state if logged in
+          }
+        };
+        fetchUser();
+      }, [navigate]);
   // Add a new content block
   const addBlock = (type) => {
     setContent([...content, { id: uuidv4(), type, text: "" }]);

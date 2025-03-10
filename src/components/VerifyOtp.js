@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { verifyOtp } from "../api/authApi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const VerifyOtp = () => {
   const [otp, setOtp] = useState("");
@@ -8,6 +9,7 @@ const VerifyOtp = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email || "";
+  const { fetchUser } = useContext(AuthContext); // Get fetchUser function
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +17,10 @@ const VerifyOtp = () => {
       const response = await verifyOtp({ email, otp });
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
-        navigate("/dashboard");
+        console.log(response.data.token);
+        await fetchUser(); // ✅ Immediately update user data
+
+        navigate("/");
       }
     } catch (err) {
       setError("Invalid OTP. Please try again.");

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import "./CourseTutorialEditor.css";
+import { checkAuth } from "../services/authService"; // Import checkAuth function
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -13,7 +15,21 @@ const CourseTutorialEditor = () => {
   const [tutorials, setTutorials] = useState([]);
   const [tutorialTitle, setTutorialTitle] = useState("");
   const [content, setContent] = useState([]);
+  const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
+
+   useEffect(() => {
+      const fetchUser = async () => {
+        const userData = await checkAuth();
+        if (!userData) {
+          navigate("/signup"); // Redirect if not logged in
+        } else {
+          setUser(userData); // Set user state if logged in
+        }
+      };
+      fetchUser();
+    }, [navigate]);
   useEffect(() => {
     axios
       .get(`${BASE_URL}/courses`)
