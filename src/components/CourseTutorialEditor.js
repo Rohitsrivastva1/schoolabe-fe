@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import "./CourseTutorialEditor.css";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "";
 
 const CourseTutorialEditor = () => {
   const [courses, setCourses] = useState([]);

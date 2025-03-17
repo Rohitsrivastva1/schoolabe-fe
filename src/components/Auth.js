@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser, loginUser, verifyOtp } from "../api/authApi"; // Import API functions
 import "./Auth.css";
+import { useAuth } from "./AuthContext";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,6 +17,7 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,6 +55,9 @@ const Auth = () => {
       
       if (response.data.success) {
         localStorage.setItem("token", response.data.token); // Save JWT
+        // login(response.data.user); // ✅ Update global auth state immediately
+        login(response.data.user, response.data.token); // ✅ Store token & update state
+
         navigate("/editor"); // Redirect after login
       } else {
         setError(response.message || "Invalid OTP!");

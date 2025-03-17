@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CourseDetail.css";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "";
 
 const CourseDetail = () => {
   const { courseSlug, tutorialSlug } = useParams();

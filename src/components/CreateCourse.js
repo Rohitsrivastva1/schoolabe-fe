@@ -10,7 +10,7 @@ const CreateCourse = ({ onCourseCreated }) => {
     if (!description) return alert("Enter course description!");
 
     try {
-      const response = await axios.post("http://localhost:5000/courses", {
+      const response = await axios.post("/courses", {
         title,
         description,
       });

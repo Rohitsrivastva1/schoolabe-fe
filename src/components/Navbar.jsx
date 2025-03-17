@@ -1,34 +1,19 @@
-import React, { useState, useEffect } from "react";
-import styles from "./Navbar.module.css";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "./AuthContext";
+import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  // Simulating API call to check if user is logged in
-  useEffect(() => {
-    axios.get("http://localhost:5000/auth/me")
-      .then((response) => {
-        console.log(response);
-        
-        if (response.data.success) {
-          console.log(response.data.user.name);
-          setUser(response.data.user); // { name: "Rohit Srivastava", email: "rohit@example.com" }
-        }
-      })
-      .catch(() => setUser(null));
-  }, []);
+  const { user, logout } = useAuth();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const handleLogout = () => {
-    axios.post("http://localhost:5000/auth/logout").then(() => {
-      setUser(null);
-      setDropdownOpen(false);
-    });
+
+  const handleLogout = async () => {
+    await logout();
+    setDropdownOpen(false);
   };
 
   return (
@@ -36,14 +21,12 @@ const Navbar = () => {
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>Schoolabe</Link>
 
-        {/* Hamburger Icon (Mobile) */}
         <div className={`${styles.hamburger} ${menuOpen ? styles.active : ""}`} onClick={toggleMenu}>
           <span className={styles.bar}></span>
           <span className={styles.bar}></span>
           <span className={styles.bar}></span>
         </div>
 
-        {/* Navigation Links */}
         <div className={`${styles.navLinks} ${menuOpen ? styles.active : ""}`}>
           <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
@@ -52,7 +35,6 @@ const Navbar = () => {
           <Link to="/code" onClick={() => setMenuOpen(false)}>Code Editor</Link>
         </div>
 
-        {/* Profile / Login Button */}
         <div className={styles.profileSection}>
           {user ? (
             <div className={styles.profileContainer} onClick={toggleDropdown}>
@@ -69,7 +51,9 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <Link to="/signup" className={styles.loginButton}>Login</Link>
+            <div className={styles.loginButtonPlaceholder}>
+              <Link to="/signup" className={styles.loginButton}>Login</Link>
+            </div>
           )}
         </div>
       </div>
