@@ -15,6 +15,7 @@ import { AuthProvider } from "./components/AuthContext";
 import { LoaderProvider, useLoader } from "./context/LoaderContext"; // Loader Context
 import Loader from "./components/Loader"; // Loader Component
 import { setupInterceptors } from "./api/axiosInstance"; // Axios Interceptors
+import ChangePassword from "./components/ChangePassword";
 import "./App.css";
 
 const AppContent = () => {
@@ -42,6 +43,8 @@ const AppContent = () => {
           <Route path="/courses/:courseSlug/:tutorialSlug" element={<CourseDetail />} />
           <Route path="/courses/:courseSlug" element={<CourseDetail />} />
           <Route path="/signup" element={<Auth />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+
         </Routes>
       </div>
     </Router>

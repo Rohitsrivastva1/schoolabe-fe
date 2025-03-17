@@ -45,7 +45,7 @@ const Navbar = () => {
                 <div className={styles.dropdownMenu}>
                   <Link to="/edit-profile" onClick={() => setDropdownOpen(false)}>Edit Profile</Link>
                   <Link to="/progress" onClick={() => setDropdownOpen(false)}>Progress</Link>
-                  <Link to="/forgot-password" onClick={() => setDropdownOpen(false)}>Forgot Password</Link>
+                  <Link to="/change-password" onClick={() => setDropdownOpen(false)}>Forgot Password</Link>
                   <button onClick={handleLogout}>Logout</button>
                 </div>
               )}
