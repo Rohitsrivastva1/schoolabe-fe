@@ -2,7 +2,7 @@
   "name": "schoolabefe",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://api.schoolabe.com/",
+  "proxy": "https://api.schoolabe.com",
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "@mui/material": "^6.4.6",
