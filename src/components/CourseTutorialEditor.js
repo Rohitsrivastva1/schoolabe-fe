@@ -5,7 +5,7 @@ import "./CourseTutorialEditor.css";
 import { checkAuth } from "../services/authService"; // Import checkAuth function
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const CourseTutorialEditor = () => {
   const [courses, setCourses] = useState([]);

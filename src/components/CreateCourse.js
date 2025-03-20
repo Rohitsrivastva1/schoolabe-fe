@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
+
 const CreateCourse = ({ onCourseCreated }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -10,7 +12,7 @@ const CreateCourse = ({ onCourseCreated }) => {
     if (!description) return alert("Enter course description!");
 
     try {
-      const response = await axios.post("/courses", {
+      const response = await axios.post(`${BASE_URL}/courses`, {
         title,
         description,
       });

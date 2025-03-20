@@ -11,6 +11,7 @@ const TutorialEditor = ({ onSave }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL || "/api";
 
   useEffect(() => {
         const fetchUser = async () => {
@@ -47,7 +48,7 @@ const TutorialEditor = ({ onSave }) => {
     const tutorialData = { title, content };
 
     try {
-      const response = await fetch("/api/tutorials", {
+      const response = await fetch(`${BASE_URL}/tutorials`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tutorialData),
