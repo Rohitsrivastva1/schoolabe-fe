@@ -5,7 +5,7 @@ import "./CourseTutorialEditor.css";
 import { checkAuth } from "../services/authService"; // Import checkAuth function
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "";
 
 const CourseTutorialEditor = () => {
   const [courses, setCourses] = useState([]);

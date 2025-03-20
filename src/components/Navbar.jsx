@@ -1,57 +1,19 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import styles from "./Navbar.module.css";
-import { AuthContext } from "../context/AuthContext";
-import axiosInstance from "../services/axiosInstance";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const { user, setUser, fetchUser } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const profileRef = useRef(null);
-  const [updatedUser, setUpdatedUser] = useState(user);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user, logout } = useAuth();
 
-
-  useEffect(() => {
-    fetchUser(); // Ensure user state updates when Navbar mounts
-  }, []);
-
-
-  // Update local user state when user context changes
-  useEffect(() => {
-    setUpdatedUser(user);
-  }, [user]);
-
-  // Toggle Mobile Menu
   const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-  // Toggle Profile Dropdown
-  const toggleProfileMenu = () => setProfileOpen(!profileOpen);
-
-  // Close Profile Dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
-        setProfileOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Handle Logout
   const handleLogout = async () => {
-    try {
-      await axiosInstance.post("/auth/logout", {}, { withCredentials: true });
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      setUser(null);
-      setUpdatedUser(null); // Ensure UI updates instantly
-      navigate("/signup");
-    } catch (error) {
-      console.error("Logout failed:", error.response?.data?.message);
-    }
+    await logout();
+    setDropdownOpen(false);
   };
 
   return (
@@ -59,10 +21,7 @@ const Navbar = () => {
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>Schoolabe</Link>
 
-        <div 
-          className={`${styles.hamburger} ${menuOpen ? styles.active : ""}`} 
-          onClick={toggleMenu}
-        >
+        <div className={`${styles.hamburger} ${menuOpen ? styles.active : ""}`} onClick={toggleMenu}>
           <span className={styles.bar}></span>
           <span className={styles.bar}></span>
           <span className={styles.bar}></span>
@@ -76,22 +35,25 @@ const Navbar = () => {
           <Link to="/code" onClick={() => setMenuOpen(false)}>Code Editor</Link>
         </div>
 
-        <div className={styles.authSection} ref={profileRef}>
-          {updatedUser ? (
-            <div className={styles.profileSection} onClick={toggleProfileMenu}>
+        <div className={styles.profileSection}>
+          {user ? (
+            <div className={styles.profileContainer} onClick={toggleDropdown}>
               <div className={styles.profileIcon}>
-                {updatedUser.name.split(" ").map((word) => word.charAt(0).toUpperCase()).join("")}
+                {user.name.split(" ").map((n) => n[0]).join("").toUpperCase()}
               </div>
-              {profileOpen && (
-                <div className={styles.profileDropdown}>
-                  <Link to="/profile">Profile</Link>
-                  <Link to="/change-password">Change Password</Link>
+              {dropdownOpen && (
+                <div className={styles.dropdownMenu}>
+                  <Link to="/edit-profile" onClick={() => setDropdownOpen(false)}>Edit Profile</Link>
+                  <Link to="/progress" onClick={() => setDropdownOpen(false)}>Progress</Link>
+                  <Link to="/change-password" onClick={() => setDropdownOpen(false)}>Forgot Password</Link>
                   <button onClick={handleLogout}>Logout</button>
                 </div>
               )}
             </div>
           ) : (
-            <Link to="/signup" className={styles.loginButton}>Login</Link>
+            <div className={styles.loginButtonPlaceholder}>
+              <Link to="/signup" className={styles.loginButton}>Login</Link>
+            </div>
           )}
         </div>
       </div>

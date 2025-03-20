@@ -47,7 +47,7 @@ const TutorialEditor = ({ onSave }) => {
     const tutorialData = { title, content };
 
     try {
-      const response = await fetch("http://localhost:5000/api/tutorials", {
+      const response = await fetch("/api/tutorials", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tutorialData),

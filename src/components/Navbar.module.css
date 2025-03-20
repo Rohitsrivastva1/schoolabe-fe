@@ -32,10 +32,10 @@ a {
 }
 
 .container {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
 }
 
 /* Logo */
@@ -50,8 +50,9 @@ a {
 .navLinks {
   display: flex;
   gap: 25px;
-  margin-left: auto;  /* Pushes nav menu to the right */
+  margin-left: auto; /* Pushes nav menu to the right */
 }
+
 .navLinks a {
   font-size: 1rem;
   transition: color 0.3s ease-in-out;
@@ -63,7 +64,7 @@ a {
 
 /* Hamburger Menu Icon */
 .hamburger {
-  display: none; /* Hidden by default (Only visible in mobile view) */
+  display: none;
   cursor: pointer;
   z-index: 1500;
 }
@@ -77,7 +78,6 @@ a {
   display: block;
 }
 
-/* Animate bars when menu is active */
 .hamburger.active .bar:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
@@ -93,140 +93,109 @@ a {
 /* Mobile Styles */
 @media screen and (max-width: 768px) {
   .hamburger {
-    display: block; /* Show hamburger menu on mobile */
+      display: block;
   }
 
-  /* Hide Desktop Links Initially */
   .navLinks {
-    position: absolute;
-    top: 70px;
-    left: -100%; /* Initially hidden */
-    width: 100%;
-    background: rgba(0, 0, 0, 0.9); /* Transparent Dark Background */
-    flex-direction: column;
-    text-align: center;
-    gap: 15px;
-    padding: 50px 20px;
-    transition: left 0.3s ease-in-out;
+      position: absolute;
+      top: 70px;
+      left: -100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+      padding: 50px 20px;
+      transition: left 0.3s ease-in-out;
   }
 
-  /* Show Menu When Open */
   .navLinks.active {
-    left: 0;
+      left: 0;
   }
 
-  /* Mobile Links */
   .navLinks a {
-    font-size: 1.5rem;
-    padding: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 1.5rem;
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   }
 }
 
 /* Profile Section */
 .profileSection {
-  position: relative;
   display: flex;
+  margin-left: 8px;
   align-items: center;
-  cursor: pointer;
-  margin-left: 20px;
+  position: relative;
+  order: 2; /* Add this line */
+
 }
 
+/* Profile Icon Circle */
 .profileIcon {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: #ff9800;
+  width: 40px;
+  height: 40px;
+  background-color: #ff9800;
   color: white;
-  font-size: 18px;
   font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 15px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: transform 0.3s ease;
-}
-.profileIcon:hover {
-  transform: scale(1.1);
+  font-size: 18px;
+  text-transform: uppercase;
 }
 
-/* Profile Dropdown */
-.profileDropdown {
+/* Dropdown Menu */
+.profileContainer {
+  position: relative;
+}
+
+.dropdownMenu {
   position: absolute;
   top: 50px;
   right: 0;
-  background: #1e1e1e;  /* Dark theme background */
-  color: white;
-  border-radius: 5px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  min-width: 180px;
+  min-width: 150px;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+.dropdownMenu a, .dropdownMenu button {
   padding: 10px;
-}
-.profileSection:hover .profileDropdown {
-  display: flex;
-}
-.profileDropdown a,
-.profileDropdown button {
-  padding: 12px;
-  text-decoration: none;
-  color: white;
-  background: none;
-  border: none;
-  width: 100%;
   text-align: left;
+  width: 100%;
+  border: none;
+  background: none;
   cursor: pointer;
+  color: #333;
   font-size: 16px;
-  transition: background 0.3s ease;
-}
-.profileDropdown a:hover,
-.profileDropdown button:hover {
-  background: #f0f0f0;
 }
 
-/* Profile Info */
-.profileInfo {
-  padding: 10px;
-  text-align: center;
-}
-
-.userRole {
-  font-size: 12px;
-  color: gray;
-}
-
-.profileDropdown a,
-.profileDropdown button {
-  padding: 10px;
-  text-decoration: none;
-  color: rgb(250, 250, 250);
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.profileDropdown a:hover,
-.profileDropdown button:hover {
-  background: #f0f0f0;
+.dropdownMenu a:hover, .dropdownMenu button:hover {
+  background: #f5f5f5;
 }
 
 /* Login Button */
 .loginButton {
-  padding: 8px 15px;
-  background: #1F6FEB;
+  padding: 10px 20px;
+  background: #ff9800;
   color: white;
-  font-size: 16px;
+  font-weight: bold;
   border-radius: 5px;
   transition: background 0.3s ease;
-  cursor: pointer;
-  margin-left: 12px;
 }
 
 .loginButton:hover {
-  background: #024fc4;
+  background: #e68900;
+}
+
+
+.loginButtonPlaceholder {
+  display: flex;
+  align-items: center;
 }

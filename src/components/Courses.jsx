@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Courses.css";
 import { Helmet, HelmetProvider } from "react-helmet-async"; // Use react-helmet-async
+import axiosInstance from "../api/axiosInstance";
 
-const BASE_URL = "http://localhost:5000"; // Update with your actual API URL
+const BASE_URL = ""; // Update with your actual API URL
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/courses`)
+    axiosInstance.get(`${BASE_URL}/courses`)
       .then(response => {
         if (Array.isArray(response.data.courses)) {
           setCourses(response.data.courses);

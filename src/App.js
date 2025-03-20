@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Navbar from "./components/Navbar";
@@ -11,38 +11,53 @@ import TutorialEditor from "./components/TutorialEditor";
 import CourseTutorialEditor from "./components/CourseTutorialEditor";
 import CourseDetail from "./components/CourseDetail";
 import Auth from "./components/Auth";
-import { AuthProvider } from "./context/AuthContext"; // Import AuthProvider
-import axios from "axios";
-import "./App.css";
+import { AuthProvider } from "./components/AuthContext";
+import { LoaderProvider, useLoader } from "./context/LoaderContext"; // Loader Context
+import Loader from "./components/Loader"; // Loader Component
+import { setupInterceptors } from "./api/axiosInstance"; // Axios Interceptors
 import ChangePassword from "./components/ChangePassword";
+import "./App.css";
 
-axios.defaults.withCredentials = true; // Ensures cookies are sent with requests
+const AppContent = () => {
+  const { setLoading } = useLoader();
+
+  // useEffect(() => {
+  //   setupInterceptors(setLoading); // Initialize global API loader
+  // }, [setLoading]);
+
+  return (
+    <Router>
+      <div className="navbar">
+        <Navbar />
+      </div>
+      <Loader /> {/* Global Loader */}
+      <div className="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/code" element={<MonacoEditor />} />
+          <Route path="/cod" element={<TutorialEditor />} />
+          <Route path="/editor" element={<CourseTutorialEditor />} />
+          <Route path="/courses/:courseSlug/:tutorialSlug" element={<CourseDetail />} />
+          <Route path="/courses/:courseSlug" element={<CourseDetail />} />
+          <Route path="/signup" element={<Auth />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+
+        </Routes>
+      </div>
+    </Router>
+  );
+};
 
 const App = () => {
   return (
     <HelmetProvider>
-      <AuthProvider> {/* Wrap the entire app with AuthProvider */}
-        <Router>
-          <div className="navbar">
-            <Navbar />
-          </div>
-          <div className="main-content">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/code" element={<MonacoEditor />} />
-              <Route path="/tutorial-editor" element={<TutorialEditor />} />
-              <Route path="/course-tutorial-editor" element={<CourseTutorialEditor />} />
-              <Route path="/courses/:courseSlug/:tutorialSlug" element={<CourseDetail />} />
-              <Route path="/courses/:courseSlug" element={<CourseDetail />} />
-              <Route path="/signup" element={<Auth />} />
-              <Route path="/change-password" element={<ChangePassword />} />
-
-            </Routes>
-          </div>
-        </Router>
+      <AuthProvider>
+        <LoaderProvider>
+          <AppContent />
+        </LoaderProvider>
       </AuthProvider>
     </HelmetProvider>
   );
