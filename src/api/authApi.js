@@ -13,5 +13,5 @@ export const loginUser = async (loginData) => {
 };
 
 export const verifyOtp = async (otpData) => {
-  return axios.post(`${API_BASE_URL}/verify-otp`, otpData);
+  return axios.post(`${API_BASE_URL}/verify-otp`, otpData, { withCredentials: true });
 };
