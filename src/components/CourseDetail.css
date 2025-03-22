@@ -73,6 +73,7 @@
 .tutorial-content {
     flex: 1;
     padding: 40px;
+    margin-top: 80px;
     overflow-y: auto;
     transition: opacity 0.3s ease-in-out;
     scrollbar-width: thin;

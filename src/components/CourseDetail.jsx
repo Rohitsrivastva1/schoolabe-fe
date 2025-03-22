@@ -104,35 +104,37 @@ const CourseDetail = () => {
       </aside>
 
       <main className={`tutorial-content ${fadeIn ? "fade-in" : ""}`}>
-        {selectedTutorial &&
-        selectedTutorial.content &&
-        typeof selectedTutorial.content === "string" ? (
-          <div>
-            <h2>{selectedTutorial.title}</h2>
-            {JSON.parse(selectedTutorial.content).map((block, index) => (
-              <div key={index} className={`block-${block.type}`}>
-                {block.type === "text" && <p>{block.text}</p>}
-                {block.type === "h1" && <h1>{block.text}</h1>}
-                {block.type === "p" && <p>{block.text}</p>}
-                {block.type === "code" && (
-                  <div className="code-container1">
-                    <pre>
-                      <code>{block.text}</code>
-                    </pre>
-                  </div>
-                )}
-                {block.type === "output" && (
-                  <div className="output-box1">
-                    <strong>Output:</strong> {block.text}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Loading tutorial...</p>
-        )}
-      </main>
+  {selectedTutorial && selectedTutorial.content ? (
+    <div>
+      <h2>{selectedTutorial.title}</h2>
+      {(typeof selectedTutorial.content === "string"
+        ? JSON.parse(selectedTutorial.content)
+        : selectedTutorial.content
+      ).map((block, index) => (
+        <div key={index} className={`block-${block.type}`}>
+          {block.type === "text" && <p>{block.text}</p>}
+          {block.type === "h1" && <h1>{block.text}</h1>}
+          {block.type === "p" && <p>{block.text}</p>}
+          {block.type === "code" && (
+            <div className="code-container1">
+              <pre>
+                <code>{block.text}</code>
+              </pre>
+            </div>
+          )}
+          {block.type === "output" && (
+            <div className="output-box1">
+              <strong>Output:</strong> {block.text}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p>Loading tutorial...</p>
+  )}
+</main>
+
     </div>
   );
 };

@@ -1,56 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import "./CourseTutorialEditor.css";
-import { checkAuth } from "../services/authService"; // Import checkAuth function
+import { checkAuth } from "../services/authService"; 
 import { useNavigate } from "react-router-dom";
+import "./CourseTutorialEditor.css";
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
+const BASE_URL =  ""; 
 
 const CourseTutorialEditor = () => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [courseTitle, setCourseTitle] = useState("");
-  const [courseDescription, setCourseDescription] = useState("");
   const [tutorials, setTutorials] = useState([]);
   const [tutorialTitle, setTutorialTitle] = useState("");
   const [content, setContent] = useState([]);
+  const [courseTitle, setCourseTitle] = useState("");
+  const [courseDescription, setCourseDescription] = useState("");
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
 
-   useEffect(() => {
-      const fetchUser = async () => {
-        const userData = await checkAuth();
-        if (!userData) {
-          navigate("/signup"); // Redirect if not logged in
-        } else {
-          setUser(userData); // Set user state if logged in
-        }
-      };
-      fetchUser();
-    }, [navigate]);
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/courses`)
+    const fetchUser = async () => {
+      const userData = await checkAuth();
+      if (!userData) {
+        navigate("/signup");
+      } else {
+        setUser(userData);
+      }
+    };
+    fetchUser();
+  }, [navigate]);
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = () => {
+    axios.get(`${BASE_URL}/courses`)
       .then((response) => {
         if (response.data.success) {
           setCourses(response.data.courses);
         }
       })
       .catch((error) => console.error("Error fetching courses:", error));
-  }, []);
+  };
 
   const fetchTutorials = (courseSlug) => {
     if (!courseSlug) return;
-    axios
-      .get(`${BASE_URL}/tutorials/${courseSlug}`)
+    axios.get(`${BASE_URL}/tutorials/${courseSlug}`)
       .then((response) => {
         if (response.data.success) {
           setTutorials(response.data.tutorials);
         }
       })
       .catch((error) => console.error("Error fetching tutorials:", error));
+  };
+
+  const createCourse = () => {
+    if (!courseTitle.trim()) return alert("Course title is required!");
+    
+    const courseData = {
+      title: courseTitle,
+      description: courseDescription
+    };
+
+    axios.post(`${BASE_URL}/courses`, courseData)
+      .then((response) => {
+        if (response.data.success) {
+          setCourses([...courses, response.data.course]);
+          setCourseTitle("");
+          setCourseDescription("");
+        }
+      })
+      .catch((error) => console.error("Error creating course:", error));
   };
 
   const addBlock = (type) => {
@@ -95,6 +117,23 @@ const CourseTutorialEditor = () => {
     <div className="editor-container">
       <h2>Course & Tutorial Editor</h2>
 
+      {/* === Course Creation Section === */}
+      <div className="course-section">
+        <h3>Create a New Course</h3>
+        <input
+          type="text"
+          placeholder="Course Title"
+          value={courseTitle}
+          onChange={(e) => setCourseTitle(e.target.value)}
+        />
+        <textarea
+          placeholder="Course Description"
+          value={courseDescription}
+          onChange={(e) => setCourseDescription(e.target.value)}
+        />
+        <button onClick={createCourse}>Create Course</button>
+      </div>
+
       {/* === Course Selection Section === */}
       <div className="course-section">
         <h3>Select a Course</h3>
@@ -120,7 +159,7 @@ const CourseTutorialEditor = () => {
 
       {selectedCourse && (
         <div className="editor-preview-wrapper">
-          {/* === EDITOR SECTION === */}
+          {/* === Tutorial Editor Section === */}
           <div className="editor-section">
             <h3>Create New Tutorial</h3>
             <input
@@ -133,21 +172,11 @@ const CourseTutorialEditor = () => {
             <div className="content-list">
               {content.map((block) => (
                 <div key={block.id} className="content-block">
-                  {block.type === "code" ? (
-                    <pre>
-                      <textarea
-                        value={block.text}
-                        onChange={(e) => updateBlock(block.id, e.target.value)}
-                        placeholder="Enter code..."
-                      />
-                    </pre>
-                  ) : (
-                    <textarea
-                      value={block.text}
-                      onChange={(e) => updateBlock(block.id, e.target.value)}
-                      placeholder={`Enter ${block.type}...`}
-                    />
-                  )}
+                  <textarea
+                    value={block.text}
+                    onChange={(e) => updateBlock(block.id, e.target.value)}
+                    placeholder={`Enter ${block.type}...`}
+                  />
                   <button onClick={() => removeBlock(block.id)}>Delete</button>
                 </div>
               ))}
@@ -157,15 +186,12 @@ const CourseTutorialEditor = () => {
               <button onClick={() => addBlock("h1")}>Add Heading</button>
               <button onClick={() => addBlock("p")}>Add Paragraph</button>
               <button onClick={() => addBlock("code")}>Add Code</button>
-              <button onClick={() => addBlock("ul")}>Add Unordered List</button>
-              <button onClick={() => addBlock("ol")}>Add Ordered List</button>
-              <button onClick={() => addBlock("table")}>Add Table</button>
             </div>
 
             <button onClick={createTutorial}>Save Tutorial</button>
           </div>
 
-          {/* === PREVIEW SECTION === */}
+          {/* === Preview Section === */}
           <div className="preview-section">
             <h3>Live Preview</h3>
             <div className="preview-content">
@@ -177,31 +203,6 @@ const CourseTutorialEditor = () => {
                     <pre className="code-block">
                       <code>{block.text}</code>
                     </pre>
-                  )}
-                  {block.type === "ul" && (
-                    <ul>
-                      {block.text.split("\n").map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
-                  )}
-                  {block.type === "ol" && (
-                    <ol>
-                      {block.text.split("\n").map((item, idx) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ol>
-                  )}
-                  {block.type === "table" && (
-                    <table border="1">
-                      {block.text.split("\n").map((row, idx) => (
-                        <tr key={idx}>
-                          {row.split(",").map((cell, cellIdx) => (
-                            <td key={cellIdx}>{cell}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </table>
                   )}
                 </div>
               ))}
