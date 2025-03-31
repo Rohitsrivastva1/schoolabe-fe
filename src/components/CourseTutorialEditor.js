@@ -4,7 +4,18 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import { checkAuth } from "../services/authService";
 import { useNavigate } from "react-router-dom";
-import { FaPlus, FaTrash, FaHeading, FaListUl, FaListOl, FaCode, FaTable, FaSave } from "react-icons/fa";
+import { 
+  FaPlus, 
+  FaTrash, 
+  FaHeading, 
+  FaListUl, 
+  FaListOl, 
+  FaCode, 
+  FaTable, 
+  FaSave,
+  FaImage,
+  FaYoutube
+} from "react-icons/fa";
 import "./CourseTutorialEditor.css";
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
@@ -77,6 +88,13 @@ const CourseTutorialEditor = () => {
       .catch((error) => console.error("Error creating course:", error));
   };
 
+  // Helper function to convert YouTube URLs to embed URL
+  const convertYoutubeUrl = (url) => {
+    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? `https://www.youtube.com/embed/${match[2]}` : url;
+  };
+
   const addBlock = (type) => {
     if (type === "table") {
       setContent([
@@ -96,7 +114,16 @@ const CourseTutorialEditor = () => {
       ]);
       return;
     }
-
+    if (type === "image") {
+      let newBlock = { id: uuidv4(), type: "image", src: "", alt: "" };
+      setContent([...content, newBlock]);
+      return;
+    }
+    if (type === "youtube") {
+      let newBlock = { id: uuidv4(), type: "youtube", url: "" };
+      setContent([...content, newBlock]);
+      return;
+    }
     let newBlock = { id: uuidv4(), type, text: "" };
     setContent([...content, newBlock]);
   };
@@ -105,6 +132,30 @@ const CourseTutorialEditor = () => {
     setContent(
       content.map((block) =>
         block.id === id ? { ...block, text: newText } : block
+      )
+    );
+  };
+
+  const updateImageBlock = (id, newSrc) => {
+    setContent(
+      content.map((block) =>
+        block.id === id ? { ...block, src: newSrc } : block
+      )
+    );
+  };
+
+  const updateImageAlt = (id, newAlt) => {
+    setContent(
+      content.map((block) =>
+        block.id === id ? { ...block, alt: newAlt } : block
+      )
+    );
+  };
+
+  const updateYoutubeBlock = (id, newUrl) => {
+    setContent(
+      content.map((block) =>
+        block.id === id ? { ...block, url: newUrl } : block
       )
     );
   };
@@ -303,6 +354,28 @@ const CourseTutorialEditor = () => {
                         </tbody>
                       </table>
                     </>
+                  ) : block.type === "image" ? (
+                    <>
+                      <input 
+                        type="text"
+                        value={block.src}
+                        onChange={(e) => updateImageBlock(block.id, e.target.value)}
+                        placeholder="Enter image URL..."
+                      />
+                      <input 
+                        type="text"
+                        value={block.alt}
+                        onChange={(e) => updateImageAlt(block.id, e.target.value)}
+                        placeholder="Enter alt text..."
+                      />
+                    </>
+                  ) : block.type === "youtube" ? (
+                    <input 
+                      type="text"
+                      value={block.url}
+                      onChange={(e) => updateYoutubeBlock(block.id, e.target.value)}
+                      placeholder="Enter YouTube video URL..."
+                    />
                   ) : (
                     <textarea
                       value={block.text}
@@ -329,6 +402,8 @@ const CourseTutorialEditor = () => {
               <button onClick={() => addBlock("p")}>Paragraph</button>
               <button onClick={() => addBlock("code")}><FaCode /> Code</button>
               <button onClick={() => addBlock("table")}><FaTable /> Table</button>
+              <button onClick={() => addBlock("image")}><FaImage /> Image</button>
+              <button onClick={() => addBlock("youtube")}><FaYoutube /> YouTube</button>
             </div>
 
             <div className="preview-section">
@@ -336,7 +411,7 @@ const CourseTutorialEditor = () => {
               <div className="preview-content">
                 {content.map((block) => (
                   <div key={block.id} className="content-preview">
-                    {block.type === 'table' ? (
+                    {block.type === "table" ? (
                       <table className="preview-table">
                         <tbody>
                           {block.data.map((row, rowIndex) => (
@@ -352,13 +427,31 @@ const CourseTutorialEditor = () => {
                           ))}
                         </tbody>
                       </table>
+                    ) : block.type === "image" ? (
+                      <img 
+                        src={block.src} 
+                        alt={block.alt || "Image"} 
+                        className="preview-image" 
+                      />
+                    ) : block.type === "youtube" ? (
+                      <div className="video-responsive">
+                        <iframe
+                          width="560"
+                          height="315"
+                          src={convertYoutubeUrl(block.url)}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title="YouTube video"
+                        ></iframe>
+                      </div>
                     ) : (
                       React.createElement(
-                        block.type === 'ul' || block.type === 'ol' ? block.type : 'div',
+                        block.type === "ul" || block.type === "ol" ? block.type : "div",
                         {
                           className: `preview-${block.type}`,
                           dangerouslySetInnerHTML: {
-                            __html: DOMPurify.sanitize(block.text) 
+                            __html: DOMPurify.sanitize(block.text)
                           }
                         }
                       )

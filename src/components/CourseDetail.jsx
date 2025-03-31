@@ -42,6 +42,15 @@ const CourseDetail = () => {
       .replace(/--+/g, "-");
   };
 
+  // Helper: Convert YouTube URL to embed URL
+  const convertYoutubeUrl = (url) => {
+    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11
+      ? `https://www.youtube.com/embed/${match[2]}`
+      : url;
+  };
+
   // Fetch Course & Tutorials Data
   useEffect(() => {
     if (!courseSlug) return;
@@ -166,23 +175,26 @@ const CourseDetail = () => {
       </button>
 
       {/* Main Content */}
-      <main ref={contentRef} className={`tutorial-content ${fadeIn ? "fade-in" : ""}`}>
+      <main
+        ref={contentRef}
+        className={`tutorial-content ${fadeIn ? "fade-in" : ""}`}
+      >
         {selectedTutorial && selectedTutorial.content ? (
           <div>
             <h2>{selectedTutorial.title}</h2>
             {selectedTutorial.content.map((block, index) => {
-              const blockText = block.text || '';
+              const blockText = block.text || "";
               const blockId = slugify(blockText) || `block-${index}`;
-              
+
               return (
                 <div key={index} id={blockId} className={`block-${block.type}`}>
-                  {/* All content blocks */}
+                  {/* Text and Heading Blocks */}
                   {block.type === "text" && <p>{blockText}</p>}
                   {block.type === "h1" && <h1>{blockText}</h1>}
                   {block.type === "h2" && <h2>{blockText}</h2>}
                   {block.type === "p" && <p>{blockText}</p>}
 
-                  {/* List blocks */}
+                  {/* List Blocks */}
                   {block.type === "ul" && blockText && (
                     <ul className="custom-ul">
                       {blockText.split("\n").map((item, i) => (
@@ -190,7 +202,6 @@ const CourseDetail = () => {
                       ))}
                     </ul>
                   )}
-
                   {block.type === "ol" && blockText && (
                     <ol className="custom-ol">
                       {blockText.split("\n").map((item, i) => (
@@ -199,7 +210,7 @@ const CourseDetail = () => {
                     </ol>
                   )}
 
-                  {/* Code block */}
+                  {/* Code Block */}
                   {block.type === "code" && (
                     <div className="code-container1">
                       <pre>
@@ -208,31 +219,57 @@ const CourseDetail = () => {
                     </div>
                   )}
 
-                  {/* Output block - Added missing section */}
+                  {/* Output Block */}
                   {block.type === "output" && (
                     <div className="output-box1">
                       <strong>Output:</strong> {blockText}
                     </div>
                   )}
 
-                  {/* Table block */}
+                  {/* Table Block */}
                   {block.type === "table" && block.data && (
                     <div className="block-table">
                       <table>
                         <tbody>
                           {block.data.map((row, rowIndex) => (
                             <tr key={rowIndex}>
-                              {row.map((cell, cellIndex) => (
+                              {row.map((cell, cellIndex) =>
                                 block.headerRow && rowIndex === 0 ? (
-                                  <th key={cellIndex}>{cell || ''}</th>
+                                  <th key={cellIndex}>{cell || ""}</th>
                                 ) : (
-                                  <td key={cellIndex}>{cell || ''}</td>
+                                  <td key={cellIndex}>{cell || ""}</td>
                                 )
-                              ))}
+                              )}
                             </tr>
                           ))}
                         </tbody>
                       </table>
+                    </div>
+                  )}
+
+                  {/* New: Image Block */}
+                  {block.type === "image" && (
+                    <div className="block-image-container">
+                      <img
+                        src={block.src}
+                        alt={block.alt || "Image"}
+                        className="block-image"
+                      />
+                    </div>
+                  )}
+
+                  {/* New: YouTube Video Block */}
+                  {block.type === "youtube" && (
+                    <div className="block-youtube-container">
+                      <div className="video-responsive">
+                        <iframe
+                          src={convertYoutubeUrl(block.url)}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title="YouTube video"
+                        ></iframe>
+                      </div>
                     </div>
                   )}
                 </div>

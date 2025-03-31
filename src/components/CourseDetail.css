@@ -380,3 +380,40 @@
     color: #6e7681;
     opacity: 0.5;
   } 
+
+  /* New styles for Image and YouTube blocks */
+.block-image-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .block-image-container .block-image {
+    max-width: 80%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .block-youtube-container {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .block-youtube-container .video-responsive {
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    margin: auto;
+    max-width: 80%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .block-youtube-container .video-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
