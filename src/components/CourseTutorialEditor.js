@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus, FaTrash, FaHeading, FaListUl, FaListOl, FaCode, FaTable, FaSave } from "react-icons/fa";
 import "./CourseTutorialEditor.css";
 
-const BASE_URL = ""; // Update with your backend URL
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const CourseTutorialEditor = () => {
   const [courses, setCourses] = useState([]);

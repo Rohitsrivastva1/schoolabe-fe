@@ -5,7 +5,7 @@ import "./Courses.css";
 import { Helmet, HelmetProvider } from "react-helmet-async"; // Use react-helmet-async
 import axiosInstance from "../api/axiosInstance";
 
-const BASE_URL = ""; // Update with your actual API URL
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
