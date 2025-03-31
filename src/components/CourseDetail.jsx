@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState,useRef  } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CourseDetail.css";
@@ -15,32 +14,26 @@ const CourseDetail = () => {
   const [headings, setHeadings] = useState([]);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const contentRef = useRef(null); // Ref for tutorial content
+  const contentRef = useRef(null);
 
+  // Handle Sidebar Visibility Based on Screen Size
   useEffect(() => {
-    // Hide sidebar by default only on mobile
     if (window.innerWidth <= 768) {
       setSidebarOpen(false);
     } else {
       setSidebarOpen(true);
     }
 
-    // Update on window resize
     const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setSidebarOpen(true);
-      } else {
-        setSidebarOpen(false);
-      }
+      setSidebarOpen(window.innerWidth > 768);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
- 
-  // Convert title into a slug format
   const slugify = (text) => {
+    if (!text) return '';
     return text
       .toString()
       .toLowerCase()
@@ -49,7 +42,7 @@ const CourseDetail = () => {
       .replace(/--+/g, "-");
   };
 
-  // Fetch Course & Tutorials when courseSlug changes
+  // Fetch Course & Tutorials Data
   useEffect(() => {
     if (!courseSlug) return;
 
@@ -72,7 +65,7 @@ const CourseDetail = () => {
       .catch((error) => console.error("Error fetching tutorials:", error));
   }, [courseSlug]);
 
-  // Select tutorial & extract headings
+  // Select the Right Tutorial
   useEffect(() => {
     if (tutorials.length === 0) return;
 
@@ -83,7 +76,9 @@ const CourseDetail = () => {
     setFadeIn(true);
 
     if (!tutorialSlug || tutorialSlug !== slugify(tutorial.title)) {
-      navigate(`/courses/${courseSlug}/${slugify(tutorial.title)}`, { replace: true });
+      navigate(`/courses/${courseSlug}/${slugify(tutorial.title)}`, {
+        replace: true,
+      });
     }
 
     if (tutorial) {
@@ -91,22 +86,22 @@ const CourseDetail = () => {
     }
   }, [tutorials, tutorialSlug, navigate, courseSlug]);
 
-  // Extract headings (h1, h2) for TOC
+  // Extract Headings for Table of Contents
   const extractHeadings = (content) => {
     try {
-      const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
-      const headings = parsedContent.filter((block) => block.type === "h1" || block.type === "h2");
+      const parsedContent =
+        typeof content === "string" ? JSON.parse(content) : content;
+      const headings = parsedContent.filter(
+        (block) => block.type === "h1" || block.type === "h2"
+      );
       setHeadings(headings);
     } catch (error) {
       console.error("Error parsing content:", error);
     }
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen((prev) => !prev);
-  };
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
-  // Handle tutorial click
   const handleTutorialClick = (tutorial) => {
     setFadeIn(false);
     setTimeout(() => {
@@ -114,18 +109,22 @@ const CourseDetail = () => {
       setFadeIn(true);
       navigate(`/courses/${courseSlug}/${slugify(tutorial.title)}`);
       if (window.innerWidth <= 768) {
-        setSidebarOpen(false); // Close sidebar on mobile
+        setSidebarOpen(false);
       }
     }, 200);
   };
 
+  // Close Sidebar When Clicking Outside
   useEffect(() => {
     const handleClickOutsideContent = (event) => {
-   
-      
-      if (window.innerWidth <= 768 && sidebarOpen && contentRef.current && contentRef.current.contains(event.target) && !event.target.classList.contains('sidebar-toggle')) {
+      if (
+        window.innerWidth <= 768 &&
+        sidebarOpen &&
+        contentRef.current &&
+        contentRef.current.contains(event.target) &&
+        !event.target.classList.contains("sidebar-toggle")
+      ) {
         setSidebarOpen(false);
- 
       }
     };
 
@@ -135,19 +134,22 @@ const CourseDetail = () => {
     };
   }, [sidebarOpen]);
 
-
   return (
     <div className="course-detail-container">
-      {/* Left Sidebar */}
+      {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <h2>{course?.title ? course.title.toUpperCase() : "Loading..."}</h2>
-        <p className="course-description">{course?.description || "No description available."}</p>
+        <h2>{course?.title?.toUpperCase() || "Loading..."}</h2>
+        <p className="course-description">
+          {course?.description || "No description available."}
+        </p>
         <ul>
           {tutorials.length > 0 ? (
             tutorials.map((tutorial) => (
               <li
                 key={tutorial.id}
-                className={selectedTutorial?.id === tutorial.id ? "active-tutorial" : ""}
+                className={
+                  selectedTutorial?.id === tutorial.id ? "active-tutorial" : ""
+                }
                 onClick={() => handleTutorialClick(tutorial)}
               >
                 {tutorial.title}
@@ -163,42 +165,86 @@ const CourseDetail = () => {
         {sidebarOpen ? "❌" : "➡️"}
       </button>
 
-
       {/* Main Content */}
-      <main  ref={contentRef}  className={`tutorial-content ${fadeIn ? "fade-in" : ""}`}>
+      <main ref={contentRef} className={`tutorial-content ${fadeIn ? "fade-in" : ""}`}>
         {selectedTutorial && selectedTutorial.content ? (
           <div>
             <h2>{selectedTutorial.title}</h2>
-            {(typeof selectedTutorial.content === "string"
-              ? JSON.parse(selectedTutorial.content)
-              : selectedTutorial.content
-            ).map((block, index) => (
-              <div key={index} id={slugify(block.text)} className={`block-${block.type}`}>
-                {block.type === "text" && <p>{block.text}</p>}
-                {block.type === "h1" && <h1>{block.text}</h1>}
-                {block.type === "h2" && <h2>{block.text}</h2>}
-                {block.type === "p" && <p>{block.text}</p>}
-                {block.type === "code" && (
-                  <div className="code-container1">
-                    <pre>
-                      <code>{block.text}</code>
-                    </pre>
-                  </div>
-                )}
-                {block.type === "output" && (
-                  <div className="output-box1">
-                    <strong>Output:</strong> {block.text}
-                  </div>
-                )}
-              </div>
-            ))}
+            {selectedTutorial.content.map((block, index) => {
+              const blockText = block.text || '';
+              const blockId = slugify(blockText) || `block-${index}`;
+              
+              return (
+                <div key={index} id={blockId} className={`block-${block.type}`}>
+                  {/* All content blocks */}
+                  {block.type === "text" && <p>{blockText}</p>}
+                  {block.type === "h1" && <h1>{blockText}</h1>}
+                  {block.type === "h2" && <h2>{blockText}</h2>}
+                  {block.type === "p" && <p>{blockText}</p>}
+
+                  {/* List blocks */}
+                  {block.type === "ul" && blockText && (
+                    <ul className="custom-ul">
+                      {blockText.split("\n").map((item, i) => (
+                        <li key={i}>{item.trim()}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {block.type === "ol" && blockText && (
+                    <ol className="custom-ol">
+                      {blockText.split("\n").map((item, i) => (
+                        <li key={i}>{item.trim()}</li>
+                      ))}
+                    </ol>
+                  )}
+
+                  {/* Code block */}
+                  {block.type === "code" && (
+                    <div className="code-container1">
+                      <pre>
+                        <code>{blockText}</code>
+                      </pre>
+                    </div>
+                  )}
+
+                  {/* Output block - Added missing section */}
+                  {block.type === "output" && (
+                    <div className="output-box1">
+                      <strong>Output:</strong> {blockText}
+                    </div>
+                  )}
+
+                  {/* Table block */}
+                  {block.type === "table" && block.data && (
+                    <div className="block-table">
+                      <table>
+                        <tbody>
+                          {block.data.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                              {row.map((cell, cellIndex) => (
+                                block.headerRow && rowIndex === 0 ? (
+                                  <th key={cellIndex}>{cell || ''}</th>
+                                ) : (
+                                  <td key={cellIndex}>{cell || ''}</td>
+                                )
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         ) : (
           <p>Loading tutorial...</p>
         )}
       </main>
 
-      {/* Right Sidebar (Table of Contents) */}
+      {/* Table of Contents */}
       <aside className="right-sidebar">
         <h3>On This Page</h3>
         <ul>
@@ -208,7 +254,9 @@ const CourseDetail = () => {
                 href={`#${slugify(heading.text)}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  document.getElementById(slugify(heading.text))?.scrollIntoView({ behavior: "smooth" });
+                  document
+                    .getElementById(slugify(heading.text))
+                    ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
                 {heading.text}

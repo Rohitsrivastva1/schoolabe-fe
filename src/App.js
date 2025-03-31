@@ -17,7 +17,15 @@ import Loader from "./components/Loader"; // Loader Component
 import { setupInterceptors } from "./api/axiosInstance"; // Axios Interceptors
 import ChangePassword from "./components/ChangePassword";
 import "./App.css";
+import Quizzes from "./components/Quizzes";
+import QuizDetail from "./components/QuizDetail";
 
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import QuizForm from "./components/Admin/QuizForm";
+
+import ManageQuestions from "./components/Admin/ManageQuestions";
+import QuestionForm from "./components/Admin/QuestionForm";
+  
 const AppContent = () => {
   const { setLoading } = useLoader();
 
@@ -44,6 +52,16 @@ const AppContent = () => {
           <Route path="/courses/:courseSlug" element={<CourseDetail />} />
           <Route path="/signup" element={<Auth />} />
           <Route path="/change-password" element={<ChangePassword />} />
+
+
+          <Route path="/quizzes" element={<Quizzes />} />
+          <Route path="/quizzes/:quizSlug" element={<QuizDetail />} />
+
+          <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/create-quiz" element={<QuizForm />} />
+        <Route path="/admin/edit-quiz/:slug" element={<QuizForm />} />
+        <Route path="/admin/manage-questions/:slug" element={<ManageQuestions />} />
+        <Route path="/admin/add-question/:slug" element={<QuestionForm />} />
 
         </Routes>
       </div>

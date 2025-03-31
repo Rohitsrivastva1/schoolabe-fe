@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import { checkAuth } from "../services/authService"; 
+import DOMPurify from "dompurify";
+import { checkAuth } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { FaPlus, FaTrash, FaHeading, FaListUl, FaListOl, FaCode, FaTable, FaSave } from "react-icons/fa";
 import "./CourseTutorialEditor.css";
 
-const BASE_URL =  ""; 
+const BASE_URL = ""; // Update with your backend URL
 
 const CourseTutorialEditor = () => {
   const [courses, setCourses] = useState([]);
@@ -16,8 +18,8 @@ const CourseTutorialEditor = () => {
   const [courseTitle, setCourseTitle] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -58,10 +60,10 @@ const CourseTutorialEditor = () => {
 
   const createCourse = () => {
     if (!courseTitle.trim()) return alert("Course title is required!");
-    
+
     const courseData = {
       title: courseTitle,
-      description: courseDescription
+      description: courseDescription,
     };
 
     axios.post(`${BASE_URL}/courses`, courseData)
@@ -76,13 +78,82 @@ const CourseTutorialEditor = () => {
   };
 
   const addBlock = (type) => {
-    setContent([...content, { id: uuidv4(), type, text: "" }]);
+    if (type === "table") {
+      setContent([
+        ...content,
+        {
+          id: uuidv4(),
+          type: "table",
+          rows: 2,
+          cols: 2,
+          headerRow: true,
+          data: Array(2)
+            .fill(null)
+            .map((_, rowIndex) =>
+              Array(2).fill(rowIndex === 0 ? "Header" : "")
+            ),
+        },
+      ]);
+      return;
+    }
+
+    let newBlock = { id: uuidv4(), type, text: "" };
+    setContent([...content, newBlock]);
   };
 
   const updateBlock = (id, newText) => {
     setContent(
       content.map((block) =>
         block.id === id ? { ...block, text: newText } : block
+      )
+    );
+  };
+
+  const updateTableCell = (blockId, rowIndex, colIndex, value) => {
+    setContent(
+      content.map((block) =>
+        block.id === blockId
+          ? {
+              ...block,
+              data: block.data.map((row, r) =>
+                r === rowIndex
+                  ? row.map((cell, c) => (c === colIndex ? value : cell))
+                  : row
+              ),
+            }
+          : block
+      )
+    );
+  };
+
+  const addTableRow = (blockId) => {
+    setContent(
+      content.map((block) => 
+        block.id === blockId ? {
+          ...block,
+          rows: block.rows + 1,
+          data: [...block.data, Array(block.cols).fill("")]
+        } : block
+      )
+    );
+  };
+
+  const addTableColumn = (blockId) => {
+    setContent(
+      content.map((block) => 
+        block.id === blockId ? {
+          ...block,
+          cols: block.cols + 1,
+          data: block.data.map(row => [...row, ""])
+        } : block
+      )
+    );
+  };
+
+  const toggleHeaderRow = (blockId) => {
+    setContent(
+      content.map((block) => 
+        block.id === blockId ? { ...block, headerRow: !block.headerRow } : block
       )
     );
   };
@@ -95,29 +166,29 @@ const CourseTutorialEditor = () => {
     if (!selectedCourse) return alert("Select a course first!");
     if (!tutorialTitle.trim()) return alert("Tutorial title is required!");
 
+    setIsSaving(true);
     const tutorialData = {
       title: tutorialTitle,
       content: JSON.stringify(content),
       courseSlug: selectedCourse.slug,
     };
 
-    axios
-      .post(`${BASE_URL}/tutorials`, tutorialData)
+    axios.post(`${BASE_URL}/tutorials`, tutorialData)
       .then((response) => {
         if (response.data.success) {
           setTutorials([...tutorials, response.data.tutorial]);
+          setTutorialTitle("");
+          setContent([]);
         }
-        setTutorialTitle("");
-        setContent([]);
       })
-      .catch((error) => console.error("Error creating tutorial:", error));
+      .catch((error) => console.error("Error creating tutorial:", error))
+      .finally(() => setIsSaving(false));
   };
 
   return (
     <div className="editor-container">
       <h2>Course & Tutorial Editor</h2>
 
-      {/* === Course Creation Section === */}
       <div className="course-section">
         <h3>Create a New Course</h3>
         <input
@@ -131,10 +202,11 @@ const CourseTutorialEditor = () => {
           value={courseDescription}
           onChange={(e) => setCourseDescription(e.target.value)}
         />
-        <button onClick={createCourse}>Create Course</button>
+        <button onClick={createCourse}>
+          <FaSave /> Create Course
+        </button>
       </div>
 
-      {/* === Course Selection Section === */}
       <div className="course-section">
         <h3>Select a Course</h3>
         <select
@@ -159,7 +231,6 @@ const CourseTutorialEditor = () => {
 
       {selectedCourse && (
         <div className="editor-preview-wrapper">
-          {/* === Tutorial Editor Section === */}
           <div className="editor-section">
             <h3>Create New Tutorial</h3>
             <input
@@ -172,41 +243,144 @@ const CourseTutorialEditor = () => {
             <div className="content-list">
               {content.map((block) => (
                 <div key={block.id} className="content-block">
-                  <textarea
-                    value={block.text}
-                    onChange={(e) => updateBlock(block.id, e.target.value)}
-                    placeholder={`Enter ${block.type}...`}
-                  />
-                  <button onClick={() => removeBlock(block.id)}>Delete</button>
+                  {block.type === "table" ? (
+                    <>
+                      <div className="table-controls">
+                        <button onClick={() => addTableRow(block.id)}>
+                          <FaPlus /> Row
+                        </button>
+                        <button onClick={() => addTableColumn(block.id)}>
+                          <FaPlus /> Column
+                        </button>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={block.headerRow}
+                            onChange={() => toggleHeaderRow(block.id)}
+                          />
+                          Header Row
+                        </label>
+                      </div>
+                      <table className="table-editor">
+                        <tbody>
+                          {block.data.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                              {row.map((cell, colIndex) => (
+                                block.headerRow && rowIndex === 0 ? (
+                                  <th key={colIndex}>
+                                    <input
+                                      type="text"
+                                      value={cell}
+                                      onChange={(e) =>
+                                        updateTableCell(
+                                          block.id,
+                                          rowIndex,
+                                          colIndex,
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </th>
+                                ) : (
+                                  <td key={colIndex}>
+                                    <input
+                                      type="text"
+                                      value={cell}
+                                      onChange={(e) =>
+                                        updateTableCell(
+                                          block.id,
+                                          rowIndex,
+                                          colIndex,
+                                          e.target.value
+                                        )
+                                      }
+                                    />
+                                  </td>
+                                )
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </>
+                  ) : (
+                    <textarea
+                      value={block.text}
+                      onChange={(e) => updateBlock(block.id, e.target.value)}
+                      placeholder={`Enter ${block.type}...`}
+                    />
+                  )}
+                  <button 
+                    onClick={() => removeBlock(block.id)}
+                    className="delete-btn"
+                  >
+                    <FaTrash />
+                  </button>
                 </div>
               ))}
             </div>
 
             <div className="editor-actions">
-              <button onClick={() => addBlock("h1")}>Add Heading</button>
-              <button onClick={() => addBlock("p")}>Add Paragraph</button>
-              <button onClick={() => addBlock("code")}>Add Code</button>
+              <button onClick={() => addBlock("h1")}><FaHeading /> H1</button>
+              <button onClick={() => addBlock("h2")}><FaHeading /> H2</button>
+              <button onClick={() => addBlock("h3")}><FaHeading /> H3</button>
+              <button onClick={() => addBlock("ul")}><FaListUl /> List</button>
+              <button onClick={() => addBlock("ol")}><FaListOl /> Ordered</button>
+              <button onClick={() => addBlock("p")}>Paragraph</button>
+              <button onClick={() => addBlock("code")}><FaCode /> Code</button>
+              <button onClick={() => addBlock("table")}><FaTable /> Table</button>
             </div>
 
-            <button onClick={createTutorial}>Save Tutorial</button>
-          </div>
-
-          {/* === Preview Section === */}
-          <div className="preview-section">
-            <h3>Live Preview</h3>
-            <div className="preview-content">
-              {content.map((block, index) => (
-                <div key={index} className={`block-${block.type}`}>
-                  {block.type === "h1" && <h1>{block.text}</h1>}
-                  {block.type === "p" && <p>{block.text}</p>}
-                  {block.type === "code" && (
-                    <pre className="code-block">
-                      <code>{block.text}</code>
-                    </pre>
-                  )}
-                </div>
-              ))}
+            <div className="preview-section">
+              <h3>Live Preview</h3>
+              <div className="preview-content">
+                {content.map((block) => (
+                  <div key={block.id} className="content-preview">
+                    {block.type === 'table' ? (
+                      <table className="preview-table">
+                        <tbody>
+                          {block.data.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                              {row.map((cell, cellIndex) => (
+                                block.headerRow && rowIndex === 0 ? (
+                                  <th key={cellIndex}>{cell}</th>
+                                ) : (
+                                  <td key={cellIndex}>{cell}</td>
+                                )
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      React.createElement(
+                        block.type === 'ul' || block.type === 'ol' ? block.type : 'div',
+                        {
+                          className: `preview-${block.type}`,
+                          dangerouslySetInnerHTML: {
+                            __html: DOMPurify.sanitize(block.text) 
+                          }
+                        }
+                      )
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
+
+            <button 
+              onClick={createTutorial} 
+              disabled={isSaving}
+              className="save-btn"
+            >
+              {isSaving ? (
+                <span>Saving...</span>
+              ) : (
+                <>
+                  <FaSave /> Save Tutorial
+                </>
+              )}
+            </button>
           </div>
         </div>
       )}
