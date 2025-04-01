@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import './QuizAttempt.css';
+import axios from "../../api/axiosInstance"; // Assuming you have a centralized Axios instance
 
 const QuizAttempt = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ const QuizAttempt = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await fetch(`/api/quizzes/${id}`);
+        const response = await axios.get(`/api/quizzes/${id}`);
         if (!response.ok) throw new Error('Quiz not found');
         const data = await response.json();
         if (data.success) setQuizData(data.quiz);
