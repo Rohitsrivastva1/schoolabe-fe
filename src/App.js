@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Navbar from "./components/Navbar";
@@ -16,22 +16,20 @@ import { LoaderProvider, useLoader } from "./context/LoaderContext"; // Loader C
 import Loader from "./components/Loader"; // Loader Component
 import { setupInterceptors } from "./api/axiosInstance"; // Axios Interceptors
 import ChangePassword from "./components/ChangePassword";
+
+import AdminQuizForm from "./components/AdminQuiz/AdminQuizForm";  
+import QuizPartForm from "./components/AdminQuiz/QuizPartForm";  
+import QuestionForm from "./components/AdminQuiz/QuestionForm";  
+import OptionForm from "./components/AdminQuiz/OptionForm";  
+
+import QuizList from "./components/UserQuiz/QuizList";  
+import QuizDetail from "./components/UserQuiz/QuizDetail";  
+import QuizAttempt from "./components/UserQuiz/QuizAttempt";  
+
 import "./App.css";
-import Quizzes from "./components/Quizzes";
-import QuizDetail from "./components/QuizDetail";
 
-import AdminDashboard from "./components/Admin/AdminDashboard";
-import QuizForm from "./components/Admin/QuizForm";
-
-import ManageQuestions from "./components/Admin/ManageQuestions";
-import QuestionForm from "./components/Admin/QuestionForm";
-  
 const AppContent = () => {
   const { setLoading } = useLoader();
-
-  // useEffect(() => {
-  //   setupInterceptors(setLoading); // Initialize global API loader
-  // }, [setLoading]);
 
   return (
     <Router>
@@ -53,16 +51,16 @@ const AppContent = () => {
           <Route path="/signup" element={<Auth />} />
           <Route path="/change-password" element={<ChangePassword />} />
 
+          {/* 🔥 Admin Quiz Routes */}
+          <Route path="/admin/quiz/create" element={<AdminQuizForm />} />
+          <Route path="/admin/quiz/:quizId/part" element={<QuizPartForm />} />
+          <Route path="/admin/quiz/:quizId/questions" element={<QuestionForm />} />
+          <Route path="/admin/quiz/:quizId/questions/:questionId/options" element={<OptionForm />} />
 
-          <Route path="/quizzes" element={<Quizzes />} />
-          <Route path="/quizzes/:quizSlug" element={<QuizDetail />} />
-
-          <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/create-quiz" element={<QuizForm />} />
-        <Route path="/admin/edit-quiz/:slug" element={<QuizForm />} />
-        <Route path="/admin/manage-questions/:slug" element={<ManageQuestions />} />
-        <Route path="/admin/add-question/:slug" element={<QuestionForm />} />
-
+          {/* 🧑‍💻 User Quiz Routes */}
+          <Route path="/quizzes" element={<QuizList />} />
+<Route path="/quizzes/:id" element={<QuizDetail />} />
+<Route path="/quizzes/:id/attempt" element={<QuizAttempt />} />
         </Routes>
       </div>
     </Router>

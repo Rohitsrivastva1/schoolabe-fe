@@ -1,0 +1,131 @@
+/* General Quiz Styles */
+.quiz-list,
+.quiz-detail,
+.quiz-attempt {
+  margin: 2rem auto;
+  padding: 1rem;
+  margin-top: 74px !important;
+  max-width: 900px;
+}
+
+.quiz-list .quiz-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.quiz-list .quiz-card {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.quiz-list .quiz-card h3 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.quiz-list .quiz-card p {
+  font-size: 1rem;
+  color: #777;
+}
+
+.quiz-list .quiz-card .btn {
+  background: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.quiz-list .quiz-card .btn:hover {
+  background: #0056b3;
+}
+
+/* Quiz Detail Styles */
+.quiz-detail h2 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.quiz-detail p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.quiz-detail .quiz-questions {
+  margin-top: 2rem;
+}
+
+.quiz-detail .quiz-navigation .btn {
+  background: #28a745;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.quiz-detail .quiz-navigation .btn:hover {
+  background: #218838;
+}
+
+/* Quiz Attempt Styles */
+.quiz-attempt .question {
+  margin: 2rem 0;
+}
+
+.quiz-attempt .question h3 {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.quiz-attempt .question .options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quiz-attempt .question .options input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+.quiz-attempt .explanation {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.quiz-attempt .navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.quiz-attempt .navigation-buttons button {
+  background: #007bff;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+}
+
+.quiz-attempt .navigation-buttons button:hover {
+  background: #0056b3;
+}
+
+.quiz-attempt .quiz-finished {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #28a745;
+  margin-top: 2rem;
+}
+
+.admin-quiz-form{
+    margin-top: 100px;
+}
+
