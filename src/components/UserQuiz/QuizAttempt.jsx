@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import './QuizAttempt.css';
+import axios from "../../api/axiosInstance"; // Ensure this is correctly set up
 
 const QuizAttempt = () => {
   const { id } = useParams();
@@ -11,13 +12,16 @@ const QuizAttempt = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await fetch(`/api/quizzes/${id}`);
-        if (!response.ok) throw new Error('Quiz not found');
-        const data = await response.json();
-        if (data.success) setQuizData(data.quiz);
-        else setError('Invalid quiz data');
+        const response = await axios.get(`/api/quizzes/${id}`);
+        
+        const { success, quiz } = response.data; // ✅ Correctly accessing response data
+        if (success) {
+          setQuizData(quiz);
+        } else {
+          setError("Invalid quiz data");
+        }
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || "Quiz not found");
       }
     };
 
@@ -45,48 +49,44 @@ const QuizAttempt = () => {
       </div>
 
       <div className="quiz-body">
-        {quizData.quizzes.map((question, index) => {
-          const answer = answers[index];
-          const hasAnswered = !!answer;
-          const correctAnswer = question.correctAnswer;
+        {quizData.quizzes?.map((question, index) => (  // ✅ FIXED: Changed `quizData.questions` to `quizData.quizzes`
+          <div key={index} className={`question-card`}>
+            <h3 className="question-number">Question {index + 1}</h3>
+            <p className="question-text">{question.question}</p>
 
-          return (
-            <div key={index} className={`question-card ${hasAnswered ? 'answered' : 'unanswered'}`}>
-              <h3 className="question-number">Question {index + 1}</h3>
-              <p className="question-text">{question.question}</p>
+            <div className="options-grid">
+              {question.options.map((option, optionIndex) => {
+                const isSelected = answers[index]?.selected === option;
+                const isCorrectOption = option === question.correctAnswer;
+                const optionClass = `option ${isSelected ? 'selected' : ''} ${
+                  answers[index] ? (isCorrectOption ? 'correct' : isSelected ? 'incorrect' : 'dimmed') : ''
+                }`;
 
-              <div className="options-grid">
-                {question.options.map((option, optionIndex) => {
-                  const isSelected = hasAnswered && answer.selected === option;
-                  const isCorrectOption = option === correctAnswer;
-                  const optionClass = `option ${isSelected ? 'selected' : ''} ${hasAnswered ? (isCorrectOption ? 'correct' : isSelected ? 'incorrect' : 'dimmed') : ''}`;
-
-                  return (
-                    <button
-                      key={optionIndex}
-                      className={optionClass}
-                      onClick={() => !hasAnswered && handleAnswer(index, option)}
-                      disabled={hasAnswered}
-                    >
-                      <span className="option-text">{option}</span>
-                      {hasAnswered && isCorrectOption && <span className="marker correct-marker">✓</span>}
-                      {hasAnswered && isSelected && !isCorrectOption && <span className="marker incorrect-marker">✕</span>}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {hasAnswered && (
-                <div className="explanation-container">
-                  <div className={`feedback ${answer.isCorrect ? 'correct' : 'incorrect'}`}>
-                    {answer.isCorrect ? 'Correct!' : 'Incorrect!'}
-                  </div>
-                  <p className="explanation-text">{question.explanation}</p>
-                </div>
-              )}
+                return (
+                  <button
+                    key={optionIndex}
+                    className={optionClass}
+                    onClick={() => !answers[index] && handleAnswer(index, option)}
+                    disabled={!!answers[index]}
+                  >
+                    <span className="option-text">{option}</span>
+                    {answers[index] && isCorrectOption && <span className="marker correct-marker">✓</span>}
+                    {answers[index] && isSelected && !isCorrectOption && <span className="marker incorrect-marker">✕</span>}
+                  </button>
+                );
+              })}
             </div>
-          );
-        })}
+
+            {answers[index] && (
+              <div className="explanation-container">
+                <div className={`feedback ${answers[index].isCorrect ? 'correct' : 'incorrect'}`}>
+                  {answers[index].isCorrect ? 'Correct!' : 'Incorrect!'}
+                </div>
+                <p className="explanation-text">{question.explanation}</p>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

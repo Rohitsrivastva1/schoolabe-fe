@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import QuestionForm from "../AdminQuiz/QuestionForm";
 import '../quizStyles.css';
+import axios from "../../api/axiosInstance"; // Ensure this is correctly set up
 
 const QuizDetail = () => {
   const { id } = useParams();
@@ -11,13 +11,16 @@ const QuizDetail = () => {
   useEffect(() => {
     const fetchQuizDetails = async () => {
       try {
-        const response = await fetch(`/api/quizzes/${id}`);
-        if (!response.ok) throw new Error('Quiz not found');
-        const { success, quiz } = await response.json();
-        if (success) setQuiz(quiz);
-        else setError('Failed to load quiz');
+        const response = await axios.get(`/api/quizzes/${id}`);
+        
+        const { success, quiz } = response.data; // ✅ Correct way to extract data
+        if (success) {
+          setQuiz(quiz);
+        } else {
+          setError("Failed to load quiz");
+        }
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || "Quiz not found");
       }
     };
 
