@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../quizStyles.css';
-import axios from "../../api/axiosInstance"; // Assuming you have a centralized Axios instance
+import axios from "../../api/axiosInstance"; // Ensure this is correctly set up
 
 const QuizList = () => {
   const [quizCategories, setQuizCategories] = useState([]);
@@ -10,9 +10,10 @@ const QuizList = () => {
   useEffect(() => {
     const fetchQuizCategories = async () => {
       try {
-        const response = await axios.get("/api/quizzes");
-        if (!response.ok) throw new Error('Failed to fetch');
-        const { success, quizzes } = await response.json();
+        const response = await axios.get("/api/quizzes"); // POST request
+        console.log("Response:", response.data); // Correct way to access data
+
+        const { success, quizzes } = response.data; // Axios returns data in `response.data`
         if (success) setQuizCategories(quizzes);
       } catch (error) {
         console.error("Fetch error:", error);
