@@ -60,8 +60,8 @@ const AppContent = () => {
           {/* 🧑‍💻 User Quiz Routes */}
           <Route path="/quizzes" element={<QuizList />} />
 <Route path="/quizzes/:id" element={<QuizDetail />} />
-<Route path="/quizzes/:id/attempt" element={<QuizAttempt />} />
-        </Routes>
+<Route path="/quizzes/:quizId/attempt/:subQuizId" element={<QuizAttempt />} />
+</Routes>
       </div>
     </Router>
   );

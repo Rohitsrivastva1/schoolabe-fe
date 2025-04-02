@@ -1,58 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import '../quizStyles.css';
-import axios from "../../api/axiosInstance"; // Ensure this is correctly set up
+import "./QuizDetail.dark.css"; // Import the dark theme CSS
+import axios from "../../api/axiosInstance";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlayCircle } from '@fortawesome/free-solid-svg-icons'; // Example icon
 
 const QuizDetail = () => {
   const { id } = useParams();
-  const [quiz, setQuiz] = useState(null);
-  const [error, setError] = useState('');
+  const [quizzes, setQuizzes] = useState([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchQuizDetails = async () => {
+    const fetchQuizzes = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(`/api/quizzes/${id}`);
-        
-        const { success, quiz } = response.data; // ✅ Correct way to extract data
-        if (success) {
-          setQuiz(quiz);
+
+        if (response.data.success && response.data.quiz) {
+          setQuizzes(response.data.quiz.quizzes || []);
         } else {
-          setError("Failed to load quiz");
+          setError("Failed to load quizzes.");
         }
       } catch (err) {
-        setError(err.response?.data?.message || "Quiz not found");
+        setError(err.response?.data?.message || "Quizzes not found.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchQuizDetails();
+    fetchQuizzes();
   }, [id]);
 
-  if (error) return <div className="error">{error}</div>;
-  if (!quiz) return <div>Loading quiz...</div>;
+  if (isLoading) return <div className="quiz-detail-container"><h2>Loading quizzes...</h2></div>;
+  if (error) return <div className="quiz-detail-container"><div className="error-message">{error}</div></div>;
+  if (quizzes.length === 0) return <div className="quiz-detail-container"><div className="error-message">No quizzes available for this category.</div></div>;
 
   return (
-    <div className="quiz-detail">
-      <h2>{quiz.title}</h2>
-      <p>{quiz.description}</p>
+    <div className="quiz-detail-container">
+      <h2 className="quiz-detail-title">Available Quizzes</h2>
+      <div className="quiz-list-detail">
+        {quizzes.map((quiz, index) => (
+          <div key={quiz.id} className="quiz-card-detail" style={{ animationDelay: `${0.1 * (index + 1)}s` }}>
+            <h3 className="quiz-card-title">{quiz.title}</h3>
+            <p className="quiz-card-description">{quiz.description || "No description available."}</p>
 
-      <div className="content-blocks">
-        {quiz.contentBlocks?.map((block, index) => (
-          <div key={index} className="content-block">
-            {block.type === 'heading' && <h3>{block.content}</h3>}
-            {block.type === 'paragraph' && <p>{block.content}</p>}
-            {block.type === 'list' && (
-              <ul>
-                {block.items?.map((item, i) => <li key={i}>{item}</li>)}
-              </ul>
-            )}
+            <Link to={`/quizzes/${id}/attempt/${quiz.id}`} className="quiz-card-button">
+              <FontAwesomeIcon icon={faPlayCircle} /> Start Quiz
+            </Link>
           </div>
         ))}
-      </div>
-
-      <div className="quiz-navigation">
-        <Link to={`/quizzes/${id}/attempt`} className="btn">
-          Start Quiz
-        </Link>
       </div>
     </div>
   );

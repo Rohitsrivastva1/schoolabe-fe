@@ -1,0 +1,97 @@
+/* QuizList.dark.css (Modified to have dark cards like QuizDetail) */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .quiz-list {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    background-color: #0d1117; /* GitHub dark background */
+    min-height: 100vh;
+    padding: 30px;
+    color: #c9d1d9; /* Light text on dark */
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  
+  .quiz-list h2 {
+    color: #f0f6fc; /* Brighter heading text */
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    animation: slideInUp 0.4s ease-out forwards;
+  }
+  
+  .quiz-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 90%;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  
+  @media (min-width: 768px) {
+    .quiz-cards {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+  
+  .quiz-card {
+    background-color: #161b22; /* Dark card background (like QuizDetail) */
+    border: 1px solid #30363d; /* Dark border (like QuizDetail) */
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: slideInUp 0.4s ease-out forwards;
+  }
+  
+  .quiz-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .quiz-card h3 {
+    color: #f0f6fc; /* Light heading text on dark (like QuizDetail) */
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  
+  .quiz-card p {
+    color: #6e7681; /* Gray description text on dark (like QuizDetail) */
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #238636; /* GitHub green button (like QuizDetail) */
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+  
+  .btn:hover {
+    background-color: #2ea043; /* Slightly lighter green on hover */
+  }
+  
+  .quiz-list > div > p { /* Style for "No quizzes available" */
+    color: #6e7681;
+    font-size: 1.1rem;
+    text-align: center;
+    padding-top: 20px;
+  }

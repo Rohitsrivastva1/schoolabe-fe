@@ -1,0 +1,289 @@
+/* QuizAttempt.dark.css (Revised for wider results cards on desktop) */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.quiz-attempt-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    background-color: #0d1117; /* GitHub dark background */
+    min-height: 100vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #c9d1d9; /* Default light text color */
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.quiz-header {
+    background-color: #161b22; /* Dark header background */
+    margin-top: 60px;
+    color: #f0f6fc; /* Light header text */
+    padding: 20px 30px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    animation: slideInFromLeft 0.4s ease-out forwards;
+}
+
+.quiz-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.progress-indicator {
+    background-color: #1e2127;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    border: 1px solid #30363d;
+}
+
+.quiz-body {
+    width: 95%;
+    max-width: 768px; /* Increased max width for the quiz taking part */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.question-card {
+    background-color: #161b22; /* Dark card background */
+    border: 1px solid #30363d; /* Dark border */
+    border-radius: 6px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 0.4s ease-out forwards;
+    color: #c9d1d9; /* Light text on dark card */
+}
+
+.question-number {
+    color: white;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.question-text {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #f0f6fc; /* Light question text */
+    line-height: 1.4;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+@media (min-width: 600px) {
+    .options-grid {
+        grid-template-columns: 1fr 1fr; /* Two columns on larger screens */
+    }
+}
+
+.option {
+    background-color: #1e2127; /* Dark option background */
+    border: 1px solid #30363d;
+    color: #c9d1d9; /* Light option text */
+    border-radius: 4px;
+    padding: 10px 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.option:hover {
+    background-color: #282c34;
+}
+
+.option.selected {
+    background-color: #0366d6; /* GitHub blue */
+    color: #fff;
+    border-color: #0366d6;
+}
+
+.option.correct {
+    background-color: #238636; /* GitHub green */
+    color: #fff;
+    border-color: #238636;
+}
+
+.option.incorrect {
+    background-color: #c92c2c; /* Darker red */
+    color: #fff;
+    border-color: #c92c2c;
+}
+
+.option.dimmed {
+    color: white;
+    cursor: default;
+}
+
+.option.dimmed:hover {
+    background-color: #1e2127;
+}
+
+.marker {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 8px;
+}
+
+.explanation-container {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #1e2127;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    animation: slideInFromLeft 0.3s ease-out forwards;
+    color: #c9d1d9;
+}
+
+.feedback {
+    font-weight: 600;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+
+.feedback.correct {
+    color: #238636;
+    background-color: #194733; /* Darker green */
+    border: 1px solid #308046;
+}
+
+.feedback.incorrect {
+    color: #c92c2c;
+    background-color: #581e1e; /* Darker red */
+    border: 1px solid #b02a37;
+}
+
+.explanation-text {
+    color: white;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.loading-message, .error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    font-size: 1rem;
+    color: white;
+}
+
+.error-message {
+    color: #c92c2c;
+}
+
+.next-button {
+    background-color: #238636; /* GitHub green */
+    color: #000000;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.15s ease;
+    margin-top: 15px;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.next-button:hover {
+    background-color: #2ea043;
+}
+
+.next-button:disabled {
+    background-color: white;
+    cursor: not-allowed;
+}
+
+.results-container .quiz-body {
+    width: 95%;
+    max-width: 960px; /* Increased max width for results */
+    align-items: stretch;
+}
+
+.results-score {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #238636; /* Green for success */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.results-question {
+    opacity: 1;
+    transform: translateY(0);
+    background-color: #1e2127; /* Slightly lighter dark for results */
+    border-color: #30363d;
+    margin-bottom: 15px;
+    padding: 15px;
+}
+
+.back-to-category-btn {
+    background-color: #238636; /* GitHub green */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.15s ease;
+    margin-top: 20px;
+    align-self: center;
+}
+
+.back-to-category-btn:hover {
+    background-color: #2ea043;
+}
+
+.code-block-container {
+    background-color: #282c34; /* Dark background for code block */
+    border: 1px solid #384451;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+    overflow-x: auto; /* For horizontal scrolling if code is long */
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Style adjustments for react-syntax-highlighter (optional, but can refine) */
+pre[class*="language-"] {
+    background-color: transparent !important; /* Inherit background from container */
+    color: #f8f8f2 !important; /* Dracula theme text color */
+    text-shadow: none !important;
+}
