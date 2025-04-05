@@ -17,14 +17,24 @@ import Loader from "./components/Loader"; // Loader Component
 import { setupInterceptors } from "./api/axiosInstance"; // Axios Interceptors
 import ChangePassword from "./components/ChangePassword";
 
-import AdminQuizForm from "./components/AdminQuiz/AdminQuizForm";  
-import QuizPartForm from "./components/AdminQuiz/QuizPartForm";  
-import QuestionForm from "./components/AdminQuiz/QuestionForm";  
-import OptionForm from "./components/AdminQuiz/OptionForm";  
+import AdminQuizForm from "./components/AdminQuiz/AdminQuizForm";
+import QuizPartForm from "./components/AdminQuiz/QuizPartForm";
+import QuestionForm from "./components/AdminQuiz/QuestionForm";
+import OptionForm from "./components/AdminQuiz/OptionForm";
 
-import QuizList from "./components/UserQuiz/QuizList";  
-import QuizDetail from "./components/UserQuiz/QuizDetail";  
-import QuizAttempt from "./components/UserQuiz/QuizAttempt";  
+import QuizList from "./components/UserQuiz/QuizList";
+import QuizDetail from "./components/UserQuiz/QuizDetail";
+import QuizAttempt from "./components/UserQuiz/QuizAttempt";
+
+import CategoryManager from "./components/AdminDSA/CategoryManager";
+import QuestionManager from "./components/AdminDSA/QuestionManager";
+import TestCaseManager from "./components/AdminDSA/TestCaseManager";
+
+
+import DSACategoryList from "./components/UserDSA/DSACategoryList";
+import DSAQuestionList from "./components/UserDSA/DSAQuestionList";
+
+import DSAQuestionSolve from "./components/UserDSA/DSAQuestionSolver";
 
 import "./App.css";
 
@@ -59,9 +69,22 @@ const AppContent = () => {
 
           {/* 🧑‍💻 User Quiz Routes */}
           <Route path="/quizzes" element={<QuizList />} />
-<Route path="/quizzes/:id" element={<QuizDetail />} />
-<Route path="/quizzes/:quizId/attempt/:subQuizId" element={<QuizAttempt />} />
-</Routes>
+          <Route path="/quizzes/:id" element={<QuizDetail />} />
+          <Route path="/quizzes/:quizId/attempt/:subQuizId" element={<QuizAttempt />} />
+
+
+          {/* 🛠️ Admin DSA Routes */}
+          <Route path="/admin/dsa/categories" element={<CategoryManager />} />
+          <Route path="/admin/dsa/questions/:categoryId" element={<QuestionManager />} />
+          <Route path="/admin/dsa/testcases/:questionId" element={<TestCaseManager />} />
+
+
+          <Route path="/dsa" element={<DSACategoryList />} />
+          <Route path="/dsa/category/:categoryId" element={<DSAQuestionList />} />
+          <Route path="/dsa/question/:questionId" element={<DSAQuestionSolve />} />
+
+
+        </Routes>
       </div>
     </Router>
   );

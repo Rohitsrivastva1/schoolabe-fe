@@ -1,0 +1,38 @@
+.user-dsa-container {
+    padding: 30px;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    min-height: 100vh;
+  }
+  
+  .user-dsa-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .user-dsa-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .user-dsa-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    padding: 20px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  
+  .user-dsa-card:hover {
+    background-color: #238636;
+    color: #fff;
+    transform: scale(1.05);
+  }
+  

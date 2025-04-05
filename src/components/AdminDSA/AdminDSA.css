@@ -1,0 +1,63 @@
+.admin-container {
+    padding: 2rem;
+    margin-top: 60px;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Fira Code', monospace;
+  }
+  
+  .form-inline, .form-column {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .form-column {
+    flex-direction: column;
+  }
+  
+  input, textarea, button {
+    background: #161b22;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 0.7rem;
+    border-radius: 6px;
+    width: 100%;
+  }
+  
+  textarea {
+    height: 100px;
+  }
+  
+  button {
+    background-color: #238636;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #2ea043;
+  }
+  
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .admin-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 220px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .admin-card:hover {
+    transform: translateY(-5px);
+    background-color: #21262d;
+  }
+  
