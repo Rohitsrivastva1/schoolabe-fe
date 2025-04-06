@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import "./AdminDSA.css";
 
 const QuestionManager = () => {
@@ -18,7 +20,7 @@ const QuestionManager = () => {
   const navigate = useNavigate();
 
   const fetchCategoryTitle = async () => {
-    const res = await axios.get(`/api/dsa/questions/category/${categoryId}`);
+    const res = await axios.get(`/api/dsa/categories/${categoryId}`);
     setCategoryTitle(res.data.name); // Adjust based on your backend response
   };
 
@@ -35,36 +37,75 @@ const QuestionManager = () => {
   const createQuestion = async () => {
     await axios.post("/api/dsa/questions", {
       ...form,
-      description: JSON.stringify({ type: "paragraph", content: form.description }),
+      description: JSON.stringify({ type: "rich", content: form.description }),
       DsaCategoryId: categoryId,
     });
-    setForm({ title: "", description: "", explanation: "", questionVideoUrl: "", solutionVideoUrl: "" });
+    setForm({
+      title: "",
+      description: "",
+      explanation: "",
+      questionVideoUrl: "",
+      solutionVideoUrl: "",
+    });
     fetchQuestions();
   };
 
-  return (
-    <div className="admin-container">
-      <h1>📁 {categoryTitle} - Questions</h1>
-      <h2>🧠 Add Question</h2>
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "code"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
+    ],
+  };
 
-      <div className="form-column">
+  const quillFormats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "code",
+    "list",
+    "bullet",
+    "link",
+    "image",
+  ];
+
+  return (
+    <div className="question-manager-container">
+      {/* Left: Form Column */}
+      <div className="question-form-column">
+        <h1>📁 {categoryTitle} - Questions</h1>
+        <h2>🧠 Add Question</h2>
+
         <input
           type="text"
           placeholder="Title"
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
         />
-        <textarea
-          placeholder="Description (JSON or simple text)"
+
+        <label>📝 Problem Description</label>
+        <ReactQuill
+          theme="snow"
           value={form.description}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          onChange={(value) => setForm({ ...form, description: value })}
+          modules={quillModules}
+          formats={quillFormats}
+          placeholder="Write your question description here..."
         />
-        <input
-          type="text"
-          placeholder="Explanation"
+
+        <label>💡 Explanation</label>
+        <ReactQuill
+          theme="snow"
           value={form.explanation}
-          onChange={(e) => setForm({ ...form, explanation: e.target.value })}
+          onChange={(value) => setForm({ ...form, explanation: value })}
+          modules={quillModules}
+          formats={quillFormats}
+          placeholder="Write solution explanation here..."
         />
+
         <input
           type="text"
           placeholder="Question Video URL"
@@ -77,19 +118,24 @@ const QuestionManager = () => {
           value={form.solutionVideoUrl}
           onChange={(e) => setForm({ ...form, solutionVideoUrl: e.target.value })}
         />
+
         <button onClick={createQuestion}>+ Add Question</button>
       </div>
 
-      <div className="cards-container">
-        {questions.map((q) => (
-          <div
-            key={q.id}
-            className="admin-card"
-            onClick={() => navigate(`/admin/dsa/testcases/${q.id}`)}
-          >
-            {q.title}
-          </div>
-        ))}
+      {/* Right: Question Cards Column */}
+      <div className="question-list-column">
+        <h2>📋 Existing Questions</h2>
+        <div className="question-cards">
+          {questions.map((q) => (
+            <div
+              key={q.id}
+              className="question-card"
+              onClick={() => navigate(`/admin/dsa/testcases/${q.id}`)}
+            >
+              {q.title}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

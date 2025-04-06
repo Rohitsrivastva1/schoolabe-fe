@@ -1,256 +1,270 @@
+/* Base Layout */
 .dsa-solve-page {
   display: flex;
   flex-direction: row;
-  height: calc(100vh - 100px);
-  margin-top: 100px;
+  height: calc(100vh - 80px);
+  margin-top: 80px;
   background-color: #0d1117;
   color: #c9d1d9;
   font-family: 'Fira Code', monospace;
   overflow: hidden;
+  gap: 10px;
+  padding: 10px;
 }
-  /* LEFT SIDE - Question Area */
-  .question-section {
-    flex: 1;
-    padding: 16px;
-    overflow-y: auto;
-    border-right: 1px solid #30363d;
-    max-width: 40%;
-    max-height: 100%;
+
+/* Tabs Section */
+.tabs {
+  position: sticky;
+  top: 0;
+  background-color: #0d1117;
+  z-index: 10;
+  padding: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #30363d;
+}
+
+/* Editor Section */
+.editor-section {
+  flex: 1.6;
+  display: flex;
+  flex-direction: column;
+  background-color: #161b22;
+  padding: 16px;
+  border-radius: 6px;
+  gap: 10px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Monaco Editor Styling */
+.monaco-editor {
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  height: 300px !important;
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Test Cases & Output Styling */
+.testcases-section,
+.output-section {
+  max-height: 160px;
+  overflow-y: auto;
+  background-color: #1c1f24;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+/* Buttons Group */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+
+.action-buttons button {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-buttons button:first-child {
+  background-color: #1f6feb;
+  color: white;
+}
+
+.action-buttons button:last-child {
+  background-color: #238636;
+  color: white;
+}
+
+/* Sidebar Question Section (Optional: Add your own styles here) */
+.question-section {
+  flex: 1;
+  background-color: #161b22;
+  border-radius: 6px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+
+.testcases-section {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.testcases-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #58a6ff;
+}
+
+.testcase-card {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  transition: background-color 0.3s;
+}
+
+.testcase-card:hover {
+  background-color: #1f2a36;
+}
+
+.testcase-input,
+.testcase-output {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.testcase-label {
+  font-weight: 600;
+  color: #8b949e;
+}
+
+.custom-testcase-section {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.custom-testcase-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #58a6ff;
+  margin-bottom: 10px;
+}
+
+.custom-testcase-input {
+  width: 100%;
+  height: 100px;
+  background-color: #161b22;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 10px;
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.custom-testcase-button {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background-color: #238636;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.custom-testcase-button:hover {
+  background-color: #2ea043;
+}
+.testcase-split-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.public-testcases,
+.custom-testcase {
+  flex: 1 1 300px;
+  color: #fff;
+}
+
+.public-testcases {
+  padding-right: 1rem;
+  border-right: 1px solid #333;
+}
+
+.custom-testcase textarea {
+  width: 100%;
+  height: 150px;
+  background: #111;
+  color: #fff;
+  font-family: monospace;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 0.5rem;
+  resize: vertical;
+}
+
+/* Optional: Better spacing inside test case cards */
+.testcase {
+  background: #2a2a2a;
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+}
+
+/* 🔥 Responsive: Stack vertically on mobile */
+@media (max-width: 768px) {
+  .testcase-split-box {
+    flex-direction: column;
   }
-  
-  .question-title {
-    font-size: 20px;
-    margin-bottom: 12px;
+
+  .public-testcases {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
   }
-  
-  .question-description {
-    background: #161b22;
-    padding: 12px;
-    border: 1px solid #30363d;
-    border-radius: 6px;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  
-  .explanation-box {
-    margin: 16px 0;
+}
+@media (max-width: 768px) {
+  .dsa-solve-page {
+    flex-direction: column;
     padding: 10px;
-    border-left: 3px solid #58a6ff;
-    background-color: #1e242c;
-    font-size: 14px;
+    height: auto;
   }
-  
-  .video-box {
-    margin-bottom: 16px;
-  }
-  
-  .video-box iframe {
+
+  .editor-section, .question-section {
     width: 100%;
-    height: 180px;
-    border: none;
-    border-radius: 6px;
-  }
-  
-  /* Language Selector */
-  .language-select {
-    margin-top: 16px;
-    font-size: 14px;
-  }
-  
-  .language-select select {
-    background: #0d1117;
-    color: #c9d1d9;
-    border: 1px solid #30363d;
-    padding: 6px 10px;
-    font-family: monospace;
-    font-size: 13px;
-  }
-  
-  /* RIGHT SIDE - Editor */
-  .editor-section {
-    flex: 1.6;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    background-color: #161b22;
-    height: 100%;
-    overflow: hidden;
-  }
-  
-  .run-button {
-    margin-top: 10px;
+    height: auto;
     padding: 10px;
-    background-color: #238636;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-    align-self: flex-start;
   }
-  
-  .output-box {
-    background: #1c1f24;
-    margin-top: 14px;
-    padding: 10px;
-    border-radius: 6px;
-    height: 120px;
-    overflow-y: auto;
-    font-size: 13px;
-    white-space: pre-wrap;
-    border: 1px solid #30363d;
-  }
-  
-  /* Scrollbars: Optional - clean dark scrollbars */
-  .question-section::-webkit-scrollbar,
-  .output-box::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .question-section::-webkit-scrollbar-thumb,
-  .output-box::-webkit-scrollbar-thumb {
-    background-color: #444c56;
-    border-radius: 3px;
-  }
-  
 
-  .editor-container {
-    flex-grow: 1;
-    overflow: hidden;
-  }
-  
-  .editor-container .monaco-editor {
-    height: 100% !important;
-  }
-  
-  .editor-section {
-    flex: 1.6;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    background-color: #161b22;
-    height: 100%;
-    overflow: hidden;
-  }
-  
-
-  @media (max-width: 768px) {
-    .dsa-solve-page {
-      flex-direction: column;
-    }
-  
-    .question-section {
-      max-width: 100%;
-      border-right: none;
-      border-bottom: 1px solid #30363d;
-      height: 50vh;
-    }
-  
-    .editor-section {
-      height: 50vh;
-    }
-  }
   .tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
+    flex-direction: column;
+    gap: 6px;
   }
-  
-  .tabs button {
-    background: transparent;
-    color: #c9d1d9;
-    border: 1px solid #30363d;
-    padding: 8px 12px;
-    font-size: 13px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .tabs button:hover {
-    background: #21262d;
-  }
-  
-  .tabs button.active {
-    background: #1f6feb;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .tab-content {
-    background: #161b22;
-    border: 1px solid #30363d;
-    padding: 12px;
-    border-radius: 6px;
-  }
-  
 
-  .tab-bar {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
+  .testcase-split-box {
+    flex-direction: column;
   }
-  
-  .tab-bar button {
-    padding: 8px 12px;
-    border: none;
-    background: #21262d;
-    color: #c9d1d9;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: monospace;
-    font-size: 14px;
+
+  .output-section pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
-  
-  .tab-bar button.active-tab {
-    background-color: #238636;
-  }
-  
-  .tab-bar button:disabled {
-    background-color: #30363d;
-    color: #8b949e;
-    cursor: not-allowed;
-  }
-  
-  .locked-tab-message {
-    background-color: #1e1e1e;
-    padding: 16px;
-    border: 1px dashed #555;
-    color: #c9d1d9;
-    border-radius: 6px;
-    text-align: center;
-    margin-top: 16px;
-    font-style: italic;
-  }
-  .tabs button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #444c56;
-  }
-  .tabs button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #444c56;
-  }
-  .tabs button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #444c56;
-  }
-  .tabs button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #444c56;
-  }
-  .tabs button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #444c56;
-  }
-  .tabs button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #444c56;
-  }
-          
+}
