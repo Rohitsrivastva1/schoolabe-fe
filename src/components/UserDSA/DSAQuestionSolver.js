@@ -26,13 +26,14 @@ const DSAQuestionSolve = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("problem");
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [questionRes, testCaseRes] = await Promise.all([
-          axios.get(`/api/dsa/questions/${questionId}`),
-          axios.get(`/api/dsa/testcases/all/${questionId}`),
+          axios.get(`${BASE_URL}/api/dsa/questions/${questionId}`),
+          axios.get(`${BASE_URL}/api/dsa/testcases/all/${questionId}`),
         ]);
         const q = questionRes.data;
         try {
@@ -57,7 +58,7 @@ const DSAQuestionSolve = () => {
   const runCode = async (isSubmission = false) => {
     setLoading(true);
     try {
-      const res = await axios.post("/api/dsa/submissions/run", {
+      const res = await axios.post(`${BASE_URL}/api/dsa/submissions/run`, {
         code,
         language,
         testCases: isSubmission ? testCases : testCases.filter((tc) => tc.isPublic),
