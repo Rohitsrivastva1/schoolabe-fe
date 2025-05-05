@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./AdminDSA.css";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const QuestionManager = () => {
   const { categoryId } = useParams();
@@ -20,12 +21,12 @@ const QuestionManager = () => {
   const navigate = useNavigate();
 
   const fetchCategoryTitle = async () => {
-    const res = await axios.get(`/api/dsa/categories/${categoryId}`);
+    const res = await axios.get(`${BASE_URL}/api/dsa/categories/${categoryId}`);
     setCategoryTitle(res.data.name); // Adjust based on your backend response
   };
 
   const fetchQuestions = async () => {
-    const res = await axios.get(`/api/dsa/questions/category/${categoryId}`);
+    const res = await axios.get(`${BASE_URL}/api/dsa/questions/category/${categoryId}`);
     setQuestions(res.data);
   };
 
@@ -35,7 +36,7 @@ const QuestionManager = () => {
   }, [categoryId]);
 
   const createQuestion = async () => {
-    await axios.post("/api/dsa/questions", {
+    await axios.post(`${BASE_URL}/api/dsa/questions`, {
       ...form,
       description: JSON.stringify({ type: "rich", content: form.description }),
       DsaCategoryId: categoryId,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./AdminDSA.css";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const TestCaseManager = () => {
   const { questionId } = useParams();
@@ -13,7 +14,7 @@ const TestCaseManager = () => {
   });
 
   const fetchTestCases = async () => {
-    const res = await axios.get(`/api/dsa/testcases/all/${questionId}`);
+    const res = await axios.get(`${BASE_URL}/api/dsa/testcases/all/${questionId}`);
     setTestCases(res.data);
   };
 
@@ -22,7 +23,7 @@ const TestCaseManager = () => {
   }, [questionId]);
 
   const createTestCase = async () => {
-    await axios.post("/api/dsa/testcases", {
+    await axios.post(`${BASE_URL}/api/dsa/testcases`, {
       ...form,
       questionId : questionId,
     });
