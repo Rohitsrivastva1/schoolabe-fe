@@ -1,11 +1,12 @@
+// DSAQuestionSolve.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Editor from "@monaco-editor/react";
-import "./DSAQuestionSolve.css";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { ThreeDots } from "react-loader-spinner";
+import "react-toastify/dist/ReactToastify.css";
+import "./DSAQuestionSolve.css";
 
 const defaultTemplates = {
   python: "# Write your code here in Python",
@@ -25,7 +26,6 @@ const DSAQuestionSolve = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("problem");
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [codeTab, setCodeTab] = useState("testcases"); // new state for tabs
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,13 +37,13 @@ const DSAQuestionSolve = () => {
         const q = questionRes.data;
         try {
           const parsedDesc = JSON.parse(q.description);
-          q.description = parsedDesc.content; // Extract only the content
+          q.description = parsedDesc.content;
         } catch (e) {
           console.error("Failed to parse question description");
         }
         setQuestion(q);
         setTestCases(testCaseRes.data);
-      } catch (err) {
+      } catch {
         toast.error("⚠️ Failed to load question or test cases.");
       }
     };
@@ -53,13 +53,6 @@ const DSAQuestionSolve = () => {
   useEffect(() => {
     setCode(defaultTemplates[language]);
   }, [language]);
-
-  const getEmbeddedYouTubeUrl = (url) => {
-    if (!url) return "";
-    const regex = /(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/;
-    const match = url.match(regex);
-    return match ? `https://www.youtube.com/embed/${match[1]}` : "";
-  };
 
   const runCode = async (isSubmission = false) => {
     setLoading(true);
@@ -75,7 +68,7 @@ const DSAQuestionSolve = () => {
         setHasSubmitted(true);
         toast.success("🎉 Code submitted successfully!");
       }
-    } catch (err) {
+    } catch {
       setOutput("⚠️ Error running code.");
       toast.error("Something went wrong while running the code.");
     }
@@ -83,29 +76,38 @@ const DSAQuestionSolve = () => {
     document.querySelector(".output-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const getEmbeddedYouTubeUrl = (url) => {
+    if (!url) return "";
+    const regex = /(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/;
+    const match = url.match(regex);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : "";
+  };
+
   const handleTabClick = (tab) => {
     if (tab === "problem") return setActiveTab("problem");
     if (!hasSubmitted) {
-      toast.error("🚫 Submit your solution to unlock this tab.", {
-        toastId: `lock-${tab}-tab`,
-      });
+      toast.error("🚫 Submit your solution to unlock this tab.");
       return;
     }
     setActiveTab(tab);
   };
 
   return (
-    <div className="dsa-solve-page">
+    <div className="flex h-screen bg-gray-900 text-white mt-[55px]">
       {question && (
         <>
           {/* LEFT PANEL */}
-          <div className="question-section">
-            <div className="tabs">
+          <div className="w-1/2 border-r border-gray-700 overflow-auto p-6">
+            <div className="flex space-x-4 mb-4">
               {["problem", "explanation", "solution"].map((tab) => (
                 <button
                   key={tab}
-                  className={activeTab === tab ? "active" : ""}
                   onClick={() => handleTabClick(tab)}
+                  className={`px-4 py-1 rounded ${
+                    activeTab === tab
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-800 hover:bg-gray-700 text-gray-300"
+                  }`}
                 >
                   {tab === "problem"
                     ? "🧩 Problem"
@@ -120,16 +122,18 @@ const DSAQuestionSolve = () => {
               ))}
             </div>
 
-            <div className="tab-content">
+            <div className="space-y-4">
               {activeTab === "problem" && (
                 <>
-                  <h2>{question.title}</h2>
-                  <div dangerouslySetInnerHTML={{ __html: question.description }} />
+                  <h2 className="text-xl font-bold">{question.title}</h2>
+                  <div
+                    className="text-gray-300"
+                    dangerouslySetInnerHTML={{ __html: question.description }}
+                  />
                 </>
               )}
-
-              {activeTab === "explanation" && (
-                question.explanationVideo ? (
+              {activeTab === "explanation" &&
+                (question.explanationVideo ? (
                   <iframe
                     width="100%"
                     height="315"
@@ -138,9 +142,9 @@ const DSAQuestionSolve = () => {
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
-                ) : <p>📽️ No explanation video available.</p>
-              )}
-
+                ) : (
+                  <p>📽️ No explanation video available.</p>
+                ))}
               {activeTab === "solution" && (
                 <div dangerouslySetInnerHTML={{ __html: question.solution }} />
               )}
@@ -148,66 +152,92 @@ const DSAQuestionSolve = () => {
           </div>
 
           {/* RIGHT PANEL */}
-          <div className="editor-section">
-            <div className="editor-header">
-              <label>
-                Language:&nbsp;
-                <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-                  {Object.keys(defaultTemplates).map((lang) => (
-                    <option key={lang} value={lang}>{lang.toUpperCase()}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
+          <div className="w-1/2 flex flex-col p-4 space-y-4">
+  {/* Fixed Header */}
+  <div className="flex justify-between items-center">
+    <label className="text-sm">
+      Language:&nbsp;
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value)}
+        className="bg-gray-800 text-white px-2 py-1 rounded"
+      >
+        {Object.keys(defaultTemplates).map((lang) => (
+          <option key={lang} value={lang}>
+            {lang.toUpperCase()}
+          </option>
+        ))}
+      </select>
+    </label>
+    <div className="space-x-2">
+      <button
+        className="bg-green-600 hover:bg-green-700 px-4 py-1 rounded"
+        onClick={() => runCode(false)}
+      >
+        🚀 Run
+      </button>
+      <button
+        className="bg-purple-600 hover:bg-purple-700 px-4 py-1 rounded"
+        onClick={() => runCode(true)}
+      >
+        🏁 Submit
+      </button>
+    </div>
+  </div>
 
-            <Editor
-              height="300px"
-              language={language}
-              theme="vs-dark"
-              value={code}
-              onChange={(value) => setCode(value)}
-            />
+  {/* Scrollable Content */}
+  <div className="overflow-y-auto space-y-4 flex-1">
+    {/* 🧠 Editor (Resizable below) */}
+    <div className="resizable-editor">
+      <Editor
+        height="300px"
+        language={language}
+        theme="vs-dark"
+        value={code}
+        onChange={(value) => setCode(value)}
+        options={{ fontSize: 13 }}
+      />
+    </div>
 
-            <div className="testcases-section">
-              <h3>Test Cases</h3>
-              <div className="testcase-split-box">
-                <div className="public-testcases">
-                  <h4>🧪 Sample Test Cases</h4>
-                  {testCases.filter(tc => tc.isPublic).map((tc, index) => (
-                    <div key={index} className="testcase">
-                      <p><strong>Input:</strong> {tc.input}</p>
-                      <p><strong>Expected:</strong> {tc.expectedOutput}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="custom-testcase">
-                  <h4>✍️ Custom Input</h4>
-                  <textarea
-                    placeholder="Enter custom input here..."
-                    value={customTestCase}
-                    onChange={(e) => setCustomTestCase(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="action-buttons">
-              <button onClick={() => runCode(false)}>🚀 Run Code</button>
-              <button onClick={() => runCode(true)}>🏁 Submit</button>
-            </div>
-
-            <div className="output-section">
-              <h4>📤 Output</h4>
-              {loading ? (
-                <div className="loader">
-                  <ThreeDots height="50" width="50" color="#00BFFF" visible={true} />
-                  <p>Running your code...</p>
-                </div>
-              ) : (
-                <pre>{output}</pre>
-              )}
-            </div>
+    {/* 🔍 Sample Test Cases & Custom Input */}
+    <div className="flex gap-4">
+      <div className="w-1/2">
+        <h4 className="font-bold">🧪 Sample Test Cases</h4>
+        {testCases.filter((tc) => tc.isPublic).map((tc, idx) => (
+          <div key={idx} className="bg-gray-800 p-2 my-2 rounded">
+            <p><strong>Input:</strong> {tc.input}</p>
+            <p><strong>Expected:</strong> {tc.expectedOutput}</p>
           </div>
+        ))}
+      </div>
+      <div className="w-1/2">
+        <h4 className="font-bold">✍️ Custom Input</h4>
+        <textarea
+          className="w-full bg-gray-800 text-white p-2 rounded h-28"
+          placeholder="Enter custom input..."
+          value={customTestCase}
+          onChange={(e) => setCustomTestCase(e.target.value)}
+        />
+      </div>
+    </div>
+
+    {/* 📤 Output */}
+    <div className="output-section">
+      <h4 className="text-lg font-semibold">📤 Output</h4>
+      {loading ? (
+        <div className="flex items-center space-x-4">
+          <ThreeDots height="50" width="50" color="#00BFFF" visible={true} />
+          <span>Running your code...</span>
+        </div>
+      ) : (
+        <pre className="bg-black text-green-400 p-4 mt-2 rounded max-h-48 overflow-y-auto">
+          {output}
+        </pre>
+      )}
+    </div>
+  </div>
+</div>
+
         </>
       )}
       <ToastContainer />

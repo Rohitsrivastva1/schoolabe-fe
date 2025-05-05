@@ -54,7 +54,7 @@ const CourseDetail = () => {
   // Fetch Course & Tutorials Data
   useEffect(() => {
     if (!courseSlug) return;
-
+   
     axios
       .get(`${BASE_URL}/courses/${courseSlug}`)
       .then((response) => {
@@ -95,20 +95,27 @@ const CourseDetail = () => {
     }
   }, [tutorials, tutorialSlug, navigate, courseSlug]);
 
-  // Extract Headings for Table of Contents
-  const extractHeadings = (content) => {
+  const extractHeadings = (htmlContent) => {
     try {
-      const parsedContent =
-        typeof content === "string" ? JSON.parse(content) : content;
-      const headings = parsedContent.filter(
-        (block) => block.type === "h1" || block.type === "h2"
+      const tempDiv = document.createElement("div");
+      console.log(htmlContent);
+      tempDiv.innerHTML = htmlContent;
+      console.log(tempDiv.innerHTML);
+      
+      const headings = Array.from(tempDiv.querySelectorAll("h1, h2")).map(
+        (el) => ({
+          text: el.textContent,
+          id: slugify(el.textContent),
+        })
       );
+      console.log(headings);
+      
       setHeadings(headings);
     } catch (error) {
-      console.error("Error parsing content:", error);
+      console.error("Error extracting headings:", error);
     }
   };
-
+  
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   const handleTutorialClick = (tutorial) => {
@@ -182,99 +189,11 @@ const CourseDetail = () => {
         {selectedTutorial && selectedTutorial.content ? (
           <div>
             <h2>{selectedTutorial.title}</h2>
-            {selectedTutorial.content.map((block, index) => {
-              const blockText = block.text || "";
-              const blockId = slugify(blockText) || `block-${index}`;
-
-              return (
-                <div key={index} id={blockId} className={`block-${block.type}`}>
-                  {/* Text and Heading Blocks */}
-                  {block.type === "text" && <p>{blockText}</p>}
-                  {block.type === "h1" && <h1>{blockText}</h1>}
-                  {block.type === "h2" && <h2>{blockText}</h2>}
-                  {block.type === "p" && <p>{blockText}</p>}
-
-                  {/* List Blocks */}
-                  {block.type === "ul" && blockText && (
-                    <ul className="custom-ul">
-                      {blockText.split("\n").map((item, i) => (
-                        <li key={i}>{item.trim()}</li>
-                      ))}
-                    </ul>
-                  )}
-                  {block.type === "ol" && blockText && (
-                    <ol className="custom-ol">
-                      {blockText.split("\n").map((item, i) => (
-                        <li key={i}>{item.trim()}</li>
-                      ))}
-                    </ol>
-                  )}
-
-                  {/* Code Block */}
-                  {block.type === "code" && (
-                    <div className="code-container1">
-                      <pre>
-                        <code>{blockText}</code>
-                      </pre>
-                    </div>
-                  )}
-
-                  {/* Output Block */}
-                  {block.type === "output" && (
-                    <div className="output-box1">
-                      <strong>Output:</strong> {blockText}
-                    </div>
-                  )}
-
-                  {/* Table Block */}
-                  {block.type === "table" && block.data && (
-                    <div className="block-table">
-                      <table>
-                        <tbody>
-                          {block.data.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                              {row.map((cell, cellIndex) =>
-                                block.headerRow && rowIndex === 0 ? (
-                                  <th key={cellIndex}>{cell || ""}</th>
-                                ) : (
-                                  <td key={cellIndex}>{cell || ""}</td>
-                                )
-                              )}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-
-                  {/* New: Image Block */}
-                  {block.type === "image" && (
-                    <div className="block-image-container">
-                      <img
-                        src={block.src}
-                        alt={block.alt || "Image"}
-                        className="block-image"
-                      />
-                    </div>
-                  )}
-
-                  {/* New: YouTube Video Block */}
-                  {block.type === "youtube" && (
-                    <div className="block-youtube-container">
-                      <div className="video-responsive">
-                        <iframe
-                          src={convertYoutubeUrl(block.url)}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          title="YouTube video"
-                        ></iframe>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            <div
+        className="tutorial-content"
+        dangerouslySetInnerHTML={{ __html: selectedTutorial.content.html }} 
+      />
+            
           </div>
         ) : (
           <p>Loading tutorial...</p>

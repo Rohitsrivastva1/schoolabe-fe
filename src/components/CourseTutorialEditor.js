@@ -1,484 +1,140 @@
-import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
-import DOMPurify from "dompurify";
-import { checkAuth } from "../services/authService";
-import { useNavigate } from "react-router-dom";
-import { 
-  FaPlus, 
-  FaTrash, 
-  FaHeading, 
-  FaListUl, 
-  FaListOl, 
-  FaCode, 
-  FaTable, 
-  FaSave,
-  FaImage,
-  FaYoutube
-} from "react-icons/fa";
-import "./CourseTutorialEditor.css";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import ReactQuill from 'react-quill';
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
-
-const CourseTutorialEditor = () => {
+const CourseTutorialManager = () => {
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [tutorials, setTutorials] = useState([]);
-  const [tutorialTitle, setTutorialTitle] = useState("");
-  const [content, setContent] = useState([]);
-  const [courseTitle, setCourseTitle] = useState("");
-  const [courseDescription, setCourseDescription] = useState("");
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const [courseTitle, setCourseTitle] = useState('');
+  const [courseDescription, setCourseDescription] = useState('');
+  const [tutorialTitle, setTutorialTitle] = useState('');
+  const [selectedCourseSlug, setSelectedCourseSlug] = useState('');
+  const [tutorialContent, setTutorialContent] = useState('');
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await checkAuth();
-      if (!userData) {
-        navigate("/signup");
-      } else {
-        setUser(userData);
-      }
-    };
-    fetchUser();
-  }, [navigate]);
-
+  // Fetch all courses on component mount
   useEffect(() => {
     fetchCourses();
   }, []);
 
-  const fetchCourses = () => {
-    axios.get(`${BASE_URL}/courses`)
-      .then((response) => {
-        if (response.data.success) {
-          setCourses(response.data.courses);
-        }
-      })
-      .catch((error) => console.error("Error fetching courses:", error));
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get('/courses');
+      if (response.data.success) {
+        setCourses(response.data.courses);
+      }
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    }
   };
 
-  const fetchTutorials = (courseSlug) => {
-    if (!courseSlug) return;
-    axios.get(`${BASE_URL}/tutorials/${courseSlug}`)
-      .then((response) => {
-        if (response.data.success) {
-          setTutorials(response.data.tutorials);
-        }
-      })
-      .catch((error) => console.error("Error fetching tutorials:", error));
-  };
-
-  const createCourse = () => {
-    if (!courseTitle.trim()) return alert("Course title is required!");
-
-    const courseData = {
-      title: courseTitle,
-      description: courseDescription,
-    };
-
-    axios.post(`${BASE_URL}/courses`, courseData)
-      .then((response) => {
-        if (response.data.success) {
-          setCourses([...courses, response.data.course]);
-          setCourseTitle("");
-          setCourseDescription("");
-        }
-      })
-      .catch((error) => console.error("Error creating course:", error));
-  };
-
-  // Helper function to convert YouTube URLs to embed URL
-  const convertYoutubeUrl = (url) => {
-    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? `https://www.youtube.com/embed/${match[2]}` : url;
-  };
-
-  const addBlock = (type) => {
-    if (type === "table") {
-      setContent([
-        ...content,
-        {
-          id: uuidv4(),
-          type: "table",
-          rows: 2,
-          cols: 2,
-          headerRow: true,
-          data: Array(2)
-            .fill(null)
-            .map((_, rowIndex) =>
-              Array(2).fill(rowIndex === 0 ? "Header" : "")
-            ),
-        },
-      ]);
+  const handleCreateCourse = async () => {
+    if (!courseTitle.trim()) {
+      alert('Course title is required.');
       return;
     }
-    if (type === "image") {
-      let newBlock = { id: uuidv4(), type: "image", src: "", alt: "" };
-      setContent([...content, newBlock]);
+
+    try {
+      const response = await axios.post('/courses', {
+        title: courseTitle,
+        description: courseDescription,
+      });
+
+      if (response.data.success) {
+        alert('Course created successfully!');
+        setCourseTitle('');
+        setCourseDescription('');
+        fetchCourses();
+      }
+    } catch (error) {
+      console.error('Error creating course:', error);
+      alert('Failed to create course.');
+    }
+  };
+
+  const handleCreateTutorial = async () => {
+    if (!tutorialTitle.trim() || !selectedCourseSlug) {
+      alert('Tutorial title and course selection are required.');
       return;
     }
-    if (type === "youtube") {
-      let newBlock = { id: uuidv4(), type: "youtube", url: "" };
-      setContent([...content, newBlock]);
-      return;
+
+    
+    console.log("Payload:", {
+      tutorialTitle,
+      tutorialContent,
+      selectedCourseSlug
+    });
+    try {
+      const response = await axios.post('/tutorials', {
+        title: tutorialTitle,
+        courseSlug: selectedCourseSlug,
+        content: {"html":tutorialContent},
+      });
+
+      if (response.data.success) {
+        alert('Tutorial created successfully!');
+        setTutorialTitle('');
+        setSelectedCourseSlug('');
+        setTutorialContent('');
+      }
+    } catch (error) {
+      console.error('Error creating tutorial:', error);
+      alert('Failed to create tutorial.');
     }
-    let newBlock = { id: uuidv4(), type, text: "" };
-    setContent([...content, newBlock]);
-  };
-
-  const updateBlock = (id, newText) => {
-    setContent(
-      content.map((block) =>
-        block.id === id ? { ...block, text: newText } : block
-      )
-    );
-  };
-
-  const updateImageBlock = (id, newSrc) => {
-    setContent(
-      content.map((block) =>
-        block.id === id ? { ...block, src: newSrc } : block
-      )
-    );
-  };
-
-  const updateImageAlt = (id, newAlt) => {
-    setContent(
-      content.map((block) =>
-        block.id === id ? { ...block, alt: newAlt } : block
-      )
-    );
-  };
-
-  const updateYoutubeBlock = (id, newUrl) => {
-    setContent(
-      content.map((block) =>
-        block.id === id ? { ...block, url: newUrl } : block
-      )
-    );
-  };
-
-  const updateTableCell = (blockId, rowIndex, colIndex, value) => {
-    setContent(
-      content.map((block) =>
-        block.id === blockId
-          ? {
-              ...block,
-              data: block.data.map((row, r) =>
-                r === rowIndex
-                  ? row.map((cell, c) => (c === colIndex ? value : cell))
-                  : row
-              ),
-            }
-          : block
-      )
-    );
-  };
-
-  const addTableRow = (blockId) => {
-    setContent(
-      content.map((block) => 
-        block.id === blockId ? {
-          ...block,
-          rows: block.rows + 1,
-          data: [...block.data, Array(block.cols).fill("")]
-        } : block
-      )
-    );
-  };
-
-  const addTableColumn = (blockId) => {
-    setContent(
-      content.map((block) => 
-        block.id === blockId ? {
-          ...block,
-          cols: block.cols + 1,
-          data: block.data.map(row => [...row, ""])
-        } : block
-      )
-    );
-  };
-
-  const toggleHeaderRow = (blockId) => {
-    setContent(
-      content.map((block) => 
-        block.id === blockId ? { ...block, headerRow: !block.headerRow } : block
-      )
-    );
-  };
-
-  const removeBlock = (id) => {
-    setContent(content.filter((block) => block.id !== id));
-  };
-
-  const createTutorial = () => {
-    if (!selectedCourse) return alert("Select a course first!");
-    if (!tutorialTitle.trim()) return alert("Tutorial title is required!");
-
-    setIsSaving(true);
-    const tutorialData = {
-      title: tutorialTitle,
-      content: JSON.stringify(content),
-      courseSlug: selectedCourse.slug,
-    };
-
-    axios.post(`${BASE_URL}/tutorials`, tutorialData)
-      .then((response) => {
-        if (response.data.success) {
-          setTutorials([...tutorials, response.data.tutorial]);
-          setTutorialTitle("");
-          setContent([]);
-        }
-      })
-      .catch((error) => console.error("Error creating tutorial:", error))
-      .finally(() => setIsSaving(false));
   };
 
   return (
-    <div className="editor-container">
-      <h2>Course & Tutorial Editor</h2>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h2>Create New Course</h2>
+      <input
+        type="text"
+        placeholder="Course Title"
+        value={courseTitle}
+        onChange={(e) => setCourseTitle(e.target.value)}
+        style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+      />
+      <textarea
+        placeholder="Course Description"
+        value={courseDescription}
+        onChange={(e) => setCourseDescription(e.target.value)}
+        style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+      ></textarea>
+      <button onClick={handleCreateCourse} style={{ padding: '10px 20px' }}>
+        Create Course
+      </button>
 
-      <div className="course-section">
-        <h3>Create a New Course</h3>
-        <input
-          type="text"
-          placeholder="Course Title"
-          value={courseTitle}
-          onChange={(e) => setCourseTitle(e.target.value)}
-        />
-        <textarea
-          placeholder="Course Description"
-          value={courseDescription}
-          onChange={(e) => setCourseDescription(e.target.value)}
-        />
-        <button onClick={createCourse}>
-          <FaSave /> Create Course
-        </button>
-      </div>
+      <hr style={{ margin: '40px 0' }} />
 
-      <div className="course-section">
-        <h3>Select a Course</h3>
-        <select
-          onChange={(e) => {
-            const selectedCourseObj = courses.find(
-              (course) => course.id === parseInt(e.target.value)
-            );
-            setSelectedCourse(selectedCourseObj);
-            if (selectedCourseObj) {
-              fetchTutorials(selectedCourseObj.slug);
-            }
-          }}
-        >
-          <option value="">Select a course</option>
-          {courses.map((course) => (
-            <option key={course.id} value={course.id}>
-              {course.title}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {selectedCourse && (
-        <div className="editor-preview-wrapper">
-          <div className="editor-section">
-            <h3>Create New Tutorial</h3>
-            <input
-              type="text"
-              placeholder="Tutorial Title"
-              value={tutorialTitle}
-              onChange={(e) => setTutorialTitle(e.target.value)}
-            />
-
-            <div className="content-list">
-              {content.map((block) => (
-                <div key={block.id} className="content-block">
-                  {block.type === "table" ? (
-                    <>
-                      <div className="table-controls">
-                        <button onClick={() => addTableRow(block.id)}>
-                          <FaPlus /> Row
-                        </button>
-                        <button onClick={() => addTableColumn(block.id)}>
-                          <FaPlus /> Column
-                        </button>
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={block.headerRow}
-                            onChange={() => toggleHeaderRow(block.id)}
-                          />
-                          Header Row
-                        </label>
-                      </div>
-                      <table className="table-editor">
-                        <tbody>
-                          {block.data.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                              {row.map((cell, colIndex) => (
-                                block.headerRow && rowIndex === 0 ? (
-                                  <th key={colIndex}>
-                                    <input
-                                      type="text"
-                                      value={cell}
-                                      onChange={(e) =>
-                                        updateTableCell(
-                                          block.id,
-                                          rowIndex,
-                                          colIndex,
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                  </th>
-                                ) : (
-                                  <td key={colIndex}>
-                                    <input
-                                      type="text"
-                                      value={cell}
-                                      onChange={(e) =>
-                                        updateTableCell(
-                                          block.id,
-                                          rowIndex,
-                                          colIndex,
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                  </td>
-                                )
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </>
-                  ) : block.type === "image" ? (
-                    <>
-                      <input 
-                        type="text"
-                        value={block.src}
-                        onChange={(e) => updateImageBlock(block.id, e.target.value)}
-                        placeholder="Enter image URL..."
-                      />
-                      <input 
-                        type="text"
-                        value={block.alt}
-                        onChange={(e) => updateImageAlt(block.id, e.target.value)}
-                        placeholder="Enter alt text..."
-                      />
-                    </>
-                  ) : block.type === "youtube" ? (
-                    <input 
-                      type="text"
-                      value={block.url}
-                      onChange={(e) => updateYoutubeBlock(block.id, e.target.value)}
-                      placeholder="Enter YouTube video URL..."
-                    />
-                  ) : (
-                    <textarea
-                      value={block.text}
-                      onChange={(e) => updateBlock(block.id, e.target.value)}
-                      placeholder={`Enter ${block.type}...`}
-                    />
-                  )}
-                  <button 
-                    onClick={() => removeBlock(block.id)}
-                    className="delete-btn"
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="editor-actions">
-              <button onClick={() => addBlock("h1")}><FaHeading /> H1</button>
-              <button onClick={() => addBlock("h2")}><FaHeading /> H2</button>
-              <button onClick={() => addBlock("h3")}><FaHeading /> H3</button>
-              <button onClick={() => addBlock("ul")}><FaListUl /> List</button>
-              <button onClick={() => addBlock("ol")}><FaListOl /> Ordered</button>
-              <button onClick={() => addBlock("p")}>Paragraph</button>
-              <button onClick={() => addBlock("code")}><FaCode /> Code</button>
-              <button onClick={() => addBlock("table")}><FaTable /> Table</button>
-              <button onClick={() => addBlock("image")}><FaImage /> Image</button>
-              <button onClick={() => addBlock("youtube")}><FaYoutube /> YouTube</button>
-            </div>
-
-            <div className="preview-section">
-              <h3>Live Preview</h3>
-              <div className="preview-content">
-                {content.map((block) => (
-                  <div key={block.id} className="content-preview">
-                    {block.type === "table" ? (
-                      <table className="preview-table">
-                        <tbody>
-                          {block.data.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                              {row.map((cell, cellIndex) => (
-                                block.headerRow && rowIndex === 0 ? (
-                                  <th key={cellIndex}>{cell}</th>
-                                ) : (
-                                  <td key={cellIndex}>{cell}</td>
-                                )
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    ) : block.type === "image" ? (
-                      <img 
-                        src={block.src} 
-                        alt={block.alt || "Image"} 
-                        className="preview-image" 
-                      />
-                    ) : block.type === "youtube" ? (
-                      <div className="video-responsive">
-                        <iframe
-                          width="560"
-                          height="315"
-                          src={convertYoutubeUrl(block.url)}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          title="YouTube video"
-                        ></iframe>
-                      </div>
-                    ) : (
-                      React.createElement(
-                        block.type === "ul" || block.type === "ol" ? block.type : "div",
-                        {
-                          className: `preview-${block.type}`,
-                          dangerouslySetInnerHTML: {
-                            __html: DOMPurify.sanitize(block.text)
-                          }
-                        }
-                      )
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <button 
-              onClick={createTutorial} 
-              disabled={isSaving}
-              className="save-btn"
-            >
-              {isSaving ? (
-                <span>Saving...</span>
-              ) : (
-                <>
-                  <FaSave /> Save Tutorial
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      )}
+      <h2>Create New Tutorial</h2>
+      <input
+        type="text"
+        placeholder="Tutorial Title"
+        value={tutorialTitle}
+        onChange={(e) => setTutorialTitle(e.target.value)}
+        style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+      />
+      <select
+        value={selectedCourseSlug}
+        onChange={(e) => setSelectedCourseSlug(e.target.value)}
+        style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+      >
+        <option value="">Select Course</option>
+        {courses.map((course) => (
+          <option key={course.slug} value={course.slug}>
+            {course.title}
+          </option>
+        ))}
+      </select>
+      <ReactQuill
+        value={tutorialContent}
+        onChange={setTutorialContent}
+        theme="snow"
+        placeholder="Write tutorial content here..."
+        style={{ height: '200px', marginBottom: '10px' }}
+      />
+      <button onClick={handleCreateTutorial} style={{ padding: '10px 20px'  }}>
+        Create Tutorial
+      </button>
     </div>
   );
 };
 
-export default CourseTutorialEditor;
+export default CourseTutorialManager;
