@@ -21,6 +21,8 @@ const DSAQuestionList = () => {
 
   const fetchCategoryName = async () => {
     try {
+      console.log(`${BASE_URL}/api/dsa/categories/${categoryId}`);
+      
       const res = await axios.get(`${BASE_URL}/api/dsa/categories/${categoryId}`);
       setCategoryName(res.data.name);
     } catch (err) {
