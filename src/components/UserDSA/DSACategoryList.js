@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./UserDSA.css";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const DSACategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -9,7 +10,7 @@ const DSACategoryList = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("/api/dsa/categories");
+      const res = await axios.get(`${BASE_URL}/api/dsa/categories`);
       setCategories(res.data);
     } catch (err) {
       console.error("Failed to load categories:", err);

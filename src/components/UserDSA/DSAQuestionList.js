@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "./UserDSA.css";
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const DSAQuestionList = () => {
   const { categoryId } = useParams();
@@ -11,7 +12,7 @@ const DSAQuestionList = () => {
 
   const fetchQuestions = async () => {
     try {
-      const res = await axios.get(`/api/dsa/questions/category/${categoryId}`);
+      const res = await axios.get(`${BASE_URL}/api/dsa/questions/category/${categoryId}`);
       setQuestions(res.data);
     } catch (err) {
       console.error("Failed to fetch questions", err);
@@ -20,7 +21,7 @@ const DSAQuestionList = () => {
 
   const fetchCategoryName = async () => {
     try {
-      const res = await axios.get(`/api/dsa/categories/${categoryId}`);
+      const res = await axios.get(`${BASE_URL}/api/dsa/categories/${categoryId}`);
       setCategoryName(res.data.name);
     } catch (err) {
       console.error("Failed to fetch category name", err);
