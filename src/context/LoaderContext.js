@@ -14,7 +14,7 @@ export const LoaderProvider = ({ children }) => {
   }, []); // ✅ Runs only once when the provider is initialized
 
   return (
-    <LoaderContext.Provider value={{ loading }}>
+    <LoaderContext.Provider value={{ loading, setLoading }}>
       {children}
     </LoaderContext.Provider>
   );

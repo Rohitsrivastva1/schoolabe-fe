@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser, loginUser, verifyOtp } from "../api/authApi"; // Import API functions
 import "./Auth.css";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -55,8 +55,7 @@ const Auth = () => {
       
       if (response.data.success) {
         localStorage.setItem("token", response.data.token); // Save JWT
-        // login(response.data.user); // ✅ Update global auth state immediately
-        login(response.data.user, response.data.token); // ✅ Store token & update state
+        login(); // ✅ Update global auth state immediately
 
         navigate("/editor"); // Redirect after login
       } else {

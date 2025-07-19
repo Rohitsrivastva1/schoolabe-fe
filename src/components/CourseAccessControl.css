@@ -1,0 +1,246 @@
+/* ========================== */
+/* 🔒 Course Access Control */
+/* ========================== */
+
+.access-control {
+  position: relative;
+  width: 100%;
+  min-height: 60vh;
+}
+
+.access-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 17, 23, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.access-content {
+  background: rgba(22, 27, 34, 0.95);
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.access-icon {
+  font-size: 48px;
+  color: #58a6ff;
+  margin-bottom: 20px;
+}
+
+.access-content h2 {
+  font-size: 28px;
+  color: #c9d1d9;
+  margin: 0 0 10px 0;
+}
+
+.access-content > p {
+  color: #8b949e;
+  font-size: 16px;
+  margin: 0 0 30px 0;
+  line-height: 1.5;
+}
+
+/* Course Preview */
+.course-preview {
+  background: rgba(13, 17, 23, 0.5);
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.course-preview h3 {
+  font-size: 20px;
+  color: #58a6ff;
+  margin: 0 0 10px 0;
+}
+
+.course-preview p {
+  color: #8b949e;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+  line-height: 1.5;
+}
+
+.course-price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.course-price .price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #58a6ff;
+}
+
+.course-price .original-price {
+  font-size: 16px;
+  color: #8b949e;
+  text-decoration: line-through;
+}
+
+/* Access Actions */
+.access-actions {
+  margin: 30px 0;
+}
+
+.purchase-btn {
+  background: linear-gradient(135deg, #58a6ff, #1f6feb);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+.purchase-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(88, 166, 255, 0.3);
+}
+
+.purchase-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-prompt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid #58a6ff;
+  padding: 15px;
+  border-radius: 8px;
+  justify-content: center;
+}
+
+.login-prompt svg {
+  color: #58a6ff;
+  font-size: 18px;
+}
+
+.login-prompt p {
+  color: #8b949e;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Access Benefits */
+.access-benefits {
+  text-align: left;
+  margin-top: 30px;
+}
+
+.access-benefits h4 {
+  color: #c9d1d9;
+  font-size: 18px;
+  margin: 0 0 15px 0;
+}
+
+.access-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.access-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8b949e;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.access-benefits li svg {
+  color: #3fb950;
+  font-size: 12px;
+}
+
+/* Loading State */
+.access-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #8b949e;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #30363d;
+  border-top: 3px solid #58a6ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .access-content {
+    padding: 30px 20px;
+    margin: 20px;
+  }
+
+  .access-content h2 {
+    font-size: 24px;
+  }
+
+  .course-preview {
+    padding: 15px;
+  }
+
+  .course-preview h3 {
+    font-size: 18px;
+  }
+
+  .purchase-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.access-content {
+  animation: fadeInUp 0.5s ease-out;
+} 

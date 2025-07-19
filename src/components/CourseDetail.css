@@ -10,19 +10,21 @@
     overflow: hidden;
 }
 
+/* ========================== */
 /* 🏗️ Sidebar (Left) */
+/* ========================== */
 .sidebar {
     width: 280px;
     background: rgba(22, 27, 34, 0.95);
     backdrop-filter: blur(10px);
-    padding: 10px;
+    padding: 20px;
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
     flex-shrink: 0;
     position: fixed;
-    height: 100vh;
-    left: 0;
     top: 0;
+    left: 0;
+    height: 100vh;
     transition: transform 0.3s ease-in-out;
     z-index: 100;
 }
@@ -30,18 +32,18 @@
 .sidebar h2 {
     font-size: 20px;
     color: #58a6ff;
-    border-bottom: 2px solid #58a6ff;
-    padding-bottom: 6px;
-    margin-bottom: 12px;
+    border-bottom: 2px solid #30363d;
+    padding-bottom: 10px;
+    margin: 0 0 15px 0;
 }
 
 .course-description {
     font-size: 14px;
     color: #8b949e;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
+    line-height: 1.5;
 }
 
-/* 📜 Sidebar List */
 .sidebar ul {
     list-style: none;
     padding: 0;
@@ -49,116 +51,117 @@
 }
 
 .sidebar ul li {
-    padding: 10px;
-    background: #161b22;
-    margin-bottom: 6px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     color: #c9d1d9;
     font-size: 15px;
+    border-left: 4px solid transparent;
 }
 
 .sidebar ul li:hover {
     background: #21262d;
-    transform: scale(1.04);
+    color: #ffffff;
 }
 
 .active-tutorial {
-    background: #2a2f3a !important;
-    font-weight: bold;
+    background: #1c283d !important; /* A bit of specificity to ensure override */
+    font-weight: 600;
+    color: #ffffff !important;
     border-left: 4px solid #58a6ff;
 }
 
 /* ========================== */
-/* 📖 Tutorial Content Section */
+/* 🎭 Sidebar Toggle Button */
 /* ========================== */
-.tutorial-content {
-    flex: 1;
-    padding: 40px;
-    margin-top: 80px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #30363d transparent;
-    max-width: 65%;
-    margin-left: 260px; /* Space for sidebar */
-    transition: margin-left 0.3s ease;
-}
-
-.fade-in {
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.block-h1 h1 {
-    font-size: 26px;
-    color: #ffa657;
-    margin-bottom: 15px;
-    margin-top: 25px;
-}
-
-.block-h2 h2 {
-    font-size: 22px;
-    color: #ffae57;
-    margin-bottom: 12px;
-    margin-top: 20px;
-}
-
-.block-p p {
-    font-size: 18px;
-    line-height: 1.8;
-    color: #e6edf3;
-    margin-bottom: 15px;
-    margin-top: 10px;
-}
-
-/* Increase spacing between code and text */
-.code-container1 {
-    background: #161b22;
-    padding: 15px;
-    border-radius: 8px;
-    overflow-x: auto;
-    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.1);
-    margin: 20px 0; /* Add space before and after */
-}
-
-.code-container1 pre {
-    font-family: 'Fira Code', monospace;
-    color: #ffdd55;
-    overflow-x: auto;
-}
-
-.output-box1 {
-    background: #21262d;
-    padding: 10px;
+.sidebar-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: rgba(33, 38, 45, 0.8);
+    color: white;
+    border: 1px solid #30363d;
+    padding: 8px 10px;
     border-radius: 5px;
-    margin: 20px 0;
-    font-size: 15px;
-    color: #ffffff;
-    border-left: 4px solid #58a6ff;
+    cursor: pointer;
+    z-index: 101;
+    transition: all 0.3s ease-in-out;
+    font-size: 18px; /* For better icon visibility */
+    display: none; /* Hidden on desktop */
 }
 
-/* 📜 Table of Contents (Right Sidebar) */
+.sidebar-toggle:hover {
+    background: #30363d;
+}
+
+/* ========================== */
+/* 📖 Main Content Section */
+/* ========================== */
+.main-content-area {
+    flex: 1;
+    padding: 40px 60px;
+    overflow-y: auto;
+    margin-left: 280px; /* Space for left sidebar */
+    margin-right: 270px; /* Space for right sidebar */
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.main-content-area h1 {
+    font-size: 36px;
+    color: #c9d1d9;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 15px;
+}
+
+.tutorial-body p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #c9d1d9;
+    margin-bottom: 16px;
+}
+/* Styles for other elements like code blocks, tables, lists will be inherited from your backend HTML */
+.tutorial-body h2 {
+    font-size: 28px;
+    color: #58a6ff;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 10px;
+}
+.tutorial-body code {
+    background-color: #161b22;
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+}
+
+/* ========================== */
+/* 📜 Table of Contents (Right) */
+/* ========================== */
 .right-sidebar {
     position: fixed;
-    right: 20px;
-    top: 80px;
+    right: 0;
+    top: 0;
     width: 250px;
-    max-height: 80vh;
+    height: 100vh;
     overflow-y: auto;
-    padding: 15px;
-    background: rgba(22, 27, 34, 0.95);
-    border-radius: 8px;
-    border: 1px solid #30363d;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
+    padding: 80px 20px 20px 20px;
+    background: #0d1117;
+    border-left: 1px solid #30363d;
 }
 
 .right-sidebar h3 {
-    color: #c9d1d9;
-    font-size: 16px;
-    margin-bottom: 10px;
+    color: #8b949e;
+    font-size: 14px;
+    margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
 .right-sidebar ul {
@@ -167,119 +170,26 @@
     margin: 0;
 }
 
-.right-sidebar ul li {
-    padding: 8px 12px;
-    border-radius: 5px;
+.right-sidebar ul li a {
+    display: block;
+    padding: 8px 0;
+    border-left: 2px solid #30363d;
+    padding-left: 15px;
     font-size: 14px;
     color: #8b949e;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
-.right-sidebar ul li:hover {
-    background: #21262d;
+.right-sidebar ul li a:hover {
     color: #ffffff;
+    border-left: 2px solid #58a6ff;
 }
 
-.right-sidebar ul li.active {
-    background: #238636;
-    color: white;
-    font-weight: bold;
-}
-
-/* 📊 Table Styles */
-.block-table table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    background: #161b22;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.block-table th,
-.block-table td {
-    padding: 12px;
-    border: 1px solid #30363d;
-    text-align: left;
-    color: #c9d1d9;
-}
-
-.block-table th {
-    background: #21262d;
-    font-weight: bold;
-    color: #ffa657;
-}
-
-.block-table tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.block-table tr:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-
-/* ========================== */
-/* 🎭 Sidebar Toggle Button */
-/* ========================== */
-.sidebar-toggle {
-    position: fixed;
-    top: 320px;
-    left: -10px;
-    background: rgba(22, 27, 34, 0.1);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 101;
-    transition: all 0.3s ease-in-out;
-}
-
-.sidebar-toggle:hover {
-    background: rgba(22, 27, 34, 0.4);
-}
-
-/* ========================== */
-/* 📱 Responsive Design */
-/* ========================== */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 280px;
-        background: rgba(22, 27, 34, 0.95);
-        position: fixed;
-        left: -280px !important; /* Initially hidden */
-        top: 0;
-        height: 100vh;
-        transition: left 0.3s ease-in-out;
-        z-index: 100;
-    }
-
-    .sidebar.open {
-        left: 0 !important; /* Slide in */
-    }
-
-    .tutorial-content {
-        margin-left: 0;
-        max-width: 100%;
-        padding: 20px;
-        transition: margin-left 0.3s ease;
-    }
-
-    .right-sidebar {
-        display: none;
-    }
-
-    .sidebar-toggle {
-        top: 80px;
-        left: 10px;
-        background: rgba(22, 27, 34, 0.8);
-        padding: 8px 12px;
-        border-radius: 5px;
-        z-index: 110;
-    }
+.no-headings-message {
+    font-size: 14px;
+    color: #6e7681;
+    padding-left: 15px;
 }
 
 /* ========================== */
@@ -296,124 +206,41 @@
     }
 }
 
-
-.custom-ul {
-    list-style: none;
-    padding-left: 20px;
-}
-
-.custom-ul li {
-    position: relative;
-    margin-bottom: 8px;
-    font-size: 18px;
-    color: #e6edf3;
-    line-height: 1.6;
-}
-
-/* ✅ Custom Bullet Icon */
-.custom-ul li::before {
-    content: "";
-    color: #2ea043;
-    font-weight: bold;
-    margin-right: 6px;
-}
-
-
-/* Added missing output box styling */
-.output-box1 {
-    background: #21262d;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 20px 0;
-    border-left: 4px solid #58a6ff;
-    color: #c9d1d9;
-  }
-  
-  .output-box1 strong {
-    color: #ff7b72;
-    display: block;
-    margin-bottom: 8px;
-  }
-  
-  /* Enhanced list styling */
-  .custom-ul li::before {
-    content: "•";
-    color: #2ea043;
-    margin-right: 8px;
-    font-size: 1.2em;
-  }
-  
-  .custom-ol {
-    counter-reset: list-counter;
-  }
-  
-  .custom-ol li {
-    counter-increment: list-counter;
-  }
-  
-  .custom-ol li::before {
-    content: counter(list-counter) ".";
-    color: #58a6ff;
-    margin-right: 8px;
-    font-weight: bold;
-  }
-  
-  /* Added missing fade-in animation */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .fade-in {
+.fade-in {
     animation: fadeIn 0.4s ease-out;
-  }
-  
-  /* Added missing empty state styling */
-  .block-table td:empty::before {
-    content: "-";
-    color: #6e7681;
-    opacity: 0.5;
-  } 
+}
 
-  /* New styles for Image and YouTube blocks */
-.block-image-container {
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .block-image-container .block-image {
-    max-width: 80%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .block-youtube-container {
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .block-youtube-container .video-responsive {
-    position: relative;
-    overflow: hidden;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    margin: auto;
-    max-width: 80%;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .block-youtube-container .video-responsive iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  
+/* ========================== */
+/* 📱 Responsive Design */
+/* ========================== */
+@media (max-width: 1200px) {
+    .main-content-area {
+        margin-right: 0; /* Hide right sidebar on medium screens */
+    }
+    .right-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%); /* Initially hidden */
+    }
+
+    .sidebar.open {
+        transform: translateX(0); /* Slide in */
+    }
+
+    .main-content-area {
+        margin-left: 0;
+        padding: 20px;
+    }
+    
+    .main-content-area h1 {
+        font-size: 28px;
+    }
+
+    .sidebar-toggle {
+        display: block; /* Show toggle on mobile */
+    }
+}

@@ -1,38 +1,74 @@
-.user-dsa-container {
-    padding: 30px;
-    background-color: #0d1117;
-    color: #c9d1d9;
-    min-height: 100vh;
-  }
-  
-  .user-dsa-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .user-dsa-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .user-dsa-card {
-    background-color: #161b22;
-    border: 1px solid #30363d;
-    padding: 20px 30px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    font-size: 18px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  }
-  
-  .user-dsa-card:hover {
-    background-color: #238636;
-    color: #fff;
-    transform: scale(1.05);
-  }
-  
+/* Dark GitHub theme base */
+body {
+  background-color: #0d1117;
+  color: #c9d1d9;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+.dsa-landing {
+  padding: 2rem;
+  margin-top: 27px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dsa-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 27px;
+}
+
+.dsa-header h1 {
+  font-size: 2.5rem;
+  color: #58a6ff;
+}
+
+.dsa-header p {
+  color: #8b949e;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.dsa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.dsa-card {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.dsa-card:hover {
+  background-color: #238636;
+  color: #ffffff;
+  transform: scale(1.05);
+  border-color: #58a6ff;
+}
+.modal-description {
+  color: #c9d1d9;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.modal-description code {
+  background: #2e3440;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  color: #88c0d0;
+}
