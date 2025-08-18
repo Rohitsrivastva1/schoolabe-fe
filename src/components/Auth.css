@@ -4,20 +4,24 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #0d1117;
+    background: var(--bg-primary);
     padding: 20px;
+    margin-top: 64px;
   }
   
   /* Authentication Card - Bigger & Better */
   .auth-card {
-    background: #161b22;
-    border: 1px solid #30363d;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     padding: 50px;
-    border-radius: 10px;
+    border-radius: 16px;
     width: 420px;  /* Increased Width */
     text-align: center;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-    color: #c9d1d9;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-primary);
+    animation: scaleIn 0.4s ease-out;
   }
   
   /* Title */
@@ -25,7 +29,7 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 25px;
-    color: #ffffff;
+    color: var(--text-primary);
   }
   
   /* Input Fields */
@@ -33,17 +37,17 @@
     width: 100%;
     padding: 12px;
     margin: 12px 0;
-    border: 1px solid #30363d;
+    border: 1px solid var(--border-primary);
     border-radius: 6px;
-    background: #0d1117;
-    color: #c9d1d9;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     font-size: 16px;
     outline: none;
     transition: 0.2s;
   }
   
   .auth-card input:focus {
-    border-color: #58a6ff;
+    border-color: var(--accent-primary);
   }
   
   /* Submit Button */
@@ -51,7 +55,7 @@
     width: 100%;
     padding: 12px;
     border: none;
-    background: #238636;
+    background: var(--accent-secondary);
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -62,23 +66,35 @@
   }
   
   .auth-card button:hover {
-    background: #2ea043;
+    background: var(--accent-primary);
   }
   
   /* Switch Text */
   .switch-text {
     margin-top: 20px;
     font-size: 14px;
+    color: var(--text-secondary);
   }
   
   .switch-text span {
-    color: #58a6ff;
+    color: var(--accent-primary);
     cursor: pointer;
     font-weight: bold;
   }
   
   .switch-text span:hover {
     text-decoration: underline;
+  }
+  
+  /* Error message */
+  .error {
+    color: var(--accent-danger);
+    background: rgba(248, 81, 73, 0.1);
+    border: 1px solid var(--accent-danger);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
   }
   
   /* OTP Modal */
@@ -96,28 +112,32 @@
   
   /* OTP Box */
   .otp-box {
-    background: #161b22;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     padding: 30px;
-    border-radius: 8px;
+    border-radius: 16px;
     text-align: center;
     width: 350px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    color: #c9d1d9;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-primary);
   }
   
   .otp-box h2 {
     font-size: 22px;
     margin-bottom: 10px;
+    color: var(--text-primary);
   }
   
   .otp-box input {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: 1px solid #30363d;
+    border: 1px solid var(--border-primary);
     border-radius: 6px;
-    background: #0d1117;
-    color: #c9d1d9;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     font-size: 16px;
   }
   
@@ -125,7 +145,7 @@
     width: 100%;
     padding: 12px;
     border: none;
-    background: #238636;
+    background: var(--accent-secondary);
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -135,7 +155,7 @@
   }
   
   .otp-box button:hover {
-    background: #2ea043;
+    background: var(--accent-primary);
   }
   
   /* Responsive Design */

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminDSA.css";
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const CategoryManager = () => {
   const [name, setName] = useState("");
@@ -10,14 +9,14 @@ const CategoryManager = () => {
   const navigate = useNavigate();
   const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     const res = await axios.get(`${BASE_URL}/api/dsa/categories`);
     setCategories(res.data);
-  };
+  }, [BASE_URL]);
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [fetchCategories]);
 
   const createCategory = async () => {
     if (!name) return;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Editor } from "@monaco-editor/react";
-import { FaPlay, FaDownload, FaSun, FaMoon } from "react-icons/fa";
+import { FaPlay, FaDownload, FaSun } from "react-icons/fa";
 import axios from "axios";
 import "./MonacoEditor.css";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ const MonacoEditor = () => {
   const [language, setLanguage] = useState("javascript");
   const [theme, setTheme] = useState("vs-dark");
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  // Removed unused user state
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -23,7 +23,7 @@ const MonacoEditor = () => {
       if (!userData) {
         navigate("/signup"); // Redirect if not logged in
       } else {
-        setUser(userData); // Set user state if logged in
+        // User is logged in, no need to set state
       }
     };
     fetchUser();

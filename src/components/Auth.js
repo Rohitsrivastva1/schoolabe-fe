@@ -57,7 +57,7 @@ const Auth = () => {
         localStorage.setItem("token", response.data.token); // Save JWT
         login(); // ✅ Update global auth state immediately
 
-        navigate("/editor"); // Redirect after login
+        navigate("/"); // Redirect to home page after login
       } else {
         setError(response.message || "Invalid OTP!");
       }

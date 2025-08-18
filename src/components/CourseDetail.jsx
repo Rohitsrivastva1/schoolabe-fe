@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import DOMPurify from 'dompurify'; // --- FIX: Import DOMPurify for security
@@ -38,16 +38,22 @@ const CourseDetail = () => {
       .replace(/--+/g, "-"); // Replace multiple - with single -
   };
 
-  // Helper: Convert YouTube URL to a valid embed URL
-  const convertYoutubeUrl = (url) => {
-    if (!url) return '';
-    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    // --- FIX: Use correct YouTube embed URL format
-    return match && match[2].length === 11
-      ? `https://www.youtube.com/embed/${match[2]}`
-      : url;
-  };
+  // Extracts H1 and H2 tags from sanitized HTML for the "On This Page" sidebar
+  const extractHeadings = useCallback((htmlContent) => {
+    try {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = htmlContent; // Safe because content is pre-sanitized
+      
+      const foundHeadings = Array.from(tempDiv.querySelectorAll("h1, h2")).map((el) => ({
+        text: el.textContent,
+        id: slugify(el.textContent),
+      }));
+      setHeadings(foundHeadings);
+    } catch (error) {
+      console.error("Error extracting headings:", error);
+      setHeadings([]);
+    }
+  }, []);
 
   // Fetch Course & Tutorials Data
   useEffect(() => {
@@ -92,24 +98,7 @@ const CourseDetail = () => {
 
       setFadeIn(true);
     }
-  }, [tutorials, tutorialSlug, courseSlug, navigate]);
-
-  // Extracts H1 and H2 tags from sanitized HTML for the "On This Page" sidebar
-  const extractHeadings = (htmlContent) => {
-    try {
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = htmlContent; // Safe because content is pre-sanitized
-      
-      const foundHeadings = Array.from(tempDiv.querySelectorAll("h1, h2")).map((el) => ({
-        text: el.textContent,
-        id: slugify(el.textContent),
-      }));
-      setHeadings(foundHeadings);
-    } catch (error) {
-      console.error("Error extracting headings:", error);
-      setHeadings([]);
-    }
-  };
+  }, [tutorials, tutorialSlug, courseSlug, navigate, extractHeadings]);
   
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 

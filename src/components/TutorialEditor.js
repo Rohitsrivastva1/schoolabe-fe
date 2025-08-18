@@ -1,7 +1,7 @@
 // 📂 src/components/TutorialEditor.js
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FaPlus, FaTrash, FaSave, FaCopy } from "react-icons/fa";
+import { FaTrash, FaSave, FaCopy } from "react-icons/fa";
 import "./TutorialEditor.css";
 import { useNavigate } from "react-router-dom";
 import { checkAuth } from "../services/authService";
@@ -10,7 +10,7 @@ const TutorialEditor = ({ onSave }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState([]);
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  // Removed unused user state
   const BASE_URL = process.env.REACT_APP_API_BASE_URL || "/api";
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const TutorialEditor = ({ onSave }) => {
       if (!userData) {
         navigate("/signup");
       } else {
-        setUser(userData);
+        // User is logged in, no need to set state
       }
     };
     fetchUser();

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./AdminDSA.css";
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
 const QuestionManager = () => {
   const { categoryId } = useParams();
@@ -19,21 +18,22 @@ const QuestionManager = () => {
   });
 
   const navigate = useNavigate();
+  const BASE_URL = process.env.REACT_APP_API_BASE_URL || ""; // Fetch from env, fallback to empty
 
-  const fetchCategoryTitle = async () => {
+  const fetchCategoryTitle = useCallback(async () => {
     const res = await axios.get(`${BASE_URL}/api/dsa/categories/${categoryId}`);
     setCategoryTitle(res.data.name); // Adjust based on your backend response
-  };
+  }, [BASE_URL, categoryId]);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = useCallback(async () => {
     const res = await axios.get(`${BASE_URL}/api/dsa/questions/category/${categoryId}`);
     setQuestions(res.data);
-  };
+  }, [BASE_URL, categoryId]);
 
   useEffect(() => {
     fetchCategoryTitle();
     fetchQuestions();
-  }, [categoryId]);
+  }, [fetchCategoryTitle, fetchQuestions]);
 
   const createQuestion = async () => {
     await axios.post(`${BASE_URL}/api/dsa/questions`, {

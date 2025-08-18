@@ -49,7 +49,7 @@ const DSAQuestionSolve = () => {
       }
     };
     fetchData();
-  }, [questionId]);
+  }, [questionId, BASE_URL]);
 
   useEffect(() => {
     setCode(defaultTemplates[language]);

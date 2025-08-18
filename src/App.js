@@ -12,14 +12,17 @@ import CourseTutorialEditor from "./components/CourseTutorialEditor";
 import CourseDetail from "./components/CourseDetail";
 import Auth from "./components/Auth";
 import { AuthProvider } from "./context/AuthContext";
-import { LoaderProvider, useLoader } from "./context/LoaderContext"; // Loader Context
+import { LoaderProvider } from "./context/LoaderContext"; // Loader Context
 import { CartProvider } from "./context/CartContext"; // Cart Context
+import { ThemeProvider } from "./context/ThemeContext"; // Theme Context
 import Loader from "./components/Loader"; // Loader Component
 import ChangePassword from "./components/ChangePassword";
 import Cart from "./components/Cart";
+import EditProfile from "./components/EditProfile";
+import Progress from "./components/Progress";
+import ForgotPassword from "./components/ForgotPassword";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SmoothScrollProvider from "./SmoothScrollProvider";
 
 import AdminQuizForm from "./components/AdminQuiz/AdminQuizForm";
 import QuizPartForm from "./components/AdminQuiz/QuizPartForm";
@@ -43,7 +46,7 @@ import DSAQuestionSolve from "./components/UserDSA/DSAQuestionSolver";
 import "./App.css";
 
 const AppContent = () => {
-  const { setLoading } = useLoader();
+  // Removed unused setLoading variable
 
   return (
     <Router>
@@ -77,6 +80,9 @@ const AppContent = () => {
           <Route path="/signup" element={<Auth />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* 🔥 Admin Quiz Routes */}
           <Route path="/admin/quiz/create" element={<AdminQuizForm />} />
@@ -110,15 +116,15 @@ const AppContent = () => {
 const App = () => {
   return (
     <HelmetProvider>
-      <AuthProvider>
-        <CartProvider>
-          <LoaderProvider>
-          <SmoothScrollProvider>  
-            <AppContent />
-            </SmoothScrollProvider>
-          </LoaderProvider>
-        </CartProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <CartProvider>
+            <LoaderProvider>
+              <AppContent />
+            </LoaderProvider>
+          </CartProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </HelmetProvider>
   );
 };
