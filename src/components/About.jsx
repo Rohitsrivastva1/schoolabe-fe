@@ -1,6 +1,7 @@
 import React from "react";
 import "./About.css";
 import { Helmet } from "react-helmet-async"; // Use react-helmet-async
+// Removed unused heroImg import
 
 const About = () => {
   return (

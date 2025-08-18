@@ -6,6 +6,8 @@ import HomePage from "./components/HomePage";
 import Courses from "./components/Courses";
 import Contact from "./components/Contact";
 import About from "./components/About";
+import Roadmap from "./components/Roadmap";
+import RoadmapDetail from "./components/RoadmapDetail";
 import MonacoEditor from "./components/MonacoEditor";
 import TutorialEditor from "./components/TutorialEditor";
 import CourseTutorialEditor from "./components/CourseTutorialEditor";
@@ -71,6 +73,8 @@ const AppContent = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/about" element={<About />} />
+          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/roadmap/:careerPath" element={<RoadmapDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/code" element={<MonacoEditor />} />
           <Route path="/cod" element={<TutorialEditor />} />

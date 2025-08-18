@@ -4,7 +4,7 @@ import axios from "axios";
 import DOMPurify from 'dompurify'; // --- FIX: Import DOMPurify for security
 import "./CourseDetail.css";
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || "";
+// Removed unused BASE_URL variable
 
 const CourseDetail = () => {
   const { courseSlug, tutorialSlug } = useParams();
@@ -59,13 +59,13 @@ const CourseDetail = () => {
   useEffect(() => {
     if (!courseSlug) return;
     
-    axios.get(`${BASE_URL}/courses/${courseSlug}`)
+    axios.get(`/courses/${courseSlug}`)
       .then((response) => {
         if (response.data.success) setCourse(response.data.course);
       })
       .catch((error) => console.error("Error fetching course:", error));
 
-    axios.get(`${BASE_URL}/tutorials/${courseSlug}`)
+    axios.get(`/tutorials/${courseSlug}`)
       .then((response) => {
         if (response.data.success) setTutorials(response.data.tutorials);
       })

@@ -11,7 +11,7 @@ const TutorialEditor = ({ onSave }) => {
   const [content, setContent] = useState([]);
   const navigate = useNavigate();
   // Removed unused user state
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL || "/api";
+  // Removed unused BASE_URL variable
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -55,7 +55,7 @@ const TutorialEditor = ({ onSave }) => {
   const handleSave = async () => {
     const tutorialData = { title, content };
     try {
-      const response = await fetch(`${BASE_URL}/tutorials`, {
+      const response = await fetch(`/tutorials`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tutorialData),

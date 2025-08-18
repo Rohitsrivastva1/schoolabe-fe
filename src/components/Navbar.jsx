@@ -24,18 +24,11 @@ const Navbar = () => {
         </Link>
   
         <div className="navbar-nav">
-           {["Home", "About", "Courses", "Contact", "Practise code"].map((item, index) => {
-             const path = item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "")}`;
-             return (
-               <Link
-                 key={index}
-                 to={path}
-                 className="nav-link"
-               >
-                 {item}
-               </Link>
-             );
-           })}
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/courses" className="nav-link">Courses</Link>
+          <Link to="/roadmap" className="nav-link">Python Roadmap</Link>
+          <Link to="/contact" className="nav-link">Contact</Link>
         </div>
 
         <div className="navbar-right">

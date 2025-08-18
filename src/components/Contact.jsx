@@ -2,21 +2,9 @@ import React from "react";
 import {
   FaEnvelope,
   FaPhone,
-  FaGlobe,
-  FaPython,
-  FaChartBar,
   FaGithub,
   FaDiscord,
-  FaLinkedin,
-  FaTwitter,
-  FaClock,
-  FaUser,
-  FaEnvelope as FaEmail,
-  FaMobile,
-  FaGraduationCap,
-  FaQuestionCircle,
-  FaBullseye,
-  FaComments
+  FaClock
 } from "react-icons/fa";
 import "./Contact.css";
 
@@ -40,23 +28,6 @@ const Contact = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="Enter your phone number (optional)" />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="experience">Python Experience Level</label>
-            <select id="experience">
-              <option value="">Select your experience level</option>
-              <option value="beginner">Complete Beginner</option>
-              <option value="basic">Basic Python Knowledge</option>
-              <option value="intermediate">Intermediate Python Developer</option>
-              <option value="advanced">Advanced Python Developer</option>
-              <option value="professional">Professional Python Developer</option>
-            </select>
-          </div>
-
-          <div className="form-group">
             <label htmlFor="subject">What can we help you with? *</label>
             <select id="subject" required>
               <option value="">Select a topic</option>
@@ -74,20 +45,8 @@ const Contact = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="goals">Your Learning Goals</label>
-            <textarea id="goals" rows="3" placeholder="What do you want to achieve with Python? (e.g., build web apps, become a data scientist, work in AI, etc.)"></textarea>
-          </div>
-
-          <div className="form-group">
             <label htmlFor="message">Your Message *</label>
-            <textarea id="message" rows="5" placeholder="Tell us about your specific questions, challenges, or how we can help you with your Python learning journey..." required></textarea>
-          </div>
-
-          <div className="form-group">
-            <label className="checkbox-label">
-              <input type="checkbox" required />
-              <span>I agree to receive updates about Python courses and learning resources</span>
-            </label>
+            <textarea id="message" rows="4" placeholder="Tell us about your specific questions, challenges, or how we can help you with your Python learning journey..." required></textarea>
           </div>
 
           <button type="submit" className="primary-btn">Send Message to Python Team</button>
@@ -103,9 +62,10 @@ const Contact = () => {
                 <FaEnvelope />
                 Email Support
               </h3>
-              <p><strong>General Inquiries:</strong> <a href="mailto:hello@schoolabe.com">hello@schoolabe.com</a></p>
-              <p><strong>Python Support:</strong> <a href="mailto:python@schoolabe.com">python@schoolabe.com</a></p>
-              <p><strong>Technical Help:</strong> <a href="mailto:support@schoolabe.com">support@schoolabe.com</a></p>
+              <div className="contact-content">
+                <p><strong>Contact:</strong> <a href="mailto:hello@schoolabe.com">hello@schoolabe.com</a></p>
+                <p><strong>Support Hours:</strong> Mon-Fri, 9 AM - 6 PM IST</p>
+              </div>
             </div>
 
             <div className="contact-item" style={{"--item-index": "1"}}>
@@ -113,44 +73,21 @@ const Contact = () => {
                 <FaPhone />
                 Phone Support
               </h3>
-              <p><strong>India:</strong> <a href="tel:+919876543210">+91 98765 43210</a></p>
-              <p><strong>International:</strong> <a href="tel:+15551234567">+1 (555) 123-4567</a></p>
-              <p><strong>Support Hours:</strong> Mon-Fri, 9 AM - 6 PM IST</p>
-            </div>
-
-            <div className="contact-item" style={{"--item-index": "2"}}>
-              <h3>
-                <FaGlobe />
-                Python Community
-              </h3>
-              <p>Join our vibrant Python community for support, networking, and learning opportunities.</p>
+              <div className="contact-content">
+                <p><strong>Contact:</strong> <a href="tel:+919876543210">+91 98765 43210</a></p>
+                <p><strong>Support Hours:</strong> Mon-Fri, 9 AM - 6 PM IST</p>
+              </div>
             </div>
           </div>
 
           <div className="social-links">
-            <a href="#" className="social-icon">
-              <FaPython />
-              Python Forum
-            </a>
-            <a href="#" className="social-icon">
-              <FaChartBar />
-              Data Science Hub
-            </a>
-            <a href="#" className="social-icon">
+            <a href="https://github.com/schoolabe" className="social-icon">
               <FaGithub />
               GitHub
             </a>
-            <a href="#" className="social-icon">
+            <a href="https://discord.gg/schoolabe" className="social-icon">
               <FaDiscord />
               Discord
-            </a>
-            <a href="#" className="social-icon">
-              <FaLinkedin />
-              LinkedIn
-            </a>
-            <a href="#" className="social-icon">
-              <FaTwitter />
-              Twitter
             </a>
           </div>
 

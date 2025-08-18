@@ -1,0 +1,472 @@
+/* Python Career Tree - Modern Interactive Roadmap */
+
+.python-tree-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0D1117 0%, #161B22 50%, #0D1117 100%);
+  color: #E6EDF3;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 2rem 0;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.python-tree-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header */
+.tree-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.tree-header h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #58A6FF, #A371F7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+
+.tree-header p {
+  font-size: 1.2rem;
+  color: #8B949E;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Tree Visualization */
+.tree-visualization {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Root Node */
+.root-node {
+  background: rgba(22, 27, 34, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(88, 166, 255, 0.3);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.root-node::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #58A6FF, #A371F7);
+  border-radius: 20px;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.root-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #58A6FF, #A371F7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+  color: white;
+  box-shadow: 0 8px 24px rgba(88, 166, 255, 0.4);
+}
+
+.root-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #E6EDF3;
+  margin-bottom: 0.5rem;
+}
+
+.root-content p {
+  color: #8B949E;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.root-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.skill-tag {
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  color: #58A6FF;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(88, 166, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Tree Trunk */
+.tree-trunk {
+  width: 8px;
+  height: 60px;
+  background: linear-gradient(to bottom, #8B5CF6, #A371F7);
+  margin: 0 auto 2rem;
+  border-radius: 4px;
+  position: relative;
+}
+
+.tree-trunk::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #A371F7;
+}
+
+/* Career Branches */
+.career-branches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.career-branch {
+  position: relative;
+}
+
+.branch-node {
+  background: rgba(22, 27, 34, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--branch-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.branch-node::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--branch-color);
+  opacity: 0.8;
+}
+
+.branch-node:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  border-color: var(--branch-color);
+}
+
+.branch-icon {
+  font-size: 2rem;
+  color: var(--branch-color);
+  margin-bottom: 1rem;
+}
+
+.branch-node h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #E6EDF3;
+  margin-bottom: 0.5rem;
+}
+
+.branch-node p {
+  color: #8B949E;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.branch-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.salary {
+  background: rgba(63, 185, 80, 0.1);
+  color: #3FB950;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.expand-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #8B949E;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.expand-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #E6EDF3;
+}
+
+.expand-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.expand-btn svg.expanded {
+  transform: rotate(90deg);
+}
+
+/* Branch Skills */
+.branch-skills {
+  background: rgba(13, 17, 23, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.skill-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.skill-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.skill-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.skill-info h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #E6EDF3;
+  margin-bottom: 0.2rem;
+}
+
+.skill-level {
+  font-size: 0.8rem;
+  color: #8B949E;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.branch-projects h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #E6EDF3;
+  margin-bottom: 0.8rem;
+}
+
+.projects-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.project-tag {
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  color: #58A6FF;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Tree Legend */
+.tree-legend {
+  background: rgba(22, 27, 34, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tree-legend h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #E6EDF3;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.legend-items {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #8B949E;
+  font-size: 0.9rem;
+}
+
+.legend-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.legend-icon.beginner {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22C55E;
+}
+
+.legend-icon.intermediate {
+  background: rgba(251, 191, 36, 0.2);
+  color: #FBBF24;
+}
+
+.legend-icon.advanced {
+  background: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .python-tree-container {
+    padding: 1rem 0;
+  }
+  
+  .tree-visualization {
+    padding: 0 1rem;
+  }
+  
+  .career-branches {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .legend-items {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .root-node {
+    padding: 1.5rem;
+  }
+  
+  .root-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tree-header h1 {
+    font-size: 2rem;
+  }
+  
+  .tree-header p {
+    font-size: 1rem;
+  }
+  
+  .branch-node {
+    padding: 1rem;
+  }
+  
+  .branch-skills {
+    padding: 1rem;
+  }
+}
