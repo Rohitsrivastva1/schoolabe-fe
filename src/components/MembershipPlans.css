@@ -4,6 +4,8 @@
   padding: 2rem;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin-top: 64px;
+  box-sizing: border-box;
 }
 
 .membership-header {
@@ -67,19 +69,26 @@
 
 .plans-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
   margin-bottom: 4rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .plan-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 2px solid transparent;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 .plan-card:hover {
@@ -172,6 +181,8 @@
 
 .plan-actions {
   text-align: center;
+  margin-top: auto;
+  padding-top: 1rem;
 }
 
 .plan-btn {
