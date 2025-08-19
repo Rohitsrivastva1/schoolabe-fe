@@ -38,6 +38,17 @@ class PaymentService {
     }
   }
 
+  // Verify membership payment on backend
+  static async verifyMembershipPayment(paymentData) {
+    try {
+      const response = await axiosInstance.post(`${BASE_URL}/api/membership/verify-payment`, paymentData);
+      return response.data;
+    } catch (error) {
+      console.error('Error verifying membership payment:', error);
+      throw error;
+    }
+  }
+
   // Process payment using Razorpay
   static async processPayment(orderData, user) {
     try {
@@ -124,6 +135,88 @@ class PaymentService {
 
     } catch (error) {
       console.error('Payment processing error:', error);
+      throw error;
+    }
+  }
+
+  // Process membership payment using Razorpay
+  static async processMembershipPayment(orderData, user) {
+    try {
+      // Load Razorpay if not already loaded
+      if (!window.Razorpay) {
+        await this.loadRazorpay();
+      }
+
+      const options = {
+        key: RAZORPAY_KEY_ID,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'Schoolabe',
+        description: orderData.description || 'Membership Subscription',
+        order_id: orderData.orderId,
+        prefill: {
+          name: user?.name || '',
+          email: user?.email || '',
+          contact: user?.phone || ''
+        },
+        theme: {
+          color: '#667eea'
+        },
+        handler: async (response) => {
+          try {
+            // Verify payment on backend
+            const verificationData = {
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+              planType: orderData.planType
+            };
+
+            const verificationResponse = await this.verifyMembershipPayment(verificationData);
+            
+            if (verificationResponse.success) {
+              return {
+                success: true,
+                paymentId: response.razorpay_payment_id,
+                orderId: response.razorpay_order_id,
+                message: 'Membership activated successfully!'
+              };
+            } else {
+              throw new Error(verificationResponse.message || 'Payment verification failed');
+            }
+          } catch (error) {
+            console.error('Payment verification error:', error);
+            throw error;
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            console.log('Payment modal dismissed');
+          }
+        }
+      };
+
+      // Open Razorpay modal
+      const razorpay = new window.Razorpay(options);
+      return new Promise((resolve, reject) => {
+        razorpay.on('payment.failed', (response) => {
+          reject(new Error('Payment failed: ' + response.error.description));
+        });
+        
+        razorpay.on('payment.success', async (response) => {
+          try {
+            const result = await options.handler(response);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        });
+
+        razorpay.open();
+      });
+
+    } catch (error) {
+      console.error('Membership payment processing error:', error);
       throw error;
     }
   }

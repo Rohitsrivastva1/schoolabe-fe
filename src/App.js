@@ -44,6 +44,7 @@ import DSACategoryList from "./components/UserDSA/DSACategoryList";
 import DSAQuestionList from "./components/UserDSA/DSAQuestionList";
 
 import DSAQuestionSolve from "./components/UserDSA/DSAQuestionSolver";
+import MembershipPlans from "./components/MembershipPlans";
 
 import "./App.css";
 
@@ -98,6 +99,9 @@ const AppContent = () => {
           <Route path="/quizzes" element={<QuizList />} />
           <Route path="/quizzes/:id" element={<QuizDetail />} />
           <Route path="/quizzes/:quizId/attempt/:subQuizId" element={<QuizAttempt />} />
+          
+          {/* 👑 Membership Routes */}
+          <Route path="/membership" element={<MembershipPlans />} />
 
 
           {/* 🛠️ Admin DSA Routes */}

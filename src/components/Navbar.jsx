@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaCrown } from "react-icons/fa";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -29,6 +29,10 @@ const Navbar = () => {
           <Link to="/courses" className="nav-link">Courses</Link>
           <Link to="/roadmap" className="nav-link">Python Roadmap</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
+          <Link to="/membership" className="nav-link membership-link">
+            <FaCrown />
+            Premium
+          </Link>
         </div>
 
         <div className="navbar-right">

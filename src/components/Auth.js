@@ -29,16 +29,32 @@ const Auth = () => {
     setError("");
 
     try {
-      const response = isLogin ? await loginUser(formData) : await registerUser(formData);
-      console.log(response,"response");
-      
-      if (response.data.success) {
+      if (isLogin) {
+        // For login, handle direct authentication (OTP bypassed)
+        const response = await loginUser(formData);
+        console.log(response, "login response");
         
-        setShowOtpModal(true);
+        if (response.data.success) {
+          // Login successful - no OTP needed
+          localStorage.setItem("token", response.data.token); // Save JWT if provided
+          login(); // Update global auth state
+          navigate("/"); // Redirect to home page
+        } else {
+          setError(response.data.message || "Login failed!");
+        }
       } else {
-        setError(response.data.message || "Something went wrong!");
+        // For registration, still use OTP flow
+        const response = await registerUser(formData);
+        console.log(response, "registration response");
+        
+        if (response.data.success) {
+          setShowOtpModal(true);
+        } else {
+          setError(response.data.message || "Registration failed!");
+        }
       }
     } catch (err) {
+      console.error("Auth error:", err);
       setError("Server error. Please try again.");
     }
     setLoading(false);
@@ -92,12 +108,12 @@ const Auth = () => {
         </p>
       </div>
 
-      {/* OTP Modal */}
-      {showOtpModal && (
+      {/* OTP Modal - Only for Registration */}
+      {showOtpModal && !isLogin && (
         <div className="otp-modal">
           <div className="otp-box">
             <h2>Enter OTP</h2>
-            <p>We have sent a 6-digit OTP to your email.</p>
+            <p>We have sent a 6-digit OTP to your email for account verification.</p>
 
             {error && <p className="error">{error}</p>}
 
