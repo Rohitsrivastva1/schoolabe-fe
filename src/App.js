@@ -23,6 +23,7 @@ import Cart from "./components/Cart";
 import EditProfile from "./components/EditProfile";
 import Progress from "./components/Progress";
 import ForgotPassword from "./components/ForgotPassword";
+import CSSPlayground from "./components/CSSPlayground";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -45,6 +46,8 @@ import DSAQuestionList from "./components/UserDSA/DSAQuestionList";
 
 import DSAQuestionSolve from "./components/UserDSA/DSAQuestionSolver";
 import MembershipPlans from "./components/MembershipPlans";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 
 import "./App.css";
 
@@ -83,36 +86,109 @@ const AppContent = () => {
           <Route path="/courses/:courseSlug/:tutorialSlug" element={<CourseDetail />} />
           <Route path="/courses/:courseSlug" element={<CourseDetail />} />
           <Route path="/signup" element={<Auth />} />
-          <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
-          <Route path="/progress" element={<Progress />} />
+          <Route path="/change-password" element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          } />
+          <Route path="/cart" element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          } />
+          <Route path="/edit-profile" element={
+            <ProtectedRoute>
+              <EditProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/progress" element={
+            <ProtectedRoute>
+              <Progress />
+            </ProtectedRoute>
+          } />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/css-playground" element={<CSSPlayground />} />
 
           {/* 🔥 Admin Quiz Routes */}
-          <Route path="/admin/quiz/create" element={<AdminQuizForm />} />
-          <Route path="/admin/quiz/:quizId/part" element={<QuizPartForm />} />
-          <Route path="/admin/quiz/:quizId/questions" element={<QuestionForm />} />
-          <Route path="/admin/quiz/:quizId/questions/:questionId/options" element={<OptionForm />} />
+          <Route path="/admin/quiz/create" element={
+            <AdminRoute>
+              <AdminQuizForm />
+            </AdminRoute>
+          } />
+          <Route path="/admin/quiz/:quizId/part" element={
+            <AdminRoute>
+              <QuizPartForm />
+            </AdminRoute>
+          } />
+          <Route path="/admin/quiz/:quizId/questions" element={
+            <AdminRoute>
+              <QuestionForm />
+            </AdminRoute>
+          } />
+          <Route path="/admin/quiz/:quizId/questions/:questionId/options" element={
+            <AdminRoute>
+              <OptionForm />
+            </AdminRoute>
+          } />
 
           {/* 🧑‍💻 User Quiz Routes */}
-          <Route path="/quizzes" element={<QuizList />} />
-          <Route path="/quizzes/:id" element={<QuizDetail />} />
-          <Route path="/quizzes/:quizId/attempt/:subQuizId" element={<QuizAttempt />} />
+          <Route path="/quizzes" element={
+            <ProtectedRoute>
+              <QuizList />
+            </ProtectedRoute>
+          } />
+          <Route path="/quizzes/:id" element={
+            <ProtectedRoute>
+              <QuizDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/quizzes/:quizId/attempt/:subQuizId" element={
+            <ProtectedRoute>
+              <QuizAttempt />
+            </ProtectedRoute>
+          } />
           
           {/* 👑 Membership Routes */}
-          <Route path="/membership" element={<MembershipPlans />} />
+          <Route path="/membership" element={
+            <ProtectedRoute>
+              <MembershipPlans />
+            </ProtectedRoute>
+          } />
 
 
           {/* 🛠️ Admin DSA Routes */}
-          <Route path="/admin/dsa/categories" element={<CategoryManager />} />
-          <Route path="/admin/dsa/questions/:categoryId" element={<QuestionManager />} />
-          <Route path="/admin/dsa/testcases/:questionId" element={<TestCaseManager />} />
+          <Route path="/admin/dsa/categories" element={
+            <AdminRoute>
+              <CategoryManager />
+            </AdminRoute>
+          } />
+          <Route path="/admin/dsa/questions/:categoryId" element={
+            <AdminRoute>
+              <QuestionManager />
+            </AdminRoute>
+          } />
+          <Route path="/admin/dsa/testcases/:questionId" element={
+            <AdminRoute>
+              <TestCaseManager />
+            </AdminRoute>
+          } />
 
 
-          <Route path="/practisecode" element={<DSACategoryList />} />
-          <Route path="/dsa/category/:categoryId" element={<DSAQuestionList />} />
-          <Route path="/dsa/question/:questionId" element={<DSAQuestionSolve />} />
+          <Route path="/practisecode" element={
+            <ProtectedRoute>
+              <DSACategoryList />
+            </ProtectedRoute>
+          } />
+          <Route path="/dsa/category/:categoryId" element={
+            <ProtectedRoute>
+              <DSAQuestionList />
+            </ProtectedRoute>
+          } />
+          <Route path="/dsa/question/:questionId" element={
+            <ProtectedRoute>
+              <DSAQuestionSolve />
+            </ProtectedRoute>
+          } />
 
 
         </Routes>

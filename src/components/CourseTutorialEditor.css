@@ -7,7 +7,6 @@
   color: #E6EDF3;
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
 }
 
 .admin-editor-container::before {
@@ -185,11 +184,11 @@
 }
 
 /* Form Elements */
-.form-group {
+.tutorial-editor .form-group {
   margin-bottom: 20px;
 }
 
-.form-group label {
+.tutorial-editor .form-group label {
   display: block;
   font-weight: 600;
   color: #E6EDF3;

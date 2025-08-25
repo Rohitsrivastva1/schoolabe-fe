@@ -7,7 +7,10 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   padding: 2rem 0;
   position: relative;
-  overflow-x: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .python-tree-container::before {
@@ -31,6 +34,11 @@
   margin-bottom: 3rem;
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2rem;
 }
 
 .tree-header h1 {
@@ -53,11 +61,12 @@
 
 /* Tree Visualization */
 .tree-visualization {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 /* Root Node */
@@ -423,8 +432,10 @@
     padding: 1rem 0;
   }
   
+  .tree-header,
   .tree-visualization {
     padding: 0 1rem;
+    max-width: 100%;
   }
   
   .career-branches {
@@ -454,6 +465,15 @@
 }
 
 @media (max-width: 480px) {
+  .python-tree-container {
+    padding: 0.5rem 0;
+  }
+  
+  .tree-header,
+  .tree-visualization {
+    padding: 0 0.5rem;
+  }
+  
   .tree-header h1 {
     font-size: 2rem;
   }

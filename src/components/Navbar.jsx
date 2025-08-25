@@ -28,23 +28,28 @@ const Navbar = () => {
           <Link to="/about" className="nav-link">About</Link>
           <Link to="/courses" className="nav-link">Courses</Link>
           <Link to="/roadmap" className="nav-link">Python Roadmap</Link>
+          <Link to="/css-playground" className="nav-link">🎨 CSS Playground</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
-          <Link to="/membership" className="nav-link membership-link">
-            <FaCrown />
-            Premium
-          </Link>
+          {user && (
+            <Link to="/membership" className="nav-link membership-link">
+              <FaCrown />
+              Premium
+            </Link>
+          )}
         </div>
 
         <div className="navbar-right">
-          {/* Cart Icon */}
-          <Link to="/cart" className="nav-link cart-link">
-            <FaShoppingCart className="cart-icon" />
-            {getCartCount() > 0 && (
-              <span className="cart-badge">
-                {getCartCount()}
-              </span>
-            )}
-          </Link>
+          {/* Cart Icon - Only visible when logged in */}
+          {user && (
+            <Link to="/cart" className="nav-link cart-link">
+              <FaShoppingCart className="cart-icon" />
+              {getCartCount() > 0 && (
+                <span className="cart-badge">
+                  {getCartCount()}
+                </span>
+              )}
+            </Link>
+          )}
 
           {user ? (
             <div className="user-menu">

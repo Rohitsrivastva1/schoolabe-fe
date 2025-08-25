@@ -26,7 +26,7 @@ const HomePage = () => {
       <div className="homepage">
         {/* Hero Section */}
         <section className="hero-section">
-          <div className="container">
+          <div className="container-full">
             <div className="hero-content">
               <div className="hero-text">
                 <div className="hero-badge">
@@ -101,7 +101,7 @@ const HomePage = () => {
 
         {/* Stats Section */}
         <section className="stats-section">
-          <div className="container">
+          <div className="container-content">
             <div className="stats-grid">
               <div className="stat-item">
                 <div className="stat-number">15K+</div>
@@ -125,7 +125,7 @@ const HomePage = () => {
 
         {/* Features Section */}
         <section className="features-section">
-          <div className="container">
+          <div className="container-content">
             <div className="section-header">
               <h2 className="section-title">Why Choose Schoolabe for Python?</h2>
               <p className="section-description">
@@ -181,7 +181,7 @@ const HomePage = () => {
 
         {/* Latest Courses Section */}
         <section className="latest-courses-section">
-          <div className="container">
+          <div className="container-content">
             <div className="section-header">
               <h2 className="section-title">Latest Python Courses</h2>
               <p className="section-description">
@@ -246,7 +246,7 @@ const HomePage = () => {
 
         {/* CTA Section */}
         <section className="cta-section">
-          <div className="container">
+          <div className="container-content">
             <div className="cta-content">
               <h2>Ready to Master Python Programming?</h2>
               <p>

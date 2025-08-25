@@ -1,28 +1,20 @@
-/* Modern Contact Page Design */
+/* Modern Contact Page Design - Matching Homepage Theme */
 .contact-us {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #0D1117 0%, #161B22 50%, #0D1117 100%);
-    color: #E6EDF3;
+    background: transparent;
+    color: #f0f6fc;
     min-height: 100vh;
     padding: 40px 20px;
     position: relative;
-    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Background Pattern */
 .contact-us::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(63, 185, 80, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(88, 166, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(255, 123, 123, 0.05) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 1;
+    display: none;
 }
 
 .contact-us > * {
@@ -34,7 +26,7 @@
 .contact-us h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 800;
-    background: linear-gradient(135deg, #E6EDF3 0%, #58A6FF 50%, #3FB950 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #58a6ff 25%, #8b5cf6 50%, #ec4899 75%, #fbbf24 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -46,7 +38,7 @@
 
 .contact-us p {
     font-size: 1.1rem;
-    color: #8B949E;
+    color: #a1a1aa;
     text-align: center;
     margin-bottom: 48px;
     max-width: 600px;
@@ -63,6 +55,7 @@
     max-width: 1200px;
     margin: 0 auto;
     align-items: start;
+    width: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -72,16 +65,14 @@
     }
 }
 
-/* Enhanced Contact Form */
+/* Enhanced Contact Form - Clean Design */
 .contact-form {
-    background: rgba(22, 27, 34, 0.8);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 28px;
-    box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
 }
@@ -92,17 +83,23 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #3FB950, #58A6FF, #FF7B7B);
+    height: 3px;
+    background: linear-gradient(90deg, #58a6ff, #8b5cf6, #34d399);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.contact-form:hover::before {
+    transform: scaleX(1);
 }
 
 /* Modern Form Groups */
-.form-group {
+.contact-container .form-group {
     margin-bottom: 18px;
     position: relative;
 }
 
-.form-group label {
+.contact-container .form-group label {
     display: block;
     font-size: 0.85rem;
     font-weight: 600;
@@ -112,9 +109,9 @@
     letter-spacing: 0.5px;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
+.contact-container .form-group input,
+.contact-container .form-group textarea,
+.contact-container .form-group select {
     width: 100%;
     background: rgba(13, 17, 23, 0.8);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -126,9 +123,9 @@
     font-family: 'Inter', sans-serif;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
+.contact-container .form-group input:focus,
+.contact-container .form-group textarea:focus,
+.contact-container .form-group select:focus {
     outline: none;
     border-color: #3FB950;
     box-shadow: 
@@ -137,8 +134,8 @@
     background: rgba(13, 17, 23, 0.9);
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder {
+.contact-container .form-group input::placeholder,
+.contact-container .form-group textarea::placeholder {
     color: #6E7681;
 }
 
@@ -431,6 +428,11 @@
         padding: 24px 16px;
     }
     
+    .contact-container {
+        max-width: 100%;
+        padding: 0 16px;
+    }
+    
     .contact-form,
     .contact-details {
         padding: 24px;
@@ -445,6 +447,21 @@
     }
     
     .contact-item {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-us {
+        padding: 16px 12px;
+    }
+    
+    .contact-container {
+        padding: 0 12px;
+    }
+    
+    .contact-form,
+    .contact-details {
         padding: 20px;
     }
 }

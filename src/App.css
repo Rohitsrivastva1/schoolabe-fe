@@ -11,7 +11,6 @@ html, body {
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow-x: hidden;
 }
 
 #root {
@@ -38,6 +37,10 @@ html, body {
   color: var(--text-primary);
   padding: 0;
   flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Course Layout */
@@ -61,21 +64,48 @@ html, body {
   z-index: 100;
 }
 
-
 /* Global Component Styling */
 .container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.container > * {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Full-width container without padding */
+.container-full {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* Content container with padding for readability */
+.container-content {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--space-4);
+  box-sizing: border-box;
 }
 
 .section {
   padding: var(--space-16) 0;
+  width: 100%;
 }
 
 .section-header {
-  text-align: center;
+  text-align: left;
   margin-bottom: var(--space-12);
+  width: 100%;
 }
 
 .section-title {
@@ -89,8 +119,92 @@ html, body {
   font-size: var(--text-lg);
   color: var(--text-secondary);
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0;
   line-height: 1.6;
+}
+
+/* Additional Layout Fixes */
+.page-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-content {
+  width: 100%;
+  display: block;
+}
+
+.page-section {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ensure all main content areas are properly full-width */
+.main-content > * {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Fix for any remaining left-shifted content */
+.content-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-width content sections */
+.full-width-section {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+}
+
+/* Contact and Roadmap specific fixes */
+.contact-us,
+.python-tree-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-us > *,
+.python-tree-container > * {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-container,
+.tree-header,
+.tree-visualization {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Content that should be constrained for readability */
+.content-constrained {
+  max-width: 1200px;
+  margin: 0;
+  width: 100%;
+  padding: 0 var(--space-4);
+}
+
+/* Hero sections that should take full width */
+.hero-full-width {
+  width: 100%;
+  max-width: 100%;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
 }
 
 /* Card Components */
@@ -162,7 +276,7 @@ html, body {
   background: var(--accent-600);
 }
 
-/* Form Components */
+/* Form Components - Generic styles (can be overridden by component-specific CSS) */
 .form-group {
   margin-bottom: var(--space-4);
 }
@@ -175,23 +289,7 @@ html, body {
   margin-bottom: var(--space-2);
 }
 
-.form-input {
-  width: 100%;
-  padding: var(--space-3) var(--space-4);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  color: var(--text-primary);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: var(--primary-500);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
+/* Form input styles moved to component-specific CSS files */
 
 .form-textarea {
   width: 100%;
@@ -391,12 +489,25 @@ html, body {
     grid-template-columns: 1fr;
   }
   
-  .container {
-    padding: 0 var(--space-3);
+  .container,
+  .page-container,
+  .content-wrapper {
+    padding: 0 var(--space-2);
   }
   
   .section {
     padding: var(--space-8) 0;
+  }
+  
+  /* Mobile full-width adjustments */
+  .full-width-section {
+    padding-left: var(--space-2);
+    padding-right: var(--space-2);
+  }
+  
+  .hero-full-width {
+    padding-left: var(--space-2);
+    padding-right: var(--space-2);
   }
 }
 
@@ -417,8 +528,10 @@ html, body {
     margin-top: 50px;
   }
   
-  .container {
-    padding: 0 var(--space-2);
+  .container,
+  .page-container,
+  .content-wrapper {
+    padding: 0 var(--space-1);
   }
   
   .card {
@@ -428,6 +541,17 @@ html, body {
   .btn {
     padding: var(--space-2) var(--space-4);
     font-size: var(--text-xs);
+  }
+  
+  /* Small mobile full-width adjustments */
+  .full-width-section {
+    padding-left: var(--space-1);
+    padding-right: var(--space-1);
+  }
+  
+  .hero-full-width {
+    padding-left: var(--space-1);
+    padding-right: var(--space-1);
   }
 }
 
@@ -463,7 +587,7 @@ html, body {
 .card:focus {
   outline: 2px solid var(--primary-500);
   outline-offset: 2px;
-}
+} 
 
 /* Toast Container Styling */
 .Toastify__toast-container {
